@@ -12,7 +12,7 @@ Authors: P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, Lukáš Kývala, R.
 WHAT IS MAELASviewer?
 -------------------------
 
-MAELASviewer is an online tool to visualize magnetostriction phenomena. This interactive applet shows the magnetostriction for some crystal systems. You can visualize the relative length change (Δl/lo=[l-lo]/lo) of the material along an arbitrary direction (β) as a function of the external magnetic field (H) and magnetostrictive coefficients (λ).
+MAELASviewer is an online tool to visualize magnetostriction phenomena. This interactive applet shows the magnetostriction for some crystal systems. You can visualize the relative length change of the material along an arbitrary direction as a function of the external magnetic field and magnetostrictive coefficients.
 
 ------------------
 INSTALLATION
