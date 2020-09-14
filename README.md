@@ -45,7 +45,7 @@ If you need to install pip3 on Ubuntu Linux, then type
 sudo apt-get update
 sudo apt-get install python3-pip
 ```
-Next, download and extract the .zip file, go to the folder that contains the file ```maelasviewer.py``` and type
+Once all depencencies are installed, download and extract the MAELASviewer-master.zip file, go to the folder that contains the file ```maelasviewer.py``` and type
 ```bash
 python3 maelasviewer.py
 ```
