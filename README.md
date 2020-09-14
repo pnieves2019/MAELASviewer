@@ -38,7 +38,7 @@ you can easily install them with pip3
 ```bash
 pip3 install dash
 pip3 install plotly
-pip3 isntall numpy
+pip3 install numpy
 ```
 If you need to install pip3 on Ubuntu Linux, then type
 ```bash
