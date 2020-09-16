@@ -39,7 +39,10 @@ app.layout = html.Div(children=[
     html.H6("The relative length change for cubic (I) systems is given by:"),
    
     html.Div([html.Img(src='/assets/eq_cub.png')]), 
-    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter (s), that is"),
+    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively."),
+    
+    html.H5("Scaling Factor:"),
+    html.H6("Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter (s) that can be modified by the user"),
     html.Div([html.Img(src='/assets/eq_cub_s1.png')]), 
     html.H6("Note that this scaling preserve the ratio between the magnetostrictive coefficients. Obviously, the case with s=1 corresponds to the real situation. The total length l is"),
     html.Div([html.Img(src='/assets/eq_cub_s2.png')]),
