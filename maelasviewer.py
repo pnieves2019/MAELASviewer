@@ -357,7 +357,7 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
-    dl_l=((x**2 + y**2 + z**2)-d)/d
+    dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
     
     fig = make_subplots(rows=1, cols=2,     
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
@@ -409,7 +409,6 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    dl_lxy=((xxy**2 + yxy**2 + zxy**2)-d)/d
     
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
@@ -419,7 +418,6 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-    dl_lxz=((xxz**2 + yxz**2 + zxz**2)-d)/d
      
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
@@ -429,7 +427,6 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-    dl_lyz=((xyz**2 + yyz**2 + zyz**2)-d)/d
          
     figc2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
@@ -495,7 +492,7 @@ def update_figure(hx,hy,hz,lmbs,s):
     figp.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
     
     figp.update_traces(hoverinfo="name", showscale=False)
-    figp.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=((x**2 + y**2 + z**2)-d)/d, name="\u03B2"), 1, 2)
+    figp.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=(np.sqrt(x**2+y**2+z**2)-d)/d, name="\u03B2"), 1, 2)
     figp.update_layout(transition_duration=500)
     figp.update_yaxes(automargin=True)
 
@@ -528,7 +525,6 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    dl_lxy=((xxy**2 + yxy**2 + zxy**2)-d)/d
     
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
@@ -538,7 +534,6 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-    dl_lxz=((xxz**2 + yxz**2 + zxz**2)-d)/d
      
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
@@ -548,7 +543,6 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-    dl_lyz=((xyz**2 + yyz**2 + zyz**2)-d)/d
          
     figcp2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
@@ -606,7 +600,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
-    dl_l=((x**2 + y**2 + z**2)-d)/d
+    dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
     
     hfig = make_subplots(rows=1, cols=2,     
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
@@ -657,12 +651,10 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2*ax*ay*bxxy*byxy)+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
-    
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2*ax*ay*bxxy*byxy)+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)  
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    dl_lxy=((xxy**2 + yxy**2 + zxy**2)-d)/d
     
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
@@ -672,18 +664,15 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-    dl_lxz=((xxz**2 + yxz**2 + zxz**2)-d)/d
      
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
-    bzyz = np.cos(vyz)
-    
+    bzyz = np.cos(vyz)   
     fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+2*ax*ay*bxyz*byyz)+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-    dl_lyz=((xyz**2 + yyz**2 + zyz**2)-d)/d
          
     figh2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
@@ -745,7 +734,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
-    dl_l=((x**2 + y**2 + z**2)-d)/d
+    dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
     
     trfig = make_subplots(rows=1, cols=2,     
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
@@ -802,7 +791,6 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    dl_lxy=((xxy**2 + yxy**2 + zxy**2)-d)/d
     
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
@@ -812,7 +800,6 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-    dl_lxz=((xxz**2 + yxz**2 + zxz**2)-d)/d
      
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
@@ -822,7 +809,6 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-    dl_lyz=((xyz**2 + yyz**2 + zyz**2)-d)/d
          
     figtr2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
@@ -880,7 +866,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
-    dl_l=((x**2 + y**2 + z**2)-d)/d
+    dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
     
     tefig = make_subplots(rows=1, cols=2,     
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
@@ -931,13 +917,11 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+lmbd*2*ax*ay*bxxy*byxy+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
-    
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+lmbd*2*ax*ay*bxxy*byxy+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)   
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    dl_lxy=((xxy**2 + yxy**2 + zxy**2)-d)/d
-    
+   
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
     byxz = 0.0
@@ -946,18 +930,15 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-    dl_lxz=((xxz**2 + yxz**2 + zxz**2)-d)/d
      
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
-    bzyz = np.cos(vyz)
-    
+    bzyz = np.cos(vyz)  
     fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg*0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+lmbd*2*ax*ay*bxyz*byyz+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-    dl_lyz=((xyz**2 + yyz**2 + zyz**2)-d)/d
          
     figte2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
@@ -1021,7 +1002,7 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
-    dl_l=((x**2 + y**2 + z**2)-d)/d
+    dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
     
     ofig = make_subplots(rows=1, cols=2,     
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
@@ -1082,7 +1063,6 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    dl_lxy=((xxy**2 + yxy**2 + zxy**2)-d)/d
     
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
@@ -1092,7 +1072,6 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-    dl_lxz=((xxz**2 + yxz**2 + zxz**2)-d)/d
      
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
@@ -1102,7 +1081,6 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-    dl_lyz=((xyz**2 + yyz**2 + zyz**2)-d)/d
          
     figo2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
@@ -1124,7 +1102,6 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     figo2d.update_xaxes(automargin=True)
 
     return figo2d
-
 
 
 
