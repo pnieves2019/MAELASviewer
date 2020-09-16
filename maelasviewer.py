@@ -17,7 +17,11 @@ app.layout = html.Div(children=[
     
     html.Div([html.Img(src='/assets/logo_maelasviewer.png')]), 
     html.H1(children='MAELASviewer: Online visualization of magnetostriction'),
-   
+    html.Hr(),
+    html.H5('Authors: P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut'),
+    html.H6('Flagship Material Design via Exascale Computing at the IT4Innovations National Supercomputing Center at VŠB - Technical University of Ostrava'),
+    html.Hr(),
+    
     html.H3("Introduction"),
     html.H6("A magnetostrictive material is one which changes in size due to a change of state of magnetization. This interactive applet shows the magnetostriction for some crystal systems. You can visualize the relative length change (\u0394l/lo=[l-lo]/lo) of the material along an arbitrary direction (β) as a function of the external magnetic field (H) and magnetostrictive coefficients (λ). The magnitude of the external magnetic field is assumed to be strong enough to saturate the magnetization (α) along the magnetic field (α||H). The length lo corresponds to the size of the magnetic material in a demagnetized state along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation the length lo of the material in any direction β is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. However, note that the simulations can also be understood as the real shape deformation of a magnetic spherical nanoparticle with diameter larger than the domain wall width (in order to allow the formation of magnetic domains)."),
     html.Div([html.Img(src='/assets/diagram_online.png')]),
@@ -35,8 +39,12 @@ app.layout = html.Div(children=[
     html.H6("The relative length change for cubic (I) systems is given by:"),
    
     html.Div([html.Img(src='/assets/eq_cub.png')]), 
-    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-   
+    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter (s), that is"),
+    html.Div([html.Img(src='/assets/eq_cub_s1.png')]), 
+    html.H6("Note that this scaling preserve the ratio between the magnetostrictive coefficients. Obviously, the case with s=1 corresponds to the real situation. The total length l is"),
+    html.Div([html.Img(src='/assets/eq_cub_s2.png')]),
+    html.H6("where we took into account that lo=1. Similar procedure is applied to the other supported crystal systems."),
+    
     html.H4("1.2 Parameters of the simulation"),
     html.H6("(Press Enter after changing any input to update the figures)"),
     html.Hr(),
@@ -323,8 +331,13 @@ app.layout = html.Div(children=[
     html.Hr(),
     
     html.H3("Bibliography"),
-    html.H6(" [1] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, 2020, arXiv:2009.01638")
-
+    html.H6(" [1] P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut, MAELASviewer: an online tool to visualize magnetostriction, 2020, arXiv"),
+    html.H6(" [2] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, 2020, arXiv:2009.01638"),
+    html.H3("Source files"),
+    html.H6("https://github.com/pnieves2019/MAELASwiewer"),
+    html.Hr(),
+    
+    
 ])
 
 ##############Cubic I -3D
