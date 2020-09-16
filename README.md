@@ -6,7 +6,7 @@ Online visualization of magnetostriction
 
 MAELASviewer
 
-Authors: P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, Lukáš Kývala, R.F. Zhang and D. Legut
+Authors: P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut
 
 -------------------------
 WHAT IS MAELASviewer?
