@@ -60,3 +60,8 @@ python3 maelasviewer.py
 ```
 then visit http://127.0.0.1:8050/ in your web browser to use MAELASviewer. This will run the app in the development server on your local machine..
 
+-------------------------------
+MANUSCRIPT
+-------------------------------
+
+P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut, MAELASviewer: an online tool to visualize magnetostriction, 2020, arXiv
