@@ -14,11 +14,20 @@ WHAT IS MAELASviewer?
 
 MAELASviewer is an online tool to visualize magnetostriction. This interactive applet shows the magnetostriction for some crystal systems. You can visualize the relative length change of the material along an arbitrary direction as a function of the external magnetic field and magnetostrictive coefficients.
 
-------------------
-INSTALLATION
-------------------
+------------------------
+ONLINE APP
+------------------------
 
-The MAELAS code requires to have ```Python3(>=3.6)```. For example, in Ubuntu Linux machine you can check the installed version of ```python3``` by opening a terminal and typing
+MAELASviewer can be used in the following link
+
+https://maelasviewer.herokuapp.com/
+
+-------------------------------
+RUNNING MAELASviewer FROM SOURCE FILES 
+-------------------------------
+
+Alternatively, it is also possible to use MAELASviewer running the source files. It requires to have ```Python3(>=3.6)```. 
+For example, in Ubuntu Linux machine you can check the installed version of ```python3``` by opening a terminal and typing
 ```bash
 python3 --version
 ```
@@ -49,5 +58,5 @@ Once all depencencies are installed, download and extract the MAELASviewer-maste
 ```bash
 python3 maelasviewer.py
 ```
-then visit http://127.0.0.1:8050/ in your web browser to use MAELASviewer.
+then visit http://127.0.0.1:8050/ in your web browser to use MAELASviewer. This will run the app in the development server on your local machine..
 

@@ -3,6 +3,7 @@
 # Run this app with `python3 maelasviewer.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -13,18 +14,19 @@ from dash.dependencies import Input, Output
 
 app = dash.Dash(__name__)
 
+server = app.server
+
 app.layout = html.Div(children=[
-    
-    html.Div([html.Img(src='/assets/logo_maelasviewer.png')]), 
+    html.Div([html.Img(src=app.get_asset_url('logo_maelasviewer.png'))]),
     html.H1(children='MAELASviewer: Online visualization of magnetostriction'),
     html.Hr(),
     html.H5('Authors: P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut'),
     html.H6('Flagship Material Design via Exascale Computing at the IT4Innovations National Supercomputing Center at VŠB - Technical University of Ostrava'),
     html.Hr(),
-    
+
     html.H3("Introduction"),
     html.H6("A magnetostrictive material is one which changes in size due to a change of state of magnetization. This interactive applet shows the magnetostriction for some crystal systems. You can visualize the relative length change (\u0394l/lo=[l-lo]/lo) of the material along an arbitrary direction (β) as a function of the external magnetic field (H) and magnetostrictive coefficients (λ). The magnitude of the external magnetic field is assumed to be strong enough to saturate the magnetization (α) along the magnetic field (α||H). The length lo corresponds to the size of the magnetic material in a demagnetized state along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation the length lo of the material in any direction β is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. However, note that the simulations can also be understood as the real shape deformation of a magnetic spherical nanoparticle with diameter larger than the domain wall width (in order to allow the formation of magnetic domains)."),
-    html.Div([html.Img(src='/assets/diagram_online.png')]),
+    html.Div([html.Img(src=app.get_asset_url('diagram_online.png'))]),
     html.Hr(),
     html.H3("Available systems"),
     html.H6("1. Single crystal: Cubic I (space group numbers  207-230)"),
@@ -37,28 +39,27 @@ app.layout = html.Div(children=[
     html.H3("1. Single crystal: Cubic I (space group numbers  207-230)"),
     html.H4("1.1 Theory"),
     html.H6("The relative length change for cubic (I) systems is given by:"),
-   
-    html.Div([html.Img(src='/assets/eq_cub.png')]), 
+    html.Div([html.Img(src=app.get_asset_url('eq_cub.png'))]),
     html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively."),
-    
+
     html.H5("Scaling Factor:"),
     html.H6("Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter (s) that can be modified by the user"),
-    html.Div([html.Img(src='/assets/eq_cub_s1.png')]), 
+    html.Div([html.Img(src=app.get_asset_url('eq_cub_s1.png'))]),
     html.H6("Note that this scaling preserve the ratio between the magnetostrictive coefficients. Obviously, the case with s=1 corresponds to the real situation. The total length l is"),
-    html.Div([html.Img(src='/assets/eq_cub_s2.png')]),
+    html.Div([html.Img(src=app.get_asset_url('eq_cub_s2.png'))]),
     html.H6("where we took into account that lo=1. Similar procedure is applied to the other supported crystal systems."),
-    
+
     html.H4("1.2 Parameters of the simulation"),
     html.H6("(Press Enter after changing any input to update the figures)"),
     html.Hr(),
-    html.H6("Direction of the external magnetic field:"), 
+    html.H6("Direction of the external magnetic field:"),
     html.Div(['H',html.Sub('x')," = ",
               dcc.Input(id='fieldx', value=1.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('y')," = ",
               dcc.Input(id='fieldy', value=0.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('z')," = ",
               dcc.Input(id='fieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"), 
+    html.H6("Magnetostrictive coefficients:"),
     html.Div(['\u03BB',html.Sup("\u03B1")," = ",
               dcc.Input(id='L0', value=0.0, type='number', debounce=True, step=0.000001)]),
     html.Div(['\u03BB',html.Sub("001")," = ",
@@ -89,25 +90,25 @@ app.layout = html.Div(children=[
     ]),
     html.Hr(),
 ####################### Cubic I polycrystal
-    
+
     html.H3("2. Polycrystal: Cubic I (space group numbers  207-230)"),
     html.H4("2.1 Theory"),
     html.H6("The theory of magnetostriction for polycrystalline materials is more complex. A widely used approximation is to assume that the stress distribution is uniform through the material. In this case the relative change in length may be put into the form:"),
-    html.Div([html.Img(src='/assets/eq_cub_poly.png')]),
+    html.Div([html.Img(src=app.get_asset_url('eq_cub_poly.png'))]),
     html.H6("where"),
-    html.Div([html.Img(src='/assets/eq_cub_poly_lmb_s.png')]),
+    html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
 
     html.H4("2.2 Parameters of the simulation"),
     html.H6("(Press Enter after changing any input to update the figures)"),
     html.Hr(),
-    html.H6("Direction of the external magnetic field:"), 
+    html.H6("Direction of the external magnetic field:"),
     html.Div(['H',html.Sub('x')," = ",
               dcc.Input(id='pfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('y')," = ",
               dcc.Input(id='pfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('z')," = ",
               dcc.Input(id='pfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"), 
+    html.H6("Magnetostrictive coefficients:"),
     html.Div(['\u03BB',html.Sub("S")," = ",
               dcc.Input(id='LS', value=0.000001, type='number', debounce=True, step=0.000001)]),
     html.Div(["Scaling factor = ",
@@ -117,7 +118,7 @@ app.layout = html.Div(children=[
     html.Hr(),
     html.H4("2.3 Simulation"),
     html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scaling factor along direction \u03B2."),
-    
+
     dcc.Graph(id='graph-poly'),
     dcc.Graph(id='graph-poly2D'),
     html.H4("2.4 Magnetostriction of some polycrystal materials (cubic I)"),
@@ -126,29 +127,28 @@ app.layout = html.Div(children=[
         html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('300'),html.Td('-0.000007')]),
         html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('300'),html.Td('-0.000034')]),
         html.Tr([html.Td(html.Div(['C15 TbFe',html.Sub("2")])), html.Td('227'),html.Td('300'),html.Td('0.001753')]),
-    ]),    
+    ]),
     html.Hr(),
 
 ######## Hex I
-    
+
     html.H3("3. Single crystal: Hexagonal I (space group numbers  177-194)"),
     html.H4("3.1 Theory"),
     html.H6("The relative length change for hexagonal (I) systems is given by:"),
-   
-    html.Div([html.Img(src='/assets/eq_hex.png')]), 
+    html.Div([html.Img(src=app.get_asset_url('eq_hex.png'))]),
     html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-   
+
     html.H4("3.2 Parameters of the simulation"),
     html.H6("(Press Enter after changing any input to update the figures)"),
     html.Hr(),
-    html.H6("Direction of the external magnetic field:"), 
+    html.H6("Direction of the external magnetic field:"),
     html.Div(['H',html.Sub('x')," = ",
               dcc.Input(id='hfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('y')," = ",
               dcc.Input(id='hfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('z')," = ",
               dcc.Input(id='hfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"), 
+    html.H6("Magnetostrictive coefficients:"),
     html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
               dcc.Input(id='hL01', value=0.0, type='number', debounce=True, step=0.000001)]),
     html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
@@ -182,25 +182,24 @@ app.layout = html.Div(children=[
 
 
 ######## Trig I
-    
+
     html.H3("4. Single crystal: Trigonal I (space group numbers  149-167)"),
     html.H4("4.1 Theory"),
     html.H6("The relative length change for trigonal (I) systems is given by:"),
-   
-    html.Div([html.Img(src='/assets/eq_trig.png')]), 
+    html.Div([html.Img(src=app.get_asset_url('eq_trig.png'))]),
     html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-   
+
     html.H4("4.2 Parameters of the simulation"),
     html.H6("(Press Enter after changing any input to update the figures)"),
     html.Hr(),
-    html.H6("Direction of the external magnetic field:"), 
+    html.H6("Direction of the external magnetic field:"),
     html.Div(['H',html.Sub('x')," = ",
               dcc.Input(id='trfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('y')," = ",
               dcc.Input(id='trfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('z')," = ",
               dcc.Input(id='trfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"), 
+    html.H6("Magnetostrictive coefficients:"),
     html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
               dcc.Input(id='trL01', value=0.0, type='number', debounce=True, step=0.000001)]),
     html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
@@ -231,25 +230,24 @@ app.layout = html.Div(children=[
     html.Hr(),
 
 ######## Tet I
-    
+
     html.H3("5. Single crystal: Tetragonal I (space group numbers  89-142)"),
     html.H4("5.1 Theory"),
     html.H6("The relative length change for tetragoanl (I) systems is given by:"),
-   
-    html.Div([html.Img(src='/assets/eq_tet.png')]), 
+    html.Div([html.Img(src=app.get_asset_url('eq_tet.png'))]),
     html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-   
+
     html.H4("5.2 Parameters of the simulation"),
     html.H6("(Press Enter after changing any input to update the figures)"),
     html.Hr(),
-    html.H6("Direction of the external magnetic field:"), 
+    html.H6("Direction of the external magnetic field:"),
     html.Div(['H',html.Sub('x')," = ",
               dcc.Input(id='tefieldx', value=1.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('y')," = ",
               dcc.Input(id='tefieldy', value=0.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('z')," = ",
               dcc.Input(id='tefieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"), 
+    html.H6("Magnetostrictive coefficients:"),
     html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
               dcc.Input(id='teL01', value=0.0, type='number', debounce=True, step=0.000001)]),
     html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
@@ -278,25 +276,24 @@ app.layout = html.Div(children=[
 
 
 ######## Orth
-    
+
     html.H3("6. Single crystal: Orthorhombic (space group numbers  16-74)"),
     html.H4("6.1 Theory"),
     html.H6("The relative length change for orthorhombic systems is given by:"),
-   
-    html.Div([html.Img(src='/assets/eq_ort.png')]), 
+    html.Div([html.Img(src=app.get_asset_url('eq_ort.png'))]),
     html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-   
+
     html.H4("6.2 Parameters of the simulation"),
     html.H6("(Press Enter after changing any input to update the figures)"),
     html.Hr(),
-    html.H6("Direction of the external magnetic field:"), 
+    html.H6("Direction of the external magnetic field:"),
     html.Div(['H',html.Sub('x')," = ",
               dcc.Input(id='ofieldx', value=1.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('y')," = ",
               dcc.Input(id='ofieldy', value=0.0, type='number', debounce=True, step=0.1)]),
     html.Div(['H',html.Sub('z')," = ",
               dcc.Input(id='ofieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"), 
+    html.H6("Magnetostrictive coefficients:"),
     html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
               dcc.Input(id='oL01', value=0.0, type='number', debounce=True, step=0.000001)]),
     html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
@@ -332,15 +329,15 @@ app.layout = html.Div(children=[
     dcc.Graph(id='ort_2D'),
 
     html.Hr(),
-    
+
     html.H3("Bibliography"),
     html.H6(" [1] P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut, MAELASviewer: an online tool to visualize magnetostriction, 2020, arXiv"),
     html.H6(" [2] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, 2020, arXiv:2009.01638"),
     html.H3("Source files"),
     html.H6("https://github.com/pnieves2019/MAELASwiewer"),
     html.Hr(),
-    
-    
+
+
 ])
 
 ##############Cubic I -3D
@@ -353,19 +350,19 @@ app.layout = html.Div(children=[
      Input(component_id='L0', component_property='value'),
      Input(component_id='L1', component_property='value'),
      Input(component_id='L2', component_property='value'),
-     Input(component_id='scale', component_property='value'),   
+     Input(component_id='scale', component_property='value'),
     ]
 )
 
 
 def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
-   
-    d=1.0   
+
+    d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
     ay=hy/h
     az=hz/h
-    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]  
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
@@ -374,20 +371,20 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
-    
-    fig = make_subplots(rows=1, cols=2,     
+
+    fig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)  
-    
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+
     fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     fig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
-    
+
     fig.update_traces(hoverinfo="name", showscale=False)
     fig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-  
+
     fig.update_layout(transition_duration=500)
 
     fig.update_yaxes(automargin=True)
@@ -405,13 +402,13 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
      Input(component_id='L0', component_property='value'),
      Input(component_id='L1', component_property='value'),
      Input(component_id='L2', component_property='value'),
-     Input(component_id='scale', component_property='value'),   
+     Input(component_id='scale', component_property='value'),
     ]
 )
 
 
 def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
-   
+
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
@@ -425,7 +422,7 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    
+
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
     byxz = 0.0
@@ -434,7 +431,7 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-     
+
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
@@ -443,7 +440,7 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-         
+
     figc2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -453,11 +450,11 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
 
     figc2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figc2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
- 
+
     figc2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figc2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
     figc2d.update_layout(xaxis_title='X-axis')
-    figc2d.update_layout(yaxis_title='Y-axis') 
+    figc2d.update_layout(yaxis_title='Y-axis')
     figc2d.update_layout(transition_duration=500)
 
     figc2d.update_yaxes(automargin=True)
@@ -475,15 +472,15 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
      Input(component_id='pfieldy', component_property='value'),
      Input(component_id='pfieldz', component_property='value'),
      Input(component_id='LS', component_property='value'),
-     Input(component_id='pscale', component_property='value'),   
+     Input(component_id='pscale', component_property='value'),
     ]
 )
 
 
 
 def update_figure(hx,hy,hz,lmbs,s):
-   
-    d=1.0 
+
+    d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
     ay=hy/h
@@ -496,17 +493,17 @@ def update_figure(hx,hy,hz,lmbs,s):
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
-    
+
     figp = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
                     subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
-    
+
     figp.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     figp.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     figp.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     figp.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     figp.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
-    
+
     figp.update_traces(hoverinfo="name", showscale=False)
     figp.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=(np.sqrt(x**2+y**2+z**2)-d)/d, name="\u03B2"), 1, 2)
     figp.update_layout(transition_duration=500)
@@ -522,12 +519,12 @@ def update_figure(hx,hy,hz,lmbs,s):
      Input(component_id='pfieldy', component_property='value'),
      Input(component_id='pfieldz', component_property='value'),
      Input(component_id='LS', component_property='value'),
-     Input(component_id='pscale', component_property='value'),   
+     Input(component_id='pscale', component_property='value'),
     ]
 )
 
 def update_figcp2d(hx,hy,hz,lmbs,s):
-   
+
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
@@ -537,29 +534,29 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmbs*1.5*((ax*bxxy+ay*byxy+az*bzxy)**2-(1/3))  
+    fxy = lmbs*1.5*((ax*bxxy+ay*byxy+az*bzxy)**2-(1/3))
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    
+
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
     byxz = 0.0
-    bzxz = np.cos(vxz)   
-    fxz = lmbs*1.5*((ax*bxxz+ay*byxz+az*bzxz)**2-(1/3)) 
+    bzxz = np.cos(vxz)
+    fxz = lmbs*1.5*((ax*bxxz+ay*byxz+az*bzxz)**2-(1/3))
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-     
+
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmbs*1.5*((ax*bxyz+ay*byyz+az*bzyz)**2-(1/3)) 
+    fyz = lmbs*1.5*((ax*bxyz+ay*byyz+az*bzyz)**2-(1/3))
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-         
+
     figcp2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -569,11 +566,11 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
 
     figcp2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figcp2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
- 
+
     figcp2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figcp2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
     figcp2d.update_layout(xaxis_title='X-axis')
-    figcp2d.update_layout(yaxis_title='Y-axis') 
+    figcp2d.update_layout(yaxis_title='Y-axis')
     figcp2d.update_layout(transition_duration=500)
 
     figcp2d.update_yaxes(automargin=True)
@@ -596,19 +593,19 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
      Input(component_id='hLa2', component_property='value'),
      Input(component_id='hLg', component_property='value'),
      Input(component_id='hLe', component_property='value'),
-     Input(component_id='hscale', component_property='value'),   
+     Input(component_id='hscale', component_property='value'),
     ]
 )
 
 
 def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
-   
-    d=1.0   
+
+    d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
     ay=hy/h
     az=hz/h
-    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]  
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
@@ -617,20 +614,20 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
-    
-    hfig = make_subplots(rows=1, cols=2,     
+
+    hfig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)  
-    
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+
     hfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     hfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     hfig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     hfig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     hfig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
-    
+
     hfig.update_traces(hoverinfo="name", showscale=False)
     hfig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-  
+
     hfig.update_layout(transition_duration=500)
 
     hfig.update_yaxes(automargin=True)
@@ -651,13 +648,13 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
      Input(component_id='hLa2', component_property='value'),
      Input(component_id='hLg', component_property='value'),
      Input(component_id='hLe', component_property='value'),
-     Input(component_id='hscale', component_property='value'),   
+     Input(component_id='hscale', component_property='value'),
     ]
 )
 
 
 def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
-   
+
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
@@ -667,11 +664,11 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2*ax*ay*bxxy*byxy)+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)  
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2*ax*ay*bxxy*byxy)+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    
+
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
     byxz = 0.0
@@ -680,16 +677,16 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-     
+
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
-    bzyz = np.cos(vyz)   
+    bzyz = np.cos(vyz)
     fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+2*ax*ay*bxyz*byyz)+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-         
+
     figh2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -699,11 +696,11 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
 
     figh2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figh2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
- 
+
     figh2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figh2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
     figh2d.update_layout(xaxis_title='X-axis')
-    figh2d.update_layout(yaxis_title='Y-axis') 
+    figh2d.update_layout(yaxis_title='Y-axis')
     figh2d.update_layout(transition_duration=500)
 
     figh2d.update_yaxes(automargin=True)
@@ -730,19 +727,19 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
      Input(component_id='trLg2', component_property='value'),
      Input(component_id='trL12', component_property='value'),
      Input(component_id='trL21', component_property='value'),
-     Input(component_id='trscale', component_property='value'),   
+     Input(component_id='trscale', component_property='value'),
     ]
 )
 
 
 def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
-   
-    d=1.0   
+
+    d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
     ay=hy/h
     az=hz/h
-    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]  
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
@@ -751,20 +748,20 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
-    
-    trfig = make_subplots(rows=1, cols=2,     
+
+    trfig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)  
-    
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+
     trfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     trfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     trfig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     trfig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     trfig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
-    
+
     trfig.update_traces(hoverinfo="name", showscale=False)
     trfig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-  
+
     trfig.update_layout(transition_duration=500)
 
     trfig.update_yaxes(automargin=True)
@@ -787,13 +784,13 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
      Input(component_id='trLg2', component_property='value'),
      Input(component_id='trL12', component_property='value'),
      Input(component_id='trL21', component_property='value'),
-     Input(component_id='trscale', component_property='value'),   
+     Input(component_id='trscale', component_property='value'),
     ]
 )
 
 
 def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
-   
+
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
@@ -803,29 +800,29 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+ax*ay*bxxy*byxy)+lmbg2*(ax*az*bxxy*bzxy+ay*az*byxy*bzxy)+lmb12*(0.5*ay*az*(bxxy**2-byxy**2)+ax*az*bxxy*byxy)+lmb21*(0.5*(ax**2-ay**2)*byxy*bzxy+ax*ay*bxxy*bzxy) 
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+ax*ay*bxxy*byxy)+lmbg2*(ax*az*bxxy*bzxy+ay*az*byxy*bzxy)+lmb12*(0.5*ay*az*(bxxy**2-byxy**2)+ax*az*bxxy*byxy)+lmb21*(0.5*(ax**2-ay**2)*byxy*bzxy+ax*ay*bxxy*bzxy)
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    
+
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
     byxz = 0.0
-    bzxz = np.cos(vxz)   
-    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-(1/3))*(bxxz**2+byxz**2)+lmba2*((az**2)-(1/3))*(bzxz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+ax*ay*bxxz*byxz)+lmbg2*(ax*az*bxxz*bzxz+ay*az*byxz*bzxz)+lmb12*(0.5*ay*az*(bxxz**2-byxz**2)+ax*az*bxxz*byxz)+lmb21*(0.5*(ax**2-ay**2)*byxz*bzxz+ax*ay*bxxz*bzxz) 
+    bzxz = np.cos(vxz)
+    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-(1/3))*(bxxz**2+byxz**2)+lmba2*((az**2)-(1/3))*(bzxz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+ax*ay*bxxz*byxz)+lmbg2*(ax*az*bxxz*bzxz+ay*az*byxz*bzxz)+lmb12*(0.5*ay*az*(bxxz**2-byxz**2)+ax*az*bxxz*byxz)+lmb21*(0.5*(ax**2-ay**2)*byxz*bzxz+ax*ay*bxxz*bzxz)
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-     
+
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
-    bzyz = np.cos(vyz)   
+    bzyz = np.cos(vyz)
     fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+ax*ay*bxyz*byyz)+lmbg2*(ax*az*bxyz*bzyz+ay*az*byyz*bzyz)+lmb12*(0.5*ay*az*(bxyz**2-byyz**2)+ax*az*bxyz*byyz)+lmb21*(0.5*(ax**2-ay**2)*byyz*bzyz+ax*ay*bxyz*bzyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-         
+
     figtr2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -835,11 +832,11 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
 
     figtr2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figtr2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
- 
+
     figtr2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figtr2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
     figtr2d.update_layout(xaxis_title='X-axis')
-    figtr2d.update_layout(yaxis_title='Y-axis') 
+    figtr2d.update_layout(yaxis_title='Y-axis')
     figtr2d.update_layout(transition_duration=500)
 
     figtr2d.update_yaxes(automargin=True)
@@ -862,19 +859,19 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
      Input(component_id='teLg', component_property='value'),
      Input(component_id='teLd', component_property='value'),
      Input(component_id='teLe', component_property='value'),
-     Input(component_id='tescale', component_property='value'),   
+     Input(component_id='tescale', component_property='value'),
     ]
 )
 
 
 def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
-   
-    d=1.0   
+
+    d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
     ay=hy/h
     az=hz/h
-    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]  
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
@@ -883,20 +880,20 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
-    
-    tefig = make_subplots(rows=1, cols=2,     
+
+    tefig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)  
-   
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+
     tefig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     tefig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
-    
+
     tefig.update_traces(hoverinfo="name", showscale=False)
     tefig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-  
+
     tefig.update_layout(transition_duration=500)
 
     tefig.update_yaxes(automargin=True)
@@ -918,12 +915,12 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
      Input(component_id='teLg', component_property='value'),
      Input(component_id='teLd', component_property='value'),
      Input(component_id='teLe', component_property='value'),
-     Input(component_id='tescale', component_property='value'),   
+     Input(component_id='tescale', component_property='value'),
     ]
 )
 
 def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
-   
+
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
@@ -933,11 +930,11 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+lmbd*2*ax*ay*bxxy*byxy+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)   
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+lmbd*2*ax*ay*bxxy*byxy+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-   
+
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
     byxz = 0.0
@@ -946,16 +943,16 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-     
+
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
-    bzyz = np.cos(vyz)  
+    bzyz = np.cos(vyz)
     fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg*0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+lmbd*2*ax*ay*bxyz*byyz+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-         
+
     figte2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -965,11 +962,11 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
 
     figte2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figte2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
- 
+
     figte2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figte2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
     figte2d.update_layout(xaxis_title='X-axis')
-    figte2d.update_layout(yaxis_title='Y-axis') 
+    figte2d.update_layout(yaxis_title='Y-axis')
     figte2d.update_layout(transition_duration=500)
 
     figte2d.update_yaxes(automargin=True)
@@ -998,19 +995,19 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
      Input(component_id='oL7', component_property='value'),
      Input(component_id='oL8', component_property='value'),
      Input(component_id='oL9', component_property='value'),
-     Input(component_id='oscale', component_property='value'),   
+     Input(component_id='oscale', component_property='value'),
     ]
 )
 
 
 def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s):
-   
-    d=1.0   
+
+    d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
     ay=hy/h
     az=hz/h
-    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]  
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
@@ -1019,20 +1016,20 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
-    
-    ofig = make_subplots(rows=1, cols=2,     
+
+    ofig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)  
-   
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+
     ofig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     ofig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
-    
+
     ofig.update_traces(hoverinfo="name", showscale=False)
     ofig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-  
+
     ofig.update_layout(transition_duration=500)
 
     ofig.update_yaxes(automargin=True)
@@ -1059,13 +1056,13 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
      Input(component_id='oL7', component_property='value'),
      Input(component_id='oL8', component_property='value'),
      Input(component_id='oL9', component_property='value'),
-     Input(component_id='oscale', component_property='value'),   
+     Input(component_id='oscale', component_property='value'),
     ]
 )
 
 
 def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s):
-   
+
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
     ax=hx/h
@@ -1075,29 +1072,29 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*bxxy**2+lmb02*byxy**2+lmb03*bzxy**2+lmb1*(ax**2*bxxy**2-ax*ay*bxxy*byxy-ax*az*bxxy*bzxy)+lmb2*(ay**2*bxxy**2-ax*ay*bxxy*byxy)+lmb3*(ax**2*byxy**2-ax*ay*bxxy*byxy)+lmb4*(ay**2*byxy**2-ax*ay*bxxy*byxy-ay*az*byxy*bzxy)+lmb5*(ax**2*bzxy**2-ax*az*bxxy*bzxy)+lmb6*(ay**2*bzxy**2-ay*az*byxy*bzxy)+lmb7*4*ax*ay*bxxy*byxy+lmb8*4*ax*az*bxxy*bzxy+lmb9*4*ay*az*byxy*bzxy  
+    fxy = lmb01*bxxy**2+lmb02*byxy**2+lmb03*bzxy**2+lmb1*(ax**2*bxxy**2-ax*ay*bxxy*byxy-ax*az*bxxy*bzxy)+lmb2*(ay**2*bxxy**2-ax*ay*bxxy*byxy)+lmb3*(ax**2*byxy**2-ax*ay*bxxy*byxy)+lmb4*(ay**2*byxy**2-ax*ay*bxxy*byxy-ay*az*byxy*bzxy)+lmb5*(ax**2*bzxy**2-ax*az*bxxy*bzxy)+lmb6*(ay**2*bzxy**2-ay*az*byxy*bzxy)+lmb7*4*ax*ay*bxxy*byxy+lmb8*4*ax*az*bxxy*bzxy+lmb9*4*ay*az*byxy*bzxy
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
-    
+
     vxz = np.mgrid[0:2*np.pi:200j]
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmb01*bxxz**2+lmb02*byxz**2+lmb03*bzxz**2+lmb1*(ax**2*bxxz**2-ax*ay*bxxz*byxz-ax*az*bxxz*bzxz)+lmb2*(ay**2*bxxz**2-ax*ay*bxxz*byxz)+lmb3*(ax**2*byxz**2-ax*ay*bxxz*byxz)+lmb4*(ay**2*byxz**2-ax*ay*bxxz*byxz-ay*az*byxz*bzxz)+lmb5*(ax**2*bzxz**2-ax*az*bxxz*bzxz)+lmb6*(ay**2*bzxz**2-ay*az*byxz*bzxz)+lmb7*4*ax*ay*bxxz*byxz+lmb8*4*ax*az*bxxz*bzxz+lmb9*4*ay*az*byxz*bzxz  
+    fxz = lmb01*bxxz**2+lmb02*byxz**2+lmb03*bzxz**2+lmb1*(ax**2*bxxz**2-ax*ay*bxxz*byxz-ax*az*bxxz*bzxz)+lmb2*(ay**2*bxxz**2-ax*ay*bxxz*byxz)+lmb3*(ax**2*byxz**2-ax*ay*bxxz*byxz)+lmb4*(ay**2*byxz**2-ax*ay*bxxz*byxz-ay*az*byxz*bzxz)+lmb5*(ax**2*bzxz**2-ax*az*bxxz*bzxz)+lmb6*(ay**2*bzxz**2-ay*az*byxz*bzxz)+lmb7*4*ax*ay*bxxz*byxz+lmb8*4*ax*az*bxxz*bzxz+lmb9*4*ay*az*byxz*bzxz
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
-     
+
     vyz = np.mgrid[0:2*np.pi:200j]
     bxyz = 0.0
     byyz = np.sin(vyz)
-    bzyz = np.cos(vyz)    
-    fyz = lmb01*bxyz**2+lmb02*byyz**2+lmb03*bzyz**2+lmb1*(ax**2*bxyz**2-ax*ay*bxyz*byyz-ax*az*bxyz*bzyz)+lmb2*(ay**2*bxyz**2-ax*ay*bxyz*byyz)+lmb3*(ax**2*byyz**2-ax*ay*bxyz*byyz)+lmb4*(ay**2*byyz**2-ax*ay*bxyz*byyz-ay*az*byyz*bzyz)+lmb5*(ax**2*bzyz**2-ax*az*bxyz*bzyz)+lmb6*(ay**2*bzyz**2-ay*az*byyz*bzyz)+lmb7*4*ax*ay*bxyz*byyz+lmb8*4*ax*az*bxyz*bzyz+lmb9*4*ay*az*byyz*bzyz  
+    bzyz = np.cos(vyz)
+    fyz = lmb01*bxyz**2+lmb02*byyz**2+lmb03*bzyz**2+lmb1*(ax**2*bxyz**2-ax*ay*bxyz*byyz-ax*az*bxyz*bzyz)+lmb2*(ay**2*bxyz**2-ax*ay*bxyz*byyz)+lmb3*(ax**2*byyz**2-ax*ay*bxyz*byyz)+lmb4*(ay**2*byyz**2-ax*ay*bxyz*byyz-ay*az*byyz*bzyz)+lmb5*(ax**2*bzyz**2-ax*az*bxyz*bzyz)+lmb6*(ay**2*bzyz**2-ay*az*byyz*bzyz)+lmb7*4*ax*ay*bxyz*byyz+lmb8*4*ax*az*bxyz*bzyz+lmb9*4*ay*az*byyz*bzyz
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-         
+
     figo2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -1107,11 +1104,11 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
 
     figo2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figo2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
- 
+
     figo2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figo2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
     figo2d.update_layout(xaxis_title='X-axis')
-    figo2d.update_layout(yaxis_title='Y-axis') 
+    figo2d.update_layout(yaxis_title='Y-axis')
     figo2d.update_layout(transition_duration=500)
 
     figo2d.update_yaxes(automargin=True)
