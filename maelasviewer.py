@@ -334,7 +334,7 @@ app.layout = html.Div(children=[
     html.H6(" [1] P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut, MAELASviewer: an online tool to visualize magnetostriction, 2020, arXiv"),
     html.H6(" [2] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, 2020, arXiv:2009.01638"),
     html.H3("Source files"),
-    html.H6("https://github.com/pnieves2019/MAELASwiewer"),
+    html.H6("https://github.com/pnieves2019/MAELASviewer"),
     html.Hr(),
 
 

@@ -58,7 +58,7 @@ Once all depencencies are installed, download and extract the MAELASviewer-maste
 ```bash
 python3 maelasviewer.py
 ```
-then visit http://127.0.0.1:8050/ in your web browser to use MAELASviewer. This will run the app in the development server on your local machine..
+then visit http://127.0.0.1:8050/ in your web browser to use MAELASviewer. This will run the app on ```localhost```, it means only on your local machine (development server).
 
 -------------------------------
 MANUSCRIPT
