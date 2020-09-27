@@ -25,7 +25,13 @@ app.layout = html.Div(children=[
     html.Hr(),
 
     html.H3("Introduction"),
-    html.H6("A magnetostrictive material is one which changes in size due to a change of state of magnetization. This interactive applet shows the magnetostriction for some crystal systems. You can visualize the relative length change (\u0394l/lo=[l-lo]/lo) of the material along an arbitrary direction (β) as a function of the external magnetic field (H) and magnetostrictive coefficients (λ). The magnitude of the external magnetic field is assumed to be strong enough to saturate the magnetization (α) along the magnetic field (α||H). The length lo corresponds to the size of the magnetic material in a demagnetized state along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation the length lo of the material in any direction β is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. However, note that the simulations can also be understood as the real shape deformation of a magnetic spherical nanoparticle with diameter larger than the domain wall width (in order to allow the formation of magnetic domains)."),
+    html.H6("A magnetostrictive material is one which changes in size due to a change of state of magnetization. The main magnetostriction effects are the Joule effect (length change induced by a linear magnetic field),  Villari  effect  (magnetization  change  due  to  a  mechanical  stress  applied), Wiedemann effect (twisting of a magnetostrictive cylinder when helical magnetic field is applied to the material) and Matteucci effect (induced helical magnetization by a torsion). Presently, MAELASviewer contains interactive applets to simulate the field-induced magnetostriction effects (Joule effect and Wiedemann effect)."),
+    
+    
+    
+    html.Hr(),
+    html.H3("The Joule effect"),
+    html.H6("This interactive applet shows the magnetostriction due to Joule effect for some crystal systems. You can visualize the relative length change (\u0394l/lo=[l-lo]/lo) of the material along an arbitrary direction (β) as a function of the external magnetic field (H) and magnetostrictive coefficients (λ). The magnitude of the external magnetic field is assumed to be strong enough to saturate the magnetization (α) along the magnetic field (α||H). The length lo corresponds to the size of the magnetic material in a demagnetized state along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation the length lo of the material in any direction β is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. However, note that the simulations can also be understood as the real shape deformation of a magnetic spherical nanoparticle with diameter larger than the domain wall width (in order to allow the formation of magnetic domains)."),
     html.Div([html.Img(src=app.get_asset_url('diagram_online.png'))]),
     html.Hr(),
     html.H3("Available systems"),
@@ -279,7 +285,7 @@ app.layout = html.Div(children=[
 
     html.H3("6. Single crystal: Orthorhombic (space group numbers  16-74)"),
     html.H4("6.1 Theory"),
-    html.H6("The relative length change for orthorhombic systems is given by:"),
+    html.H6("This interactive applet shows the magnetostriction due to Joule effect for some crystal systems."),
     html.Div([html.Img(src=app.get_asset_url('eq_ort.png'))]),
     html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
 
@@ -329,12 +335,65 @@ app.layout = html.Div(children=[
     dcc.Graph(id='ort_2D'),
 
     html.Hr(),
+    
+    html.H3("The Wiedemann effect"),
+    html.H4("Theory"),
+    
+    
+    html.H6("This interactive applet simulates the Wiedemann effect for a isotropic cylindrical rod (the twist of a rod induced by helical mangetic field). The helical magnetic field to twist a magnetic rod is achieved by applying a magnetic field along the rod height axis (longitudinal field H‖), and an electric current (I) through the rod which induces a circular magnetic field due to Ampère’s circuital law (perpendicular field H⊥)."),
+    html.Div([html.Img(src=app.get_asset_url('torsion_rod.png'))]),
+    html.H6("For an isotropic magnetic cylindrical rod aligned to the z-axis with height L and radius R, the twisted angle ϕ induced by a helical magnetic field"),
+    html.Div([html.Img(src=app.get_asset_url('eq_twist.png'))]),
+    html.H6("where \u03BBs is the isotropic magnetostrictive coefficient and A = 4πR^2 is the area of the cross section of the rod. The helical field-induced torque can be calculated as"),
+    html.Div([html.Img(src=app.get_asset_url('eq_torque.png'))]),
+    html.H6("where Y is the Young’s modulus and σ is the Poisson’s ratio. In the 3D visualization of the rod, it is also plotted the perpendicular and longitudinal magnetic fields in the exterior of the rod at z = L/2. The perpendicular field is calculated applying the Biot-Savart law for a finite wire. Note that the magnetic field generated by the magnetization of the rod is not plotted here."),
 
+    html.H4("Parameters of the simulation"),
+    html.H6("(Press Enter after changing any input to update the figures)"),
+    html.Hr(),
+    html.H6("Geometry of the magnetic rod:"),
+    html.Div(['L(m) = ',
+              dcc.Input(id='LL', value=0.0005, type='number', debounce=True, step=0.000000001)]),
+    html.Div(['R(m) = ',
+              dcc.Input(id='RR', value=0.00001, type='number', debounce=True, step=0.000000001)]),
+    html.H6("Longitudinal external magnetic field:"),
+    html.Div(['H',html.Sub('||'),"(A/m) = ",
+              dcc.Input(id='hlong', value=0.000001, type='number', debounce=True, step=0.000000001)]),
+    html.H6("Isotropic magnetostrictive coefficient:"),
+    html.Div(['\u03BB',html.Sub('S')," = ",
+              dcc.Input(id='lmbs', value=0.000001, type='number', debounce=True, step=0.0000001)]),
+    html.H6("Range of applied electric current:"),
+    html.Div(['I',html.Sub('min'),"(A) = ",
+              dcc.Input(id='imin', value=-0.00000001, type='number', debounce=True, step=0.000000001)]),
+    html.Div(['I',html.Sub('max'),"(A) = ",
+              dcc.Input(id='imax', value=0.00000001, type='number', debounce=True, step=0.000000001)]),
+    html.H6("Isotropic elastic properties:"),
+    html.Div(['Young modulus Y(GPa) = ',
+              dcc.Input(id='y', value=100.0, type='number', debounce=True, step=1.0)]),
+    html.Div(['Poisson ratio σ = ',
+              dcc.Input(id='sigma', value=0.33, type='number', debounce=True, step=0.001)]),
+    html.Div(id='my-output-rod'),
+    html.Hr(),
+    
+    html.H4("Simulation"),
+    
+    dcc.Graph(id='rod'),
+    dcc.Graph(id='twist_angle'),
+    dcc.Graph(id='torque'),
+    
+    
+    
+    
+    
+    
+    
+    
+    html.Hr(),
     html.H3("Bibliography"),
-    html.H6(" [1] P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut, MAELASviewer: an online tool to visualize magnetostriction, 2020, arXiv"),
+    html.H6(" [1] P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut, MAELASviewer: an online tool to visualize magnetostriction, 2020, Submitted to Sensors"),
     html.H6(" [2] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, 2020, arXiv:2009.01638"),
     html.H3("Source files"),
-    html.H6("https://github.com/pnieves2019/MAELASviewer"),
+    html.H6("https://github.com/pnieves2019/MAELASwiewer"),
     html.Hr(),
 
 
@@ -1019,7 +1078,7 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
 
     ofig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+                    subplot_titles=['      Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
 
     ofig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
@@ -1117,6 +1176,146 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     return figo2d
 
 
+############## rod-3D
+
+@app.callback(
+    Output('rod', 'figure'),
+    [Input(component_id='RR', component_property='value'),
+     Input(component_id='LL', component_property='value'),
+     Input(component_id='hlong', component_property='value'),
+     Input(component_id='lmbs', component_property='value'),
+     Input(component_id='imax', component_property='value'),
+    ]
+)
+
+
+def update_rod(rad,length,hlong,llmbs,iimax):
+
+    ss = 4.0*np.pi*rad**2.0
+    phi = (3.0*llmbs*length*iimax)/(ss*hlong*2.0)
+ 
+    s = np.linspace(0, 2 * np.pi, 100)
+    t = np.linspace(0, 1, 100)
+    sGrid, tGrid = np.meshgrid(s, t)
+    x = rad * np.cos(sGrid) 
+    y = rad * np.sin(sGrid)  
+    z = length*tGrid                   
+    
+    ht=iimax/(2.0*np.pi*np.sqrt((4.0*rad)**2.0+(0.5*length)**2.0))
+    
+    hln=(0.15*length*hlong)/(np.sqrt(hlong**2+ht**2))
+    htn=(0.15*length*ht)/(np.sqrt(hlong**2+ht**2))
+    
+    #hln=hlong
+    #htn=ht
+    
+    
+
+    figrod = make_subplots(rows=1, cols=1,
+                    specs=[[{'is_3d': True}]],
+                    subplot_titles=['Electric current I=Imax. Color of the rod corresponds to the twisted angle ϕ(z) in radian.'],)
+
+    figrod.add_trace(go.Cone(x=[4*rad], y=[0], z=[0.5*length], u=[0], v=[htn], w=[hln],name="H∥+H⟂",sizemode="absolute",showscale=False,colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(255,0,0)']]),1, 1)
+    figrod.add_trace(go.Cone(x=[-4*rad], y=[0], z=[0.5*length], u=[0], v=[-htn], w=[hln],name="H∥+H⟂",sizemode="absolute",showscale=False,colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(255,0,0)']]),1, 1)
+    figrod.add_trace(go.Cone(x=[0], y=[4*rad], z=[0.5*length], u=[-htn], v=[0], w=[hln],name="H∥+H⟂",sizemode="absolute",showscale=False,colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(255,0,0)']]),1, 1)
+    figrod.add_trace(go.Cone(x=[0], y=[-4*rad], z=[0.5*length], u=[htn], v=[0], w=[hln],name="H∥+H⟂",sizemode="absolute",showscale=False,colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(255,0,0)']]),1, 1)
+    figrod.update_traces(hoverinfo="name")
+    figrod.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=phi*(z/length), name="magnetic rod"), 1, 1)
+
+    #figrod.update_traces(hoverinfo="name")
+    figrod.update_layout(transition_duration=500)
+
+    figrod.update_yaxes(automargin=True)
+    figrod.update_xaxes(automargin=True)
+
+    return figrod
+
+
+############################################### twisted angle
+
+
+@app.callback(
+    Output('twist_angle', 'figure'),
+    [Input(component_id='RR', component_property='value'),
+     Input(component_id='LL', component_property='value'),
+     Input(component_id='hlong', component_property='value'),
+     Input(component_id='lmbs', component_property='value'),
+     Input(component_id='imin', component_property='value'),
+     Input(component_id='imax', component_property='value'),
+    ]
+)
+
+
+def update_twist(rad,leng,hl,llmbs,iimin,iimax):
+
+    u = np.mgrid[0:1:100j]   
+    i = iimin+(iimax-iimin)*u
+    s = 4.0*np.pi*rad**2.0
+    
+    phi = (3.0*llmbs*leng*i)/(s*hl*2.0)
+
+    tfig = make_subplots(rows=1, cols=1,
+                    specs=[[{'type': 'xy'}]],
+                    subplot_titles=['Twisted angle at z=L vs electric current'],)
+
+    tfig.add_trace(go.Scatter(x=i, y=phi, mode='lines', name='(I,ϕ)'), 1, 1)
+
+
+    tfig.update_layout(xaxis_title='Electric current I (A)')
+    tfig.update_layout(yaxis_title='Twisted angle ϕ(z=L) (rad)')
+    tfig.update_layout(transition_duration=500)
+
+    tfig.update_yaxes(automargin=True)
+    tfig.update_xaxes(automargin=True)
+
+    return tfig
+
+
+############################################### torque
+
+
+@app.callback(
+    Output('torque', 'figure'),
+    [Input(component_id='RR', component_property='value'),
+     Input(component_id='LL', component_property='value'),
+     Input(component_id='hlong', component_property='value'),
+     Input(component_id='lmbs', component_property='value'),
+     Input(component_id='imin', component_property='value'),
+     Input(component_id='imax', component_property='value'),
+     Input(component_id='y', component_property='value'),
+     Input(component_id='sigma', component_property='value'),
+    ]
+)
+
+
+def update_torque(rad,leng,hl,llmbs,iimin,iimax,yy,sig):
+
+    u = np.mgrid[0:1:100j]   
+    i = iimin+(iimax-iimin)*u
+    s = 4.0*np.pi*rad**2.0
+    
+    phi = (3.0*llmbs*leng*i)/(s*hl*2.0)
+    
+    mu = (yy*10.0**9)/(2.0*(1.0+sig))
+    
+    tor = (mu*np.pi*rad**4.0*phi)/(2.0*leng)
+
+
+    tofig = make_subplots(rows=1, cols=1,
+                    specs=[[{'type': 'xy'}]],
+                    subplot_titles=['Helical field-induced torque vs electric current'],)
+
+    tofig.add_trace(go.Scatter(x=i, y=tor, mode='lines', name='(I,τ)'), 1, 1)
+
+
+    tofig.update_layout(xaxis_title='Electric current I (A)')
+    tofig.update_layout(yaxis_title='Helical field-induced torque τ (N*m)')
+    tofig.update_layout(transition_duration=500)
+
+    tofig.update_yaxes(automargin=True)
+    tofig.update_xaxes(automargin=True)
+
+    return tofig
 
 
 if __name__ == '__main__':
