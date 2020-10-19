@@ -12,9 +12,12 @@ from plotly.subplots import make_subplots
 import numpy as np
 from dash.dependencies import Input, Output
 
+
 app = dash.Dash(__name__)
 
 server = app.server
+
+app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div(children=[
     html.Div([html.Img(src=app.get_asset_url('logo_maelasviewer.png'))]),
@@ -25,368 +28,27 @@ app.layout = html.Div(children=[
     html.Hr(),
 
     html.H3("Introduction"),
-    html.H6("A magnetostrictive material is one which changes in size due to a change of state of magnetization. The main magnetostriction effects are the Joule effect (length change induced by a linear magnetic field),  Villari  effect  (magnetization  change  due  to  a  mechanical  stress  applied), Wiedemann effect (twisting of a magnetostrictive cylinder when helical magnetic field is applied to the material) and Matteucci effect (induced helical magnetization by a torsion). Presently, MAELASviewer contains interactive applets to simulate the field-induced magnetostriction effects (Joule effect and Wiedemann effect)."),
+    dcc.Markdown('''A magnetostrictive material is one which changes in size due to a change of state of magnetization. The main magnetostriction effects are the Joule effect (length change induced by a linear magnetic field),  Villari  effect  (magnetization  change  due  to  a  mechanical  stress  applied), Wiedemann effect (twisting of a magnetostrictive cylinder when helical magnetic field is applied to the material) and Matteucci effect (induced helical magnetization by a torsion). Presently, MAELASviewer contains interactive applets to simulate the field-induced magnetostriction effects (Joule effect and Wiedemann effect).'''),
     
     
-    
     html.Hr(),
-    html.H3("The Joule effect"),
-    html.H6("This interactive applet shows the magnetostriction due to Joule effect for some crystal systems. You can visualize the relative length change (\u0394l/lo=[l-lo]/lo) of the material along an arbitrary direction (β) as a function of the external magnetic field (H) and magnetostrictive coefficients (λ). The magnitude of the external magnetic field is assumed to be strong enough to saturate the magnetization (α) along the magnetic field (α||H). The length lo corresponds to the size of the magnetic material in a demagnetized state along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation the length lo of the material in any direction β is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. However, note that the simulations can also be understood as the real shape deformation of a magnetic spherical nanoparticle with diameter larger than the domain wall width (in order to allow the formation of magnetic domains)."),
-    html.Div([html.Img(src=app.get_asset_url('diagram_online.png'))]),
-    html.Hr(),
-    html.H3("Available systems"),
-    html.H6("1. Single crystal: Cubic I (space group numbers  207-230)"),
-    html.H6("2. Polycrystal: Cubic I (space group numbers  207-230)"),
-    html.H6("3. Single crystal: Hexagonal I (space group numbers  177-194)"),
-    html.H6("4. Single crystal: Trigonal I (space group numbers  149-167)"),
-    html.H6("5. Single crystal: Tetragonal I (space group numbers  89-142)"),
-    html.H6("6. Single crystal: Orthorhombic (space group numbers  16-74)"),
-    html.Hr(),
-    html.H3("1. Single crystal: Cubic I (space group numbers  207-230)"),
-    html.H4("1.1 Theory"),
-    html.H6("The relative length change for cubic (I) systems is given by:"),
-    html.Div([html.Img(src=app.get_asset_url('eq_cub.png'))]),
-    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively."),
-
-    html.H5("Scaling Factor:"),
-    html.H6("Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter (s) that can be modified by the user"),
-    html.Div([html.Img(src=app.get_asset_url('eq_cub_s1.png'))]),
-    html.H6("Note that this scaling preserve the ratio between the magnetostrictive coefficients. Obviously, the case with s=1 corresponds to the real situation. The total length l is"),
-    html.Div([html.Img(src=app.get_asset_url('eq_cub_s2.png'))]),
-    html.H6("where we took into account that lo=1. Similar procedure is applied to the other supported crystal systems."),
-
-    html.H4("1.2 Parameters of the simulation"),
-    html.H6("(Press Enter after changing any input to update the figures)"),
-    html.Hr(),
-    html.H6("Direction of the external magnetic field:"),
-    html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='fieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='fieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='fieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"),
-    html.Div(['\u03BB',html.Sup("\u03B1")," = ",
-              dcc.Input(id='L0', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("001")," = ",
-              dcc.Input(id='L1', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("111")," = ",
-              dcc.Input(id='L2', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(["Scaling factor = ",
-              dcc.Input(id='scale', value=1.0, type='number', debounce=True)]),
-
-    html.Div(id='my-output'),
-    html.Hr(),
-    html.H4("1.3 Simulation"),
-    html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scaling factor along direction \u03B2."),
-    dcc.Graph(id='cub_3D'),
-    dcc.Graph(id='cub_2D'),
-    html.H4("1.4 Magnetostriction of some cubic crystals"),
-
-    html.Table([
-        html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup("\u03B1"),'    '])), html.Td(html.Div(['\u03BB',html.Sub("001")])),html.Td(html.Div(['\u03BB',html.Sub("111")]))]),
-        html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('0'),html.Td('    -   '),html.Td('0.000026'), html.Td('-0.00003')]),
-        html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('300'),html.Td('   -   '),html.Td('0.000021'), html.Td('-0.000021')]),
-        html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('0'),html.Td('   -   '),html.Td('-0.00006'), html.Td('-0.000035')]),
-        html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('300'),html.Td('   -   '),html.Td('-0.000046'), html.Td('-0.000024')]),
-        html.Tr([html.Td(html.Div(['C15 SmFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('0.00003'), html.Td('-0.0041')]),
-        html.Tr([html.Td(html.Div(['C15 DyFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.00007'), html.Td('0.003')]),
-        html.Tr([html.Td(html.Div(['C15 TbCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.0012'), html.Td('0.0045')]),
-        html.Tr([html.Td(html.Div(['C15 ErCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.001'), html.Td('-0.0025')]),
-    ]),
-    html.Hr(),
-####################### Cubic I polycrystal
-
-    html.H3("2. Polycrystal: Cubic I (space group numbers  207-230)"),
-    html.H4("2.1 Theory"),
-    html.H6("The theory of magnetostriction for polycrystalline materials is more complex. A widely used approximation is to assume that the stress distribution is uniform through the material. In this case the relative change in length may be put into the form:"),
-    html.Div([html.Img(src=app.get_asset_url('eq_cub_poly.png'))]),
-    html.H6("where"),
-    html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
-
-    html.H4("2.2 Parameters of the simulation"),
-    html.H6("(Press Enter after changing any input to update the figures)"),
-    html.Hr(),
-    html.H6("Direction of the external magnetic field:"),
-    html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='pfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='pfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='pfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"),
-    html.Div(['\u03BB',html.Sub("S")," = ",
-              dcc.Input(id='LS', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(["Scaling factor = ",
-              dcc.Input(id='pscale', value=1.0, type='number', debounce=True)]),
-
-    html.Div(id='my-output-p'),
-    html.Hr(),
-    html.H4("2.3 Simulation"),
-    html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scaling factor along direction \u03B2."),
-
-    dcc.Graph(id='graph-poly'),
-    dcc.Graph(id='graph-poly2D'),
-    html.H4("2.4 Magnetostriction of some polycrystal materials (cubic I)"),
-    html.Table([
-        html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['\u03BB',html.Sub("S")]))]),
-        html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('300'),html.Td('-0.000007')]),
-        html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('300'),html.Td('-0.000034')]),
-        html.Tr([html.Td(html.Div(['C15 TbFe',html.Sub("2")])), html.Td('227'),html.Td('300'),html.Td('0.001753')]),
-    ]),
-    html.Hr(),
-
-######## Hex I
-
-    html.H3("3. Single crystal: Hexagonal I (space group numbers  177-194)"),
-    html.H4("3.1 Theory"),
-    html.H6("The relative length change for hexagonal (I) systems is given by:"),
-    html.Div([html.Img(src=app.get_asset_url('eq_hex.png'))]),
-    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-
-    html.H4("3.2 Parameters of the simulation"),
-    html.H6("(Press Enter after changing any input to update the figures)"),
-    html.Hr(),
-    html.H6("Direction of the external magnetic field:"),
-    html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='hfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='hfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='hfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"),
-    html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
-              dcc.Input(id='hL01', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
-              dcc.Input(id='hL02', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B11,2")," = ",
-              dcc.Input(id='hLa1', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B12,2")," = ",
-              dcc.Input(id='hLa2', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B3,2")," = ",
-              dcc.Input(id='hLg', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B5,2")," = ",
-              dcc.Input(id='hLe', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(["Scaling factor = ",
-              dcc.Input(id='hscale', value=1.0, type='number', debounce=True)]),
-
-    html.Div(id='my-output-h'),
-    html.Hr(),
-    html.H4("3.3 Simulation"),
-    html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scaling factor along direction \u03B2."),
-    dcc.Graph(id='hex_3D'),
-    dcc.Graph(id='hex_2D'),
-    html.H4("3.4 Magnetostriction of some hexagonal crystals"),
-
-    html.Table([
-        html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup('\u03B11,0'),'    '])), html.Td(html.Div(['    \u03BB',html.Sup('\u03B12,0'),'    '])), html.Td(html.Div(['\u03BB',html.Sup('\u03B11,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B12,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B3,2')])),html.Td(html.Div(['\u03BB',html.Sup('\u03B5,2')]))]),
-        html.Tr([html.Td('HCP Co'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.000095'), html.Td('-0.000126'),html.Td('0.000057'),html.Td('-0.000286')]),
-        html.Tr([html.Td('HCP Gd'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.00014'), html.Td('-0.00013'),html.Td('0.00011'),html.Td('0.00002')]),
-        html.Tr([html.Td('HCP Tb'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('-0.0026'), html.Td('0.009'),html.Td('0.0087'),html.Td('0.015')]),
-    ]),
-    html.Hr(),
-
-
-######## Trig I
-
-    html.H3("4. Single crystal: Trigonal I (space group numbers  149-167)"),
-    html.H4("4.1 Theory"),
-    html.H6("The relative length change for trigonal (I) systems is given by:"),
-    html.Div([html.Img(src=app.get_asset_url('eq_trig.png'))]),
-    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-
-    html.H4("4.2 Parameters of the simulation"),
-    html.H6("(Press Enter after changing any input to update the figures)"),
-    html.Hr(),
-    html.H6("Direction of the external magnetic field:"),
-    html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='trfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='trfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='trfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"),
-    html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
-              dcc.Input(id='trL01', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
-              dcc.Input(id='trL02', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B11,2")," = ",
-              dcc.Input(id='trLa1', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B12,2")," = ",
-              dcc.Input(id='trLa2', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B3,1")," = ",
-              dcc.Input(id='trLg1', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B3,2")," = ",
-              dcc.Input(id='trLg2', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("12")," = ",
-              dcc.Input(id='trL12', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("21")," = ",
-              dcc.Input(id='trL21', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(["Scaling factor = ",
-              dcc.Input(id='trscale', value=1.0, type='number', debounce=True)]),
-
-
-    html.Div(id='my-output-tr'),
-    html.Hr(),
-    html.H4("4.3 Simulation"),
-    html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scaling factor along direction \u03B2."),
-    dcc.Graph(id='tri_3D'),
-    dcc.Graph(id='tri_2D'),
-
-    html.Hr(),
-
-######## Tet I
-
-    html.H3("5. Single crystal: Tetragonal I (space group numbers  89-142)"),
-    html.H4("5.1 Theory"),
-    html.H6("The relative length change for tetragoanl (I) systems is given by:"),
-    html.Div([html.Img(src=app.get_asset_url('eq_tet.png'))]),
-    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-
-    html.H4("5.2 Parameters of the simulation"),
-    html.H6("(Press Enter after changing any input to update the figures)"),
-    html.Hr(),
-    html.H6("Direction of the external magnetic field:"),
-    html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='tefieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='tefieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='tefieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"),
-    html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
-              dcc.Input(id='teL01', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
-              dcc.Input(id='teL02', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B11,2")," = ",
-              dcc.Input(id='teLa1', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B12,2")," = ",
-              dcc.Input(id='teLa2', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B3,2")," = ",
-              dcc.Input(id='teLg', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B4,2")," = ",
-              dcc.Input(id='teLd', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B5,2")," = ",
-              dcc.Input(id='teLe', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(["Scaling factor = ",
-              dcc.Input(id='tescale', value=1.0, type='number', debounce=True)]),
-
-    html.Div(id='my-output-te'),
-    html.Hr(),
-    html.H4("5.3 Simulation"),
-    html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scaling factor along direction \u03B2."),
-    dcc.Graph(id='tet_3D'),
-    dcc.Graph(id='tet_2D'),
-
-    html.Hr(),
-
-
-######## Orth
-
-    html.H3("6. Single crystal: Orthorhombic (space group numbers  16-74)"),
-    html.H4("6.1 Theory"),
-    html.H6("This interactive applet shows the magnetostriction due to Joule effect for some crystal systems."),
-    html.Div([html.Img(src=app.get_asset_url('eq_ort.png'))]),
-    html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scaling factor parameter which can be modified by the user."),
-
-    html.H4("6.2 Parameters of the simulation"),
-    html.H6("(Press Enter after changing any input to update the figures)"),
-    html.Hr(),
-    html.H6("Direction of the external magnetic field:"),
-    html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='ofieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='ofieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='ofieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-    html.H6("Magnetostrictive coefficients:"),
-    html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
-              dcc.Input(id='oL01', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
-              dcc.Input(id='oL02', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sup("\u03B13,0")," = ",
-              dcc.Input(id='oL03', value=0.0, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("1")," = ",
-              dcc.Input(id='oL1', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("2")," = ",
-              dcc.Input(id='oL2', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("3")," = ",
-              dcc.Input(id='oL3', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("4")," = ",
-              dcc.Input(id='oL4', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("5")," = ",
-              dcc.Input(id='oL5', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("6")," = ",
-              dcc.Input(id='oL6', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("7")," = ",
-              dcc.Input(id='oL7', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("8")," = ",
-              dcc.Input(id='oL8', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(['\u03BB',html.Sub("9")," = ",
-              dcc.Input(id='oL9', value=0.000001, type='number', debounce=True, step=0.000001)]),
-    html.Div(["Scaling factor = ",
-              dcc.Input(id='oscale', value=1.0, type='number', debounce=True)]),
-
-    html.Div(id='my-output-o'),
-    html.Hr(),
-    html.H4("6.3 Simulation"),
-    html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scaling factor along direction \u03B2."),
-    dcc.Graph(id='ort_3D'),
-    dcc.Graph(id='ort_2D'),
-
-    html.Hr(),
-    
-    html.H3("The Wiedemann effect"),
-    html.H4("Theory"),
-    
-    
-    html.H6("This interactive applet simulates the Wiedemann effect for a isotropic cylindrical rod (the twist of a rod induced by helical mangetic field). The helical magnetic field to twist a magnetic rod is achieved by applying a magnetic field along the rod height axis (longitudinal field H‖), and an electric current (I) through the rod which induces a circular magnetic field due to Ampère’s circuital law (perpendicular field H⊥)."),
-    html.Div([html.Img(src=app.get_asset_url('torsion_rod.png'))]),
-    html.H6("For an isotropic magnetic cylindrical rod aligned to the z-axis with height L and radius R, the twisted angle ϕ induced by a helical magnetic field"),
-    html.Div([html.Img(src=app.get_asset_url('eq_twist.png'))]),
-    html.H6("where \u03BBs is the isotropic magnetostrictive coefficient and A = 4πR^2 is the area of the cross section of the rod. The helical field-induced torque can be calculated as"),
-    html.Div([html.Img(src=app.get_asset_url('eq_torque.png'))]),
-    html.H6("where Y is the Young’s modulus and σ is the Poisson’s ratio. In the 3D visualization of the rod, it is also plotted the perpendicular and longitudinal magnetic fields in the exterior of the rod at z = L/2. The perpendicular field is calculated applying the Biot-Savart law for a finite wire. Note that the magnetic field generated by the magnetization of the rod is not plotted here."),
-
-    html.H4("Parameters of the simulation"),
-    html.H6("(Press Enter after changing any input to update the figures)"),
-    html.Hr(),
-    html.H6("Geometry of the magnetic rod:"),
-    html.Div(['L(m) = ',
-              dcc.Input(id='LL', value=0.0005, type='number', debounce=True, step=0.000000001)]),
-    html.Div(['R(m) = ',
-              dcc.Input(id='RR', value=0.00001, type='number', debounce=True, step=0.000000001)]),
-    html.H6("Longitudinal external magnetic field:"),
-    html.Div(['H',html.Sub('||'),"(A/m) = ",
-              dcc.Input(id='hlong', value=0.000001, type='number', debounce=True, step=0.000000001)]),
-    html.H6("Isotropic magnetostrictive coefficient:"),
-    html.Div(['\u03BB',html.Sub('S')," = ",
-              dcc.Input(id='lmbs', value=0.000001, type='number', debounce=True, step=0.0000001)]),
-    html.H6("Range of applied electric current:"),
-    html.Div(['I',html.Sub('min'),"(A) = ",
-              dcc.Input(id='imin', value=-0.00000001, type='number', debounce=True, step=0.000000001)]),
-    html.Div(['I',html.Sub('max'),"(A) = ",
-              dcc.Input(id='imax', value=0.00000001, type='number', debounce=True, step=0.000000001)]),
-    html.H6("Isotropic elastic properties:"),
-    html.Div(['Young modulus Y(GPa) = ',
-              dcc.Input(id='y', value=100.0, type='number', debounce=True, step=1.0)]),
-    html.Div(['Poisson ratio σ = ',
-              dcc.Input(id='sigma', value=0.33, type='number', debounce=True, step=0.001)]),
-    html.Div(id='my-output-rod'),
-    html.Hr(),
-    
-    html.H4("Simulation"),
-    
-    dcc.Graph(id='rod'),
-    dcc.Graph(id='twist_angle'),
-    dcc.Graph(id='torque'),
+    html.H3('Select a magnetostriction effect:'),
+    dcc.Dropdown(
+        id='effect',
+        options=[
+            {'label': 'Joule Effect', 'value': 'Joule'},
+            {'label': 'Wiedemann Effect', 'value': 'Wied'},
+        ],
+        placeholder="Select a magnetostrction effect"
+    ),
+    html.Div(id='effect_output'),     
     
     
     
     
     
-    
-    
+
+
     
     html.Hr(),
     html.H3("Bibliography"),
@@ -398,6 +60,458 @@ app.layout = html.Div(children=[
 
 
 ])
+
+
+################## Select system to show
+
+@app.callback(
+    dash.dependencies.Output('effect_output', 'children'),
+    [dash.dependencies.Input('effect', 'value')])
+
+def update_output(effect):
+     
+    if effect == 'Joule':
+        
+        return html.Div(children=[
+
+            html.H3("The Joule effect"),
+            html.H4("Mapping the Joule effect to a unit sphere"),
+            dcc.Markdown('''This interactive tool maps the Joule effect to a unit sphere. You can visualize the relative length change \u0394l/lo=(l-lo)/lo of the material along an arbitrary measuring direction **β** as a function of the external magnetic field **H** and magnetostrictive coefficients (λ). The magnitude of the external magnetic field is assumed to be strong enough to align the direction of magnetization (**α**) to the magnetic field (**α**||**H**). The quantity lo corresponds to the length of the magnetic material in the demagnetized state along the measuring direction **β**=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation, the length lo of the material in any measuring direction **β** is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. In the magnetized state, the unit sphere is distorted, and the distance between a point on the surface and the origin (0, 0, 0) describes the simulated length (lsim) along the measuring direction **β**.'''),
+            html.Div([html.Img(src=app.get_asset_url('diagram_online.png'))]),
+            dcc.Markdown('''The real length along the measuring direction **β** of a material with any shape in the magnetized state (lexp) can be easily obtained with this interactive applet by setting the magnetic field, the corresponding values of the magnetostrictive coefficients, and using the following equation: '''),
+            html.Div([html.Img(src=app.get_asset_url('convert.png'))]),
+            dcc.Markdown('''where lo,exp is the real length along the measuring direction **β** of a material in the demagnetized state, lsim is the simulated length value printed by the interactive app at the surface of the distorted unit sphere along direction **β**, and s is the scale factor set by the user to facilitate the visualization. When the user click on the surface of the distorted sphere, it prints the components of vector **l**sim, so that it gives both the length lsim=|**l**sim|, and direction **β** since it is aligned to **l**sim (**β**‖**l**sim) and |**β**|=1. '''),
+            html.Div([html.Img(src=app.get_asset_url('convert_fig.png'))]),
+            dcc.Markdown(''' It is important to note that this method gives only the length change in the measuring direction **β** but not the overall real shape deformation of a material induced by the Joule effect, not even for a sphere. The real shape deformation of a sphere due to Joule effect corresponds to an ellipsoid. This shape is different to the shape of the distorted sphere generated by mapping the Joule effect to a unit sphere that is implemented in MAELASviewer. The reason for that is the lack of transverse component of the displacement vector in this procedure (**u**⊥=0, **u**‖=**u**).'''),
+            html.Div([html.Img(src=app.get_asset_url('comparison_sphere.png'))]),
+    
+    
+            html.H4("Example"),
+    
+            dcc.Markdown('''**Problem** '''),
+            dcc.Markdown(''' Let's consdier that we have a single crystal FCC Ni with lattice vectors are **a**=(a0,0,0), **b**=(0,a0,0) and **c**=(0,0,a0), and its length along the measuring direction **β**=(1,0,0) in the demagnetized state is 1µm (lo,exp=1µm) at room temperature (T=300K). Next, the magnetization is saturated along an applied magnetic field in the direction **H**=(0,0,1). How long is the length of the magnetized material in the measuring direction **β**=(1,0,0)?  '''),
+            dcc.Markdown('''**Solution** '''),
+            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the magnetic field in the direction **H**=(0,0,1), and the corresponding values of the magnetostrictive coefficients at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β** (notice that **β**||**l**sim). Doing so, we get **l**sim=(1.23,0,0), so lsim=|**l**sim|=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances.'''),
+    
+            html.Hr(),
+            html.H3("Available systems"),
+            html.H6("1. Single crystal: Cubic I (space group numbers  207-230)"),
+            html.H6("2. Polycrystal: Cubic I (space group numbers  207-230)"),
+            html.H6("3. Single crystal: Hexagonal I (space group numbers  177-194)"),
+            html.H6("4. Single crystal: Trigonal I (space group numbers  149-167)"),
+            html.H6("5. Single crystal: Tetragonal I (space group numbers  89-142)"),
+            html.H6("6. Single crystal: Orthorhombic (space group numbers  16-74)"),
+            html.Hr(),
+            html.H3('Select a crystal system:'),
+            dcc.Dropdown(
+                id='joule_system',
+                options=[
+                    {'label': 'Single crystal: Cubic I (space group numbers  207-230)', 'value': 'cub'},
+                    {'label': 'Polycrystal: Cubic I (space group numbers  207-230)', 'value': 'cubpol'},
+                    {'label': 'Single crystal: Hexagonal I (space group numbers  177-194)', 'value': 'hex'},
+                    {'label': 'Single crystal: Trigonal I (space group numbers  149-167)', 'value': 'trig'},
+                    {'label': 'Single crystal: Tetragonal I (space group numbers  89-142)', 'value': 'tet'},
+                    {'label': 'Single crystal: Orthorhombic (space group numbers  16-74)', 'value': 'ort'},
+                ],
+                placeholder="Select a crystal system"
+            ),
+            html.Div(id='joule_system_output')
+
+        ])
+    
+    elif effect == 'Wied':
+        
+        return html.Div(children=[
+
+    
+            html.H3("The Wiedemann effect"),
+            html.H4("Theory"),
+    
+    
+            html.H6("This interactive applet simulates the Wiedemann effect for a isotropic cylindrical rod (the twist of a rod induced by helical mangetic field). The helical magnetic field to twist a magnetic rod is achieved by applying a magnetic field along the rod height axis (longitudinal field H‖), and an electric current (I) through the rod which induces a circular magnetic field due to Ampère’s circuital law (perpendicular field H⊥)."),
+            html.Div([html.Img(src=app.get_asset_url('torsion_rod.png'))]),
+            html.H6("For an isotropic magnetic cylindrical rod aligned to the z-axis with height L and radius R, the twisted angle ϕ induced by a helical magnetic field"),
+            html.Div([html.Img(src=app.get_asset_url('eq_twist.png'))]),
+            html.H6("where \u03BBs is the isotropic magnetostrictive coefficient and A = 4πR² is the area of the cross section of the rod. The helical field-induced torque can be calculated as"),
+            html.Div([html.Img(src=app.get_asset_url('eq_torque.png'))]),
+            html.H6("where Y is the Young’s modulus and σ is the Poisson’s ratio. In the 3D visualization of the rod, it is also plotted the perpendicular and longitudinal magnetic fields in the exterior of the rod at z = L/2. The perpendicular field is calculated applying the Biot-Savart law for a finite wire. Note that the magnetic field generated by the magnetization of the rod is not plotted here."),
+
+            html.H4("Parameters of the simulation"),
+            html.H6("(Press Enter after changing any input to update the figures)"),
+            html.Hr(),
+            html.H6("Geometry of the magnetic rod:"),
+            html.Div(['L(m) = ',
+              dcc.Input(id='LL', value=0.0005, type='number', debounce=True, step=0.000000001)]),
+            html.Div(['R(m) = ',
+              dcc.Input(id='RR', value=0.00001, type='number', debounce=True, step=0.000000001)]),
+            html.H6("Longitudinal external magnetic field:"),
+            html.Div(['H',html.Sub('||'),"(A/m) = ",
+              dcc.Input(id='hlong', value=0.000001, type='number', debounce=True, step=0.000000001)]),
+            html.H6("Isotropic magnetostrictive coefficient:"),
+            html.Div(['\u03BB',html.Sub('S')," = ",
+              dcc.Input(id='lmbs', value=0.000001, type='number', debounce=True, step=0.0000001)]),
+            html.H6("Range of applied electric current:"),
+            html.Div(['I',html.Sub('min'),"(A) = ",
+              dcc.Input(id='imin', value=-0.00000001, type='number', debounce=True, step=0.000000001)]),
+            html.Div(['I',html.Sub('max'),"(A) = ",
+              dcc.Input(id='imax', value=0.00000001, type='number', debounce=True, step=0.000000001)]),
+            html.H6("Isotropic elastic properties:"),
+            html.Div(['Young modulus Y(GPa) = ',
+              dcc.Input(id='y', value=100.0, type='number', debounce=True, step=1.0)]),
+            html.Div(['Poisson ratio σ = ',
+              dcc.Input(id='sigma', value=0.33, type='number', debounce=True, step=0.001)]),
+            html.Div(id='my-output-rod'),
+            html.Hr(),
+    
+            html.H4("Simulation"),
+    
+            dcc.Graph(id='rod'),
+            dcc.Graph(id='twist_angle'),
+            dcc.Graph(id='torque'),
+
+
+
+        ])
+    else:
+        
+        return 'No magnetostriction effect selected'
+    
+
+@app.callback(
+    dash.dependencies.Output('joule_system_output', 'children'),
+    [dash.dependencies.Input('joule_system', 'value')])
+
+def update_output(system):
+     
+    if system == 'cub':
+        
+        return html.Div(children=[
+        
+        
+        
+           
+            html.H3("Single crystal: Cubic I (space group numbers  207-230)"),
+            html.H4("Theory"),
+            html.H6("The relative length change for cubic (I) systems is given by:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_cub.png'))]),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively."),
+
+            html.H5("Scale Factor:"),
+            html.H6("Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter (s) that can be modified by the user"),
+            html.Div([html.Img(src=app.get_asset_url('eq_cub_s1.png'))]),
+            html.H6("Note that this scale preserve the ratio between the magnetostrictive coefficients. Obviously, the case with s=1 corresponds to the real situation. The printed length lsim given at the surface of the distorted sphere is calculated as"),
+            html.Div([html.Img(src=app.get_asset_url('eq_cub_s2.png'))]),
+            html.H6("where we took into account that lo=1. Similar procedure is applied to the other supported crystal systems."),
+
+            html.H4("Parameters of the simulation"),
+            html.H6("(Press Enter after changing any input to update the figures)"),
+            html.Hr(),
+            html.H6("Direction of the external magnetic field:"),
+            html.Div(['H',html.Sub('x')," = ",
+              dcc.Input(id='fieldx', value=1.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('y')," = ",
+              dcc.Input(id='fieldy', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('z')," = ",
+              dcc.Input(id='fieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.H6("Magnetostrictive coefficients:"),
+            html.Div(['\u03BB',html.Sup("\u03B1")," = ",
+              dcc.Input(id='L0', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("001")," = ",
+              dcc.Input(id='L1', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("111")," = ",
+              dcc.Input(id='L2', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(["Scale factor = ",
+              dcc.Input(id='scale', value=1.0, type='number', debounce=True)]),
+
+            html.Div(id='my-output'),
+            html.Hr(),
+            html.H4("Simulation"),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            dcc.Graph(id='cub_3D'),
+            dcc.Graph(id='cub_2D'),
+            html.H4("Magnetostrictive coefficients for some cubic crystals"),
+
+            html.Table([
+                html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup("\u03B1"),'    '])), html.Td(html.Div(['\u03BB',html.Sub("001")])),html.Td(html.Div(['\u03BB',html.Sub("111")]))]),
+                html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('0'),html.Td('    -   '),html.Td('0.000026'), html.Td('-0.00003')]),
+                html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('300'),html.Td('   -   '),html.Td('0.000021'), html.Td('-0.000021')]),
+                html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('0'),html.Td('   -   '),html.Td('-0.00006'), html.Td('-0.000035')]),
+                html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('300'),html.Td('   -   '),html.Td('-0.000046'), html.Td('-0.000024')]),
+                html.Tr([html.Td(html.Div(['C15 SmFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('0.00003'), html.Td('-0.0041')]),
+                html.Tr([html.Td(html.Div(['C15 DyFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.00007'), html.Td('0.003')]),
+                html.Tr([html.Td(html.Div(['C15 TbCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.0012'), html.Td('0.0045')]),
+                html.Tr([html.Td(html.Div(['C15 ErCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.001'), html.Td('-0.0025')]),
+            ])
+        ])
+            
+            
+    elif system == 'cubpol':
+        
+        return html.Div(children=[    
+            
+            html.H3("Polycrystal: Cubic I (space group numbers  207-230)"),
+            html.H4("Theory"),
+            html.H6("The theory of magnetostriction for polycrystalline materials is more complex. A widely used approximation is to assume that the stress distribution is uniform through the material. In this case the relative change in length may be put into the form:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_cub_poly.png'))]),
+            html.H6("where"),
+            html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
+
+            html.H4("Parameters of the simulation"),
+            html.H6("(Press Enter after changing any input to update the figures)"),
+            html.Hr(),
+            html.H6("Direction of the external magnetic field:"),
+            html.Div(['H',html.Sub('x')," = ",
+              dcc.Input(id='pfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('y')," = ",
+              dcc.Input(id='pfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('z')," = ",
+              dcc.Input(id='pfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.H6("Magnetostrictive coefficients:"),
+            html.Div(['\u03BB',html.Sub("S")," = ",
+              dcc.Input(id='LS', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(["Scale factor = ",
+              dcc.Input(id='pscale', value=1.0, type='number', debounce=True)]),
+
+            html.Div(id='my-output-p'),
+            html.Hr(),
+            html.H4("Simulation"),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+
+            dcc.Graph(id='graph-poly'),
+            dcc.Graph(id='graph-poly2D'),
+            html.H4("Magnetostrictive coefficients for some polycrystal materials (cubic I)"),
+            html.Table([
+                html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['\u03BB',html.Sub("S")]))]),
+                html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('300'),html.Td('-0.000007')]),
+                html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('300'),html.Td('-0.000034')]),
+                html.Tr([html.Td(html.Div(['C15 TbFe',html.Sub("2")])), html.Td('227'),html.Td('300'),html.Td('0.001753')]),
+            ])
+        ])
+
+######## Hex I
+
+    elif system == 'hex':
+
+        return html.Div(children=[
+        
+            html.H3(" Single crystal: Hexagonal I (space group numbers  177-194)"),
+            html.H4("Theory"),
+            html.H6("The relative length change for hexagonal (I) systems is given by:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_hex.png'))]),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+
+            html.H4("Parameters of the simulation"),
+            html.H6("(Press Enter after changing any input to update the figures)"),
+            html.Hr(),
+            html.H6("Direction of the external magnetic field:"),
+            html.Div(['H',html.Sub('x')," = ",
+              dcc.Input(id='hfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('y')," = ",
+              dcc.Input(id='hfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('z')," = ",
+              dcc.Input(id='hfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.H6("Magnetostrictive coefficients:"),
+            html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
+              dcc.Input(id='hL01', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
+              dcc.Input(id='hL02', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B11,2")," = ",
+              dcc.Input(id='hLa1', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B12,2")," = ",
+              dcc.Input(id='hLa2', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B3,2")," = ",
+              dcc.Input(id='hLg', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B5,2")," = ",
+              dcc.Input(id='hLe', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(["Scalefactor = ",
+              dcc.Input(id='hscale', value=1.0, type='number', debounce=True)]),
+
+            html.Div(id='my-output-h'),
+            html.Hr(),
+            html.H4(" Simulation"),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            dcc.Graph(id='hex_3D'),
+            dcc.Graph(id='hex_2D'),
+            html.H4("Magnetostrictive coefficients for some hexagonal crystals"),
+
+            html.Table([
+                html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup('\u03B11,0'),'    '])), html.Td(html.Div(['    \u03BB',html.Sup('\u03B12,0'),'    '])), html.Td(html.Div(['\u03BB',html.Sup('\u03B11,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B12,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B3,2')])),html.Td(html.Div(['\u03BB',html.Sup('\u03B5,2')]))]),
+                html.Tr([html.Td('HCP Co'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.000095'), html.Td('-0.000126'),html.Td('0.000057'),html.Td('-0.000286')]),
+                html.Tr([html.Td('HCP Gd'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.00014'), html.Td('-0.00013'),html.Td('0.00011'),html.Td('0.00002')]),
+                html.Tr([html.Td('HCP Tb'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('-0.0026'), html.Td('0.009'),html.Td('0.0087'),html.Td('0.015')]),
+            ])
+  
+        ])
+
+######## Trig I
+        
+    elif system == 'trig':
+
+        return html.Div(children=[
+
+            html.H3("Single crystal: Trigonal I (space group numbers  149-167)"),
+            html.H4("Theory"),
+            html.H6("The relative length change for trigonal (I) systems is given by:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_trig.png'))]),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+
+            html.H4("Parameters of the simulation"),
+            html.H6("(Press Enter after changing any input to update the figures)"),
+            html.Hr(),
+            html.H6("Direction of the external magnetic field:"),
+            html.Div(['H',html.Sub('x')," = ",
+              dcc.Input(id='trfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('y')," = ",
+              dcc.Input(id='trfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('z')," = ",
+              dcc.Input(id='trfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.H6("Magnetostrictive coefficients:"),
+            html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
+              dcc.Input(id='trL01', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
+              dcc.Input(id='trL02', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B11,2")," = ",
+              dcc.Input(id='trLa1', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B12,2")," = ",
+              dcc.Input(id='trLa2', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B3,1")," = ",
+              dcc.Input(id='trLg1', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B3,2")," = ",
+              dcc.Input(id='trLg2', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("12")," = ",
+              dcc.Input(id='trL12', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("21")," = ",
+              dcc.Input(id='trL21', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(["Scale factor = ",
+              dcc.Input(id='trscale', value=1.0, type='number', debounce=True)]),
+
+
+            html.Div(id='my-output-tr'),
+            html.Hr(),
+            html.H4("Simulation"),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            dcc.Graph(id='tri_3D'),
+            dcc.Graph(id='tri_2D')
+
+        ]) 
+
+######## Tet I
+
+    elif system == 'tet':
+
+        return html.Div(children=[
+
+            html.H3("Single crystal: Tetragonal I (space group numbers  89-142)"),
+            html.H4("Theory"),
+            html.H6("The relative length change for tetragoanl (I) systems is given by:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_tet.png'))]),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+
+            html.H4("Parameters of the simulation"),
+            html.H6("(Press Enter after changing any input to update the figures)"),
+            html.Hr(),
+            html.H6("Direction of the external magnetic field:"),
+            html.Div(['H',html.Sub('x')," = ",
+              dcc.Input(id='tefieldx', value=1.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('y')," = ",
+              dcc.Input(id='tefieldy', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('z')," = ",
+              dcc.Input(id='tefieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.H6("Magnetostrictive coefficients:"),
+            html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
+              dcc.Input(id='teL01', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
+              dcc.Input(id='teL02', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B11,2")," = ",
+              dcc.Input(id='teLa1', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B12,2")," = ",
+              dcc.Input(id='teLa2', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B3,2")," = ",
+              dcc.Input(id='teLg', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B4,2")," = ",
+              dcc.Input(id='teLd', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B5,2")," = ",
+              dcc.Input(id='teLe', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(["Scale factor = ",
+              dcc.Input(id='tescale', value=1.0, type='number', debounce=True)]),
+
+            html.Div(id='my-output-te'),
+            html.Hr(),
+            html.H4("Simulation"),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            dcc.Graph(id='tet_3D'),
+            dcc.Graph(id='tet_2D')
+
+        ])           
+
+
+######## Orth
+        
+    elif system == 'ort':
+            
+        return html.Div(children=[
+
+            html.H3("Single crystal: Orthorhombic (space group numbers  16-74)"),
+            html.H4("Theory"),
+            html.H6("This interactive applet shows the magnetostriction due to Joule effect for some crystal systems."),
+            html.Div([html.Img(src=app.get_asset_url('eq_ort.png'))]),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+
+            html.H4("Parameters of the simulation"),
+            html.H6("(Press Enter after changing any input to update the figures)"),
+            html.Hr(),
+            html.H6("Direction of the external magnetic field:"),
+            html.Div(['H',html.Sub('x')," = ",
+              dcc.Input(id='ofieldx', value=1.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('y')," = ",
+              dcc.Input(id='ofieldy', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.Div(['H',html.Sub('z')," = ",
+              dcc.Input(id='ofieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.H6("Magnetostrictive coefficients:"),
+            html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
+              dcc.Input(id='oL01', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
+              dcc.Input(id='oL02', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sup("\u03B13,0")," = ",
+              dcc.Input(id='oL03', value=0.0, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("1")," = ",
+              dcc.Input(id='oL1', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("2")," = ",
+              dcc.Input(id='oL2', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("3")," = ",
+              dcc.Input(id='oL3', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("4")," = ",
+              dcc.Input(id='oL4', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("5")," = ",
+              dcc.Input(id='oL5', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("6")," = ",
+              dcc.Input(id='oL6', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("7")," = ",
+              dcc.Input(id='oL7', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("8")," = ",
+              dcc.Input(id='oL8', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['\u03BB',html.Sub("9")," = ",
+              dcc.Input(id='oL9', value=0.000001, type='number', debounce=True, step=0.000001)]),
+            html.Div(["Scale factor = ",
+              dcc.Input(id='oscale', value=1.0, type='number', debounce=True)]),
+
+            html.Div(id='my-output-o'),
+            html.Hr(),
+            html.H4(" Simulation"),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            dcc.Graph(id='ort_3D'),
+            dcc.Graph(id='ort_2D')
+ 
+           
+        ])
+
+       
+    
+    else:
+        
+        return 'No crystal system selected'
+
+
 
 ##############Cubic I -3D
 
@@ -433,7 +547,7 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
 
     fig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
     fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
@@ -555,7 +669,7 @@ def update_figure(hx,hy,hz,lmbs,s):
 
     figp = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
     figp.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     figp.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
@@ -676,7 +790,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
 
     hfig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
     hfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     hfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
@@ -810,7 +924,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s):
 
     trfig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
     trfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     trfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
@@ -942,7 +1056,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
 
     tefig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
     tefig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
@@ -1078,7 +1192,7 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
 
     ofig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['      Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scaling_factor along direction \u03B2'],)
+                    subplot_titles=['      Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
     ofig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
