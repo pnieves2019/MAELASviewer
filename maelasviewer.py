@@ -76,9 +76,9 @@ def update_output(effect):
 
             html.H3("The Joule effect"),
             html.H4("Mapping the Joule effect to a unit sphere"),
-            dcc.Markdown('''This interactive tool maps the Joule effect to a unit sphere. You can visualize the relative length change \u0394l/lo=(l-lo)/lo of the material along an arbitrary measuring direction **β** as a function of the external magnetic field **H** and magnetostrictive coefficients (λ). The magnitude of the external magnetic field is assumed to be strong enough to align the direction of magnetization (**α**) to the magnetic field (**α**||**H**). The quantity lo corresponds to the length of the magnetic material in the demagnetized state along the measuring direction **β**=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation, the length lo of the material in any measuring direction **β** is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. In the magnetized state, the unit sphere is distorted, and the distance between a point on the surface and the origin (0, 0, 0) describes the simulated length (lsim) along the measuring direction **β**.'''),
+            dcc.Markdown('''This interactive tool maps the Joule effect to a unit sphere. You can visualize the relative length change \u0394l/lo=(l-lo)/lo of the material along an arbitrary measuring direction **β** as a function of the external magnetic field **H**, magnetocrystalline anisotropy (K) and magnetostrictive coefficients (λ). The quantity lo corresponds to the length of the magnetic material in the demagnetized state along the measuring direction **β**=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. In the simulation, the length lo of the material in any measuring direction **β** is represented by a sphere with radius 1 (lo=1), so that it does not depend on the geometry of the material. In the magnetized state, the unit sphere is distorted, and the distance between a point on the surface and the origin (0, 0, 0) describes the simulated length (lsim) along the measuring direction **β**. The magnetization direction is given by **α**, and it is assumed that the magnetization is saturated (M=Ms) along the effective field **Heff**=**H**+**Ha**, where **Ha** is the magnetocrystalline anisotropy field.'''),
             html.Div([html.Img(src=app.get_asset_url('diagram_online.png'))]),
-            dcc.Markdown('''The real length along the measuring direction **β** of a material with any shape in the magnetized state (lexp) can be easily obtained with this interactive applet by setting the magnetic field, the corresponding values of the magnetostrictive coefficients, and using the following equation: '''),
+            dcc.Markdown('''The real length along the measuring direction **β** of a material with any shape in the magnetized state (lexp) can be easily obtained with this interactive applet by setting the magnetic field, the corresponding values of the magnetocrystalline anisotropy constants and magnetostrictive coefficients, and using the following equation: '''),
             html.Div([html.Img(src=app.get_asset_url('convert.png'))]),
             dcc.Markdown('''where lo,exp is the real length along the measuring direction **β** of a material in the demagnetized state, lsim is the simulated length value printed by the interactive app at the surface of the distorted unit sphere along direction **β**, and s is the scale factor set by the user to facilitate the visualization. When the user click on the surface of the distorted sphere, it prints the components of vector **l**sim, so that it gives both the length lsim=|**l**sim|, and direction **β** since it is aligned to **l**sim (**β**‖**l**sim) and |**β**|=1. '''),
             html.Div([html.Img(src=app.get_asset_url('convert_fig.png'))]),
@@ -88,10 +88,10 @@ def update_output(effect):
     
             html.H4("Example"),
     
-            dcc.Markdown('''**Problem** '''),
-            dcc.Markdown(''' Let's consdier that we have a single crystal FCC Ni with lattice vectors are **a**=(a0,0,0), **b**=(0,a0,0) and **c**=(0,0,a0), and its length along the measuring direction **β**=(1,0,0) in the demagnetized state is 1µm (lo,exp=1µm) at room temperature (T=300K). Next, the magnetization is saturated along an applied magnetic field in the direction **H**=(0,0,1). How long is the length of the magnetized material in the measuring direction **β**=(1,0,0)?  '''),
+    
+            dcc.Markdown(''' Let's consdier that we have a single crystal FCC Ni with lattice vectors are **a**=(a0,0,0), **b**=(0,a0,0) and **c**=(0,0,a0), and its length along the measuring direction **β**=(1,0,0) in the demagnetized state is 1µm (lo,exp=1µm) at room temperature (T=300K). The magnetization is saturated along an applied magnetic field of 2 Tesla in the direction (0,0,1). How long is the length of the magnetized material in the measuring direction **β**=(1,0,0)?  '''),
             dcc.Markdown('''**Solution** '''),
-            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the magnetic field in the direction **H**=(0,0,1), and the corresponding values of the magnetostrictive coefficients at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β** (notice that **β**||**l**sim). Doing so, we get **l**sim=(1.23,0,0), so lsim=|**l**sim|=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances.'''),
+            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the components of the external magnetic field **H**=(0,0,2), and the corresponding values of the magnetostrictive coefficients and magnetocrystalline anisotropy constants and saturation mangetization at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024, K1=-0.005MJ/m^3, K2=-0.002MJ/m^3, μ0Ms=0.61T). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β** (notice that **β**||**l**sim). Doing so, we get **l**sim=(1.23,0,0), so lsim=|**l**sim|=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances.'''),
     
             html.Hr(),
             html.H3("Available systems"),
@@ -194,25 +194,29 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The relative length change for cubic (I) systems is given by:"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub.png'))]),
-            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively."),
-
-            html.H5("Scale Factor:"),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measured length direction, respectively."),
             html.H6("Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter (s) that can be modified by the user"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_s1.png'))]),
             html.H6("Note that this scale preserve the ratio between the magnetostrictive coefficients. Obviously, the case with s=1 corresponds to the real situation. The printed length lsim given at the surface of the distorted sphere is calculated as"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_s2.png'))]),
             html.H6("where we took into account that lo=1. Similar procedure is applied to the other supported crystal systems."),
+            
+            html.H6("The magnetocrystalline anisotropy energy for cubic systems is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_cub.png'))]),
+            html.H6("where K1 and K2 are the magnetocrystalline anisotropy constants. The magnetocrystalline anisotropy field Ha is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_field.png'))]),
+            html.H6("where μ0 is the vacuum permeability and Ms is the saturation magnetization. In the simulation, it is assumed that the magnetization is saturated along the effective field Heff,i = Hi + Ha,i (i=x,y,z)."),
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            html.H6("Direction of the external magnetic field:"),
-            html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='fieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='fieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='fieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.H6("External magnetic field:"),
+            html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
+              dcc.Input(id='fieldx', value=0.5, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('y'),'(Tesla)'" = ",
+              dcc.Input(id='fieldy', value=0.5, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('z'),'(Tesla)'" = ",
+              dcc.Input(id='fieldz', value=0.005, type='number', debounce=True, step=0.0000001)]),
             html.H6("Magnetostrictive coefficients:"),
             html.Div(['\u03BB',html.Sup("\u03B1")," = ",
               dcc.Input(id='L0', value=0.0, type='number', debounce=True, step=0.000001)]),
@@ -222,6 +226,16 @@ def update_output(system):
               dcc.Input(id='L2', value=0.000001, type='number', debounce=True, step=0.000001)]),
             html.Div(["Scale factor = ",
               dcc.Input(id='scale', value=1.0, type='number', debounce=True)]),
+            html.H6("Magnetocrystalline anisotropy constants:"),
+            html.Div(['K',html.Sub("1"), "(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k1c', value=0.001, type='number', debounce=True, step=0.000001)]),
+            html.Div(['K',html.Sub("2"),"(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k2c', value=0.001, type='number', debounce=True, step=0.000001)]),
+            html.H6("Saturation magnetization:"),
+            html.Div(['μ0Ms (Tesla)'," = ",
+              dcc.Input(id='ms', value=0.01, type='number', debounce=True, step=0.0001)]),
+            
+
 
             html.Div(id='my-output'),
             html.Hr(),
@@ -229,18 +243,19 @@ def update_output(system):
             html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
             dcc.Graph(id='cub_3D'),
             dcc.Graph(id='cub_2D'),
-            html.H4("Magnetostrictive coefficients for some cubic crystals"),
+            dcc.Graph(id='mae_cub_3D'),
+            html.H4("Magnetic properties of some cubic crystals"),
 
             html.Table([
-                html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup("\u03B1"),'    '])), html.Td(html.Div(['\u03BB',html.Sub("001")])),html.Td(html.Div(['\u03BB',html.Sub("111")]))]),
-                html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('0'),html.Td('    -   '),html.Td('0.000026'), html.Td('-0.00003')]),
-                html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('300'),html.Td('   -   '),html.Td('0.000021'), html.Td('-0.000021')]),
-                html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('0'),html.Td('   -   '),html.Td('-0.00006'), html.Td('-0.000035')]),
-                html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('300'),html.Td('   -   '),html.Td('-0.000046'), html.Td('-0.000024')]),
-                html.Tr([html.Td(html.Div(['C15 SmFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('0.00003'), html.Td('-0.0041')]),
-                html.Tr([html.Td(html.Div(['C15 DyFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.00007'), html.Td('0.003')]),
-                html.Tr([html.Td(html.Div(['C15 TbCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.0012'), html.Td('0.0045')]),
-                html.Tr([html.Td(html.Div(['C15 ErCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.001'), html.Td('-0.0025')]),
+                html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup("\u03B1"),'    '])), html.Td(html.Div(['\u03BB',html.Sub("001")])),html.Td(html.Div(['\u03BB',html.Sub("111")])),html.Td(html.Div(['K',html.Sub("1"),'(MJ/m',html.Sub("3"),')'])),html.Td(html.Div(['K',html.Sub("2"),'(MJ/m',html.Sub("3"),')'])),html.Td(html.Div(['μ0Ms(Tesla)']))]),
+                html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('0'),html.Td('    -   '),html.Td('0.000026'), html.Td('-0.00003'),html.Td('0.052'),html.Td('-0.018'),html.Td('2.19')]),
+                html.Tr([html.Td('BCC Fe'), html.Td('229'),html.Td('300'),html.Td('   -   '),html.Td('0.000021'), html.Td('-0.000021'),html.Td('0.048'),html.Td('-0.010'),html.Td('2.14')]),
+                html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('0'),html.Td('   -   '),html.Td('-0.00006'), html.Td('-0.000035'),html.Td('-0.120'),html.Td('0.030'),html.Td('0.64')]),
+                html.Tr([html.Td('FCC Ni'), html.Td('225'),html.Td('300'),html.Td('   -   '),html.Td('-0.000046'), html.Td('-0.000024'),html.Td('-0.005'),html.Td('-0.002'),html.Td('0.61')]),
+                html.Tr([html.Td(html.Div(['C15 SmFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('0.00003'), html.Td('-0.0041'),html.Td('   -   '),html.Td('   -   '),html.Td('   -   ')]),
+                html.Tr([html.Td(html.Div(['C15 DyFe',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.00007'), html.Td('0.003'),html.Td('   -   '),html.Td('   -   '),html.Td('   -   ')]),
+                html.Tr([html.Td(html.Div(['C15 TbCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.0012'), html.Td('0.0045'),html.Td('   -   '),html.Td('   -   '),html.Td('   -   ')]),
+                html.Tr([html.Td(html.Div(['C15 ErCo',html.Sub("2")])), html.Td('227'),html.Td('0'),html.Td('   -   '),html.Td('-0.001'), html.Td('-0.0025'),html.Td('   -   '),html.Td('   -   '),html.Td('   -   ')]),
             ])
         ])
             
@@ -255,16 +270,17 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly.png'))]),
             html.H6("where"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
+            html.H6("The magnetization is considered to be saturated in the direction of the effective field Heff,i=Hi+Ha,i (i=x,y,z)."),
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            html.H6("Direction of the external magnetic field:"),
-            html.Div(['H',html.Sub('x')," = ",
+            html.H6("Direction of the effectve magnetic field:"),
+            html.Div(['H',html.Sub('eff,x')," = ",
               dcc.Input(id='pfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('y')," = ",
+            html.Div(['H',html.Sub('eff,y')," = ",
               dcc.Input(id='pfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('z')," = ",
+            html.Div(['H',html.Sub('eff,z')," = ",
               dcc.Input(id='pfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
             html.H6("Magnetostrictive coefficients:"),
             html.Div(['\u03BB',html.Sub("S")," = ",
@@ -300,16 +316,24 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eq_hex.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
+            html.H6("The magnetocrystalline anisotropy energy for hexagonal systems is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
+            html.H6("where K1 and K2 are the magnetocrystalline anisotropy constants. The magnetocrystalline anisotropy field Ha is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_field.png'))]),
+            html.H6("where μ0 is the vacuum permeability and Ms is the saturation magentization. In the simulation, it is assumed that the magnetization is saturated along the effective field Heff,i = Hi + Ha,i (i=x,y,z)."),
+
+        
+
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
-            html.Hr(),
-            html.H6("Direction of the external magnetic field:"),
-            html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='hfieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='hfieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='hfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
+            html.Hr(),                   
+            html.H6("External magnetic field:"),
+            html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
+              dcc.Input(id='hfieldx', value=0.5, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('y'),'(Tesla)'" = ",
+              dcc.Input(id='hfieldy', value=0.5, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('z'),'(Tesla)'" = ",
+              dcc.Input(id='hfieldz', value=0.005, type='number', debounce=True, step=0.0000001)]),
             html.H6("Magnetostrictive coefficients:"),
             html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
               dcc.Input(id='hL01', value=0.0, type='number', debounce=True, step=0.000001)]),
@@ -323,8 +347,16 @@ def update_output(system):
               dcc.Input(id='hLg', value=0.000001, type='number', debounce=True, step=0.000001)]),
             html.Div(['\u03BB',html.Sup("\u03B5,2")," = ",
               dcc.Input(id='hLe', value=0.000001, type='number', debounce=True, step=0.000001)]),
-            html.Div(["Scalefactor = ",
+            html.Div(["Scale factor = ",
               dcc.Input(id='hscale', value=1.0, type='number', debounce=True)]),
+            html.H6("Magnetocrystalline anisotropy constants:"),
+            html.Div(['K',html.Sub("1"), "(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k1h', value=-0.01, type='number', debounce=True, step=0.000001)]),
+            html.Div(['K',html.Sub("2"),"(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k2h', value=0.001, type='number', debounce=True, step=0.000001)]),
+            html.H6("Saturation magnetization:"),
+            html.Div(['μ0Ms (Tesla)'," = ",
+              dcc.Input(id='ms', value=0.01, type='number', debounce=True, step=0.0001)]),
 
             html.Div(id='my-output-h'),
             html.Hr(),
@@ -332,13 +364,14 @@ def update_output(system):
             html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
             dcc.Graph(id='hex_3D'),
             dcc.Graph(id='hex_2D'),
-            html.H4("Magnetostrictive coefficients for some hexagonal crystals"),
+            dcc.Graph(id='mae_hex_3D'),
+            html.H4("Magnetic properties of some hexagonal crystals"),
 
             html.Table([
-                html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup('\u03B11,0'),'    '])), html.Td(html.Div(['    \u03BB',html.Sup('\u03B12,0'),'    '])), html.Td(html.Div(['\u03BB',html.Sup('\u03B11,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B12,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B3,2')])),html.Td(html.Div(['\u03BB',html.Sup('\u03B5,2')]))]),
-                html.Tr([html.Td('HCP Co'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.000095'), html.Td('-0.000126'),html.Td('0.000057'),html.Td('-0.000286')]),
-                html.Tr([html.Td('HCP Gd'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.00014'), html.Td('-0.00013'),html.Td('0.00011'),html.Td('0.00002')]),
-                html.Tr([html.Td('HCP Tb'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('-0.0026'), html.Td('0.009'),html.Td('0.0087'),html.Td('0.015')]),
+                html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup('\u03B11,0'),'    '])), html.Td(html.Div(['    \u03BB',html.Sup('\u03B12,0'),'    '])), html.Td(html.Div(['\u03BB',html.Sup('\u03B11,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B12,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B3,2')])),html.Td(html.Div(['\u03BB',html.Sup('\u03B5,2')])),html.Td(html.Div(['K',html.Sub("1"),'(MJ/m',html.Sub("3"),')'])),html.Td(html.Div(['K',html.Sub("2"),'(MJ/m',html.Sub("3"),')'])),html.Td(html.Div(['μ0Ms(Tesla)']))]),
+                html.Tr([html.Td('HCP Co'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.000095'), html.Td('-0.000126'),html.Td('0.000057'),html.Td('-0.000286'),html.Td('0.7'),html.Td('0.18'),html.Td('1.81')]),
+                html.Tr([html.Td('HCP Gd'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.00014'), html.Td('-0.00013'),html.Td('0.00011'),html.Td('0.00002'),html.Td('-0.12'),html.Td('0.08'),html.Td('2.59')]),
+                html.Tr([html.Td('HCP Tb'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('-0.0026'), html.Td('0.009'),html.Td('0.0087'),html.Td('0.015'),html.Td(' - '),html.Td(' - '),html.Td(' - ')]),
             ])
   
         ])
@@ -524,17 +557,76 @@ def update_output(system):
      Input(component_id='L1', component_property='value'),
      Input(component_id='L2', component_property='value'),
      Input(component_id='scale', component_property='value'),
+     Input(component_id='k1c', component_property='value'),
+     Input(component_id='k2c', component_property='value'),
+     Input(component_id='ms', component_property='value'),
     ]
 )
 
 
-def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
+def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    mu0=4.0*np.pi*10**(-7)
+    gamma=1.760859*10**11
+    alpha=1.0
+    
+    kk1=kk1*10**6
+    kk2=kk2*10**6
+    
+   # h=np.sqrt(hx*hx+hy*hy+hz*hz)+10.0**(-5)
+    a0x=0.075600
+    a0y=0.555500
+    a0z=0.000200
+    
+    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+    
+    
+    tol0=10.0**(-6)
+    torque=1.0
+    dt=10.0**(-12)
+    
+
+    
+    while torque > tol0:
+        hax=-(2.0*kk1*mu0/mms)*a0x*(a0y**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0x*(a0y**2.0)*(a0z**2.0)
+        hay=-(2.0*kk1*mu0/mms)*a0y*(a0x**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0y*(a0x**2.0)*(a0z**2.0)
+        haz=-(2.0*kk1*mu0/mms)*a0z*(a0y**2.0+a0x**2.0)-(2.0*kk2*mu0/mms)*a0z*(a0y**2.0)*(a0x**2.0)
+  
+        
+        heffx=hx+hax
+        heffy=hy+hay
+        heffz=hz+haz
+        
+        dax=((alpha*gamma)/(1.0+alpha**2.0))*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
+        day=((alpha*gamma)/(1.0+alpha**2.0))*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
+        daz=((alpha*gamma)/(1.0+alpha**2.0))*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
+        
+        a0x=a0x+dt*dax
+        a0y=a0y+dt*day
+        a0z=a0z+dt*daz
+        
+        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+        
+        torque=np.sqrt((heffy*a0z-heffz*a0y)**2.0+(heffz*a0x-heffx*a0z)**2.0+(heffx*a0y-heffy*a0x)**2.0)
+        
+    
+    
+    
+    ax=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    ay=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    az=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+
+  #  hhx=hx/h
+   # hhy=hy/h
+   # hhz=hz/h
+    
+    
+
     u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
@@ -547,15 +639,15 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
 
     fig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
-    fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hx], v=[hy], w=[hz],name="H",sizemode="absolute",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     fig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    fig.update_traces(hoverinfo="name", showscale=False)
+    fig.update_traces(hoverinfo="name+u+v+w", showscale=False)
     fig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
 
     fig.update_layout(transition_duration=500)
@@ -576,17 +668,71 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s):
      Input(component_id='L1', component_property='value'),
      Input(component_id='L2', component_property='value'),
      Input(component_id='scale', component_property='value'),
+     Input(component_id='k1c', component_property='value'),
+     Input(component_id='k2c', component_property='value'),
+     Input(component_id='ms', component_property='value'),
     ]
 )
 
 
-def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
+def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    mu0=4.0*np.pi*10**(-7)
+    gamma=1.760859*10**11
+    alpha=1.0
+    
+    kk1=kk1*10**6
+    kk2=kk2*10**6
+    
+   # h=np.sqrt(hx*hx+hy*hy+hz*hz)+10.0**(-5)
+    a0x=0.075600
+    a0y=0.555500
+    a0z=0.000200
+    
+    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+    
+    
+    tol0=10.0**(-6)
+    torque=1.0
+    dt=10.0**(-12)
+    
+
+    
+    while torque > tol0:
+        hax=-(2.0*kk1*mu0/mms)*a0x*(a0y**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0x*(a0y**2.0)*(a0z**2.0)
+        hay=-(2.0*kk1*mu0/mms)*a0y*(a0x**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0y*(a0x**2.0)*(a0z**2.0)
+        haz=-(2.0*kk1*mu0/mms)*a0z*(a0y**2.0+a0x**2.0)-(2.0*kk2*mu0/mms)*a0z*(a0y**2.0)*(a0x**2.0)
+  
+        
+        heffx=hx+hax
+        heffy=hy+hay
+        heffz=hz+haz
+        
+        dax=((alpha*gamma)/(1.0+alpha**2.0))*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
+        day=((alpha*gamma)/(1.0+alpha**2.0))*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
+        daz=((alpha*gamma)/(1.0+alpha**2.0))*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
+        
+        a0x=a0x+dt*dax
+        a0y=a0y+dt*day
+        a0z=a0z+dt*daz
+        
+        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+        
+        torque=np.sqrt((heffy*a0z-heffz*a0y)**2.0+(heffz*a0x-heffx*a0z)**2.0+(heffx*a0y-heffy*a0x)**2.0)
+        
+    
+    
+    
+    ax=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    ay=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    az=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+
+    
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
@@ -637,6 +783,55 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
 
 
 
+##############MAE Cubic I -3D
+
+@app.callback(
+    Output('mae_cub_3D', 'figure'),
+    [Input(component_id='k1c', component_property='value'),
+     Input(component_id='k2c', component_property='value'),
+    ]
+)
+
+
+def update_figmaec(kk1,kk2):
+
+
+    
+    kk1=kk1*10**3
+    kk2=kk2*10**3
+   
+
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
+    bx = np.sin(u)*np.cos(v)
+    by = np.sin(u)*np.sin(v)
+    bz = np.cos(u)
+    f = kk1*(bx**2.0*by**2.0+by**2.0*bz**2.0+bx**2.0*bz**2.0)+kk2*bx**2.0*by**2.0*bz**2.0
+    fmin=np.amin(f)
+    
+    x = f*bx-fmin*bx
+    y = f*by-fmin*by
+    z = f*bz-fmin*bz
+    
+    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+
+
+    figmaec = make_subplots(rows=1, cols=1,
+                    specs=[[{'is_3d': True}]],
+                    subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
+
+   
+    figmaec.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=ene, name="E"), 1, 1)
+
+    figmaec.update_layout(transition_duration=500)
+
+    figmaec.update_yaxes(automargin=True)
+    figmaec.update_xaxes(automargin=True)
+
+    return figmaec
+
+
+
+
 ##################### Cubic polycrystal 3D
 
 @app.callback(
@@ -652,6 +847,9 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s):
 
 
 def update_figure(hx,hy,hz,lmbs,s):
+    
+    
+    
 
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
@@ -669,9 +867,9 @@ def update_figure(hx,hy,hz,lmbs,s):
 
     figp = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['       Effective field (Heff), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
-    figp.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    figp.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="Heff",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     figp.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     figp.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     figp.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
@@ -767,17 +965,122 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
      Input(component_id='hLg', component_property='value'),
      Input(component_id='hLe', component_property='value'),
      Input(component_id='hscale', component_property='value'),
+     Input(component_id='k1h', component_property='value'),
+     Input(component_id='k2h', component_property='value'),
+     Input(component_id='ms', component_property='value'),
     ]
 )
 
 
-def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
+def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    
+    mu0=4.0*np.pi*10.0**(-7)
+    gamma=1.760859*(10.0**11)
+    alpha=5.0
+    
+    kk1=kk1*10.0**6
+    kk2=kk2*10.0**6
+    
+   # h=np.sqrt(hx*hx+hy*hy+hz*hz)+10.0**(-5)
+    a0x=0.075600
+    a0y=0.055500
+    a0z=0.200
+    
+    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    
+    
+    
+    tol0=10.0**(-4.0)
+    torque=1.0
+    dt=10.0**(-11)
+    
+    count=0
+    nsteps=10000
+    
+   # dax=0.00001
+   # day=0.00001
+   # daz=0.00001
+    
+    while torque > tol0:
+       # hax=0.0
+       # hay=0.0
+       # haz=(2.0*kk1*mu0/mms)*a0z+(4.0*kk2*mu0/mms)*a0z*(1.0-a0z**2.0)
+        
+        
+        hax=-(2.0*kk1*mu0/mms)*a0x-(4.0*kk2*mu0/mms)*a0x*(a0x**2.0-a0y**2.0)
+        hay=-(2.0*kk1*mu0/mms)*a0y-(4.0*kk2*mu0/mms)*a0y*(a0x**2.0-a0y**2.0)
+        haz=0.0
+        
+        
+        heffx=hx+hax
+        heffy=hy+hay
+        heffz=hz+haz
+        
+        
+        
+        dax=((alpha*gamma)/(1.0+alpha**2.0))*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
+        day=((alpha*gamma)/(1.0+alpha**2.0))*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
+        daz=((alpha*gamma)/(1.0+alpha**2.0))*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
+        
+        dax=dax+(gamma/(1.0+alpha**2.0))*(heffy*a0z-heffz*a0y)
+        day=day+(gamma/(1.0+alpha**2.0))*(heffz*a0x-heffx*a0z)
+        daz=daz+(gamma/(1.0+alpha**2.0))*(heffx*a0y-heffy*a0x)
+       
+       # print(heffx,heffy,heffz,alpha,gamma,a0x,a0y,a0z,hax,hay,haz,hx,hy,hz,dt,dt*gamma)
+       # exit
+        
+       # dax=(alpha*gamma)*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
+       # day=(alpha*gamma)*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
+       # daz=(alpha*gamma)*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
+        
+        
+       # print(heffx,heffy,heffz,alpha,gamma,a0x,a0y,a0z,hax,hay,haz,hx,hy,hz,dt*dax)
+       # exit
+        
+        a0x=a0x+dt*dax
+        a0y=a0y+dt*day
+        a0z=a0z+dt*daz
+        
+        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+        
+        torque=np.sqrt((heffy*a0z-heffz*a0y)**2.0+(heffz*a0x-heffx*a0z)**2.0+(heffx*a0y-heffy*a0x)**2.0)
+    #    count=count+1
+        
+    #    if count > 1000000:
+            
+    #        heff=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)
+    #        print(a0x,a0y,a0z)
+    #        print(heffx/heff,heffy/heff,heffz/heff)
+    #        print("torque",torque)
+    #        a0x=np.random.random_sample()
+    #        a0y=np.random.random_sample()
+    #        a0z=np.random.random_sample()
+    #        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    #        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    #        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    #        print("new_random_initial_values")
+            
+    #        count=0
+            
+        
+    
+   # heff=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)
+   # print(a0x,a0y,a0z)
+   # print(heffx/heff,heffy/heff,heffz/heff)
+   # print("torque",torque)
+    
+    ax=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    ay=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    az=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+
+    
+
     u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
@@ -790,15 +1093,15 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
 
     hfig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
-    hfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    hfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hx], v=[hy], w=[hz],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     hfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     hfig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     hfig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     hfig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    hfig.update_traces(hoverinfo="name", showscale=False)
+    hfig.update_traces(hoverinfo="name+u+v+w", showscale=False)
     hfig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
 
     hfig.update_layout(transition_duration=500)
@@ -822,17 +1125,121 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
      Input(component_id='hLg', component_property='value'),
      Input(component_id='hLe', component_property='value'),
      Input(component_id='hscale', component_property='value'),
+     Input(component_id='k1h', component_property='value'),
+     Input(component_id='k2h', component_property='value'),
+     Input(component_id='ms', component_property='value'),
     ]
 )
 
 
-def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
+def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    
+    mu0=4.0*np.pi*10.0**(-7)
+    gamma=1.760859*(10.0**11)
+    alpha=5.0
+    
+    kkk1=kkk1*10.0**6
+    kkk2=kkk2*10.0**6
+    
+   # h=np.sqrt(hx*hx+hy*hy+hz*hz)+10.0**(-5)
+    a0x=0.075600
+    a0y=0.055500
+    a0z=0.200
+    
+    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    
+    
+    tol0=10.0**(-4.0)
+    torque=1.0
+    dt=10.0**(-11)
+    
+    count=0
+    nsteps=10000
+    
+   # dax=0.00001
+   # day=0.00001
+   # daz=0.00001
+    
+    while torque > tol0:
+       # hax=0.0
+       # hay=0.0
+       # haz=(2.0*kk1*mu0/mms)*a0z+(4.0*kk2*mu0/mms)*a0z*(1.0-a0z**2.0)
+        
+        
+        hax=-(2.0*kkk1*mu0/mmms)*a0x-(4.0*kkk2*mu0/mmms)*a0x*(a0x**2.0-a0y**2.0)
+        hay=-(2.0*kkk1*mu0/mmms)*a0y-(4.0*kkk2*mu0/mmms)*a0y*(a0x**2.0-a0y**2.0)
+        haz=0.0
+        
+        
+        heffx=hx+hax
+        heffy=hy+hay
+        heffz=hz+haz
+        
+        
+        
+        dax=((alpha*gamma)/(1.0+alpha**2.0))*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
+        day=((alpha*gamma)/(1.0+alpha**2.0))*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
+        daz=((alpha*gamma)/(1.0+alpha**2.0))*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
+        
+        dax=dax+(gamma/(1.0+alpha**2.0))*(heffy*a0z-heffz*a0y)
+        day=day+(gamma/(1.0+alpha**2.0))*(heffz*a0x-heffx*a0z)
+        daz=daz+(gamma/(1.0+alpha**2.0))*(heffx*a0y-heffy*a0x)
+       
+       # print(heffx,heffy,heffz,alpha,gamma,a0x,a0y,a0z,hax,hay,haz,hx,hy,hz,dt,dt*gamma)
+       # exit
+        
+       # dax=(alpha*gamma)*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
+       # day=(alpha*gamma)*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
+       # daz=(alpha*gamma)*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
+        
+        
+       # print(heffx,heffy,heffz,alpha,gamma,a0x,a0y,a0z,hax,hay,haz,hx,hy,hz,dt*dax)
+       # exit
+        
+        a0x=a0x+dt*dax
+        a0y=a0y+dt*day
+        a0z=a0z+dt*daz
+        
+        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+        
+        torque=np.sqrt((heffy*a0z-heffz*a0y)**2.0+(heffz*a0x-heffx*a0z)**2.0+(heffx*a0y-heffy*a0x)**2.0)
+    #    count=count+1
+        
+    #    if count > 1000000:
+            
+    #        heff=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)
+    #        print(a0x,a0y,a0z)
+    #        print(heffx/heff,heffy/heff,heffz/heff)
+    #        print("torque",torque)
+    #        a0x=np.random.random_sample()
+    #        a0y=np.random.random_sample()
+    #        a0z=np.random.random_sample()
+    #        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    #        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    #        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    #        print("new_random_initial_values")
+            
+    #        count=0
+            
+        
+    
+   # heff=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)
+   # print(a0x,a0y,a0z)
+   # print(heffx/heff,heffy/heff,heffz/heff)
+   # print("torque",torque)
+    
+    ax=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    ay=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    az=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+
+
+
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
@@ -880,6 +1287,53 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s):
     figh2d.update_xaxes(automargin=True)
 
     return figh2d
+
+
+##############MAE Cubic I -3D
+
+@app.callback(
+    Output('mae_hex_3D', 'figure'),
+    [Input(component_id='k1h', component_property='value'),
+     Input(component_id='k2h', component_property='value'),
+    ]
+)
+
+
+def update_figmaeh(kkkk1,kkkk2):
+
+
+    
+    kkkk1=kkkk1*10**3
+    kkkk2=kkkk2*10**3
+   
+
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
+    bx = np.sin(u)*np.cos(v)
+    by = np.sin(u)*np.sin(v)
+    bz = np.cos(u)
+    f = kkkk1*(1.0-bz**2.0)+kkkk2*(1.0-bz**2.0)**2.0
+    fmin=np.amin(f)
+    
+    x = f*bx-fmin*bx
+    y = f*by-fmin*by
+    z = f*bz-fmin*bz
+    
+    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+
+
+    figmaeh = make_subplots(rows=1, cols=1,
+                    specs=[[{'is_3d': True}]],
+                    subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
+
+   
+    figmaeh.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=ene, name="E"), 1, 1)
+
+    figmaeh.update_layout(transition_duration=500)
+
+    figmaeh.update_yaxes(automargin=True)
+    figmaeh.update_xaxes(automargin=True)
+
+    return figmaeh
 
 
 
