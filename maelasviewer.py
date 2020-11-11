@@ -205,19 +205,20 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('mae_cub.png'))]),
             html.H6("where K1 and K2 are the magnetocrystalline anisotropy constants. The magnetocrystalline anisotropy field Ha is"),
             html.Div([html.Img(src=app.get_asset_url('mae_field.png'))]),
-            html.H6("where μ0 is the vacuum permeability and Ms is the saturation magnetization. In the simulation, it is assumed that the magnetization is saturated along the effective field Heff,i = Hi + Ha,i (i=x,y,z)."),
+            html.H6("where μ0 is the vacuum permeability and Ms is the saturation magnetization. In the simulation, it is assumed that the magnetization is saturated along the effective field Heff"),
+            html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            html.H6("External magnetic field:"),
+            dcc.Markdown(''' **External magnetic field:**'''),
             html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
               dcc.Input(id='fieldx', value=0.5, type='number', debounce=True, step=0.0000001)]),
             html.Div(['μ0H',html.Sub('y'),'(Tesla)'" = ",
               dcc.Input(id='fieldy', value=0.5, type='number', debounce=True, step=0.0000001)]),
             html.Div(['μ0H',html.Sub('z'),'(Tesla)'" = ",
               dcc.Input(id='fieldz', value=0.005, type='number', debounce=True, step=0.0000001)]),
-            html.H6("Magnetostrictive coefficients:"),
+            dcc.Markdown(''' **Magnetostrictive coefficients:**'''),
             html.Div(['\u03BB',html.Sup("\u03B1")," = ",
               dcc.Input(id='L0', value=0.0, type='number', debounce=True, step=0.000001)]),
             html.Div(['\u03BB',html.Sub("001")," = ",
@@ -226,21 +227,41 @@ def update_output(system):
               dcc.Input(id='L2', value=0.000001, type='number', debounce=True, step=0.000001)]),
             html.Div(["Scale factor = ",
               dcc.Input(id='scale', value=1.0, type='number', debounce=True)]),
-            html.H6("Magnetocrystalline anisotropy constants:"),
+            dcc.Markdown(''' **Magnetocrystalline anisotropy constants:**'''),
             html.Div(['K',html.Sub("1"), "(MJ/m",html.Sup("3"),")"," = ",
               dcc.Input(id='k1c', value=0.001, type='number', debounce=True, step=0.000001)]),
             html.Div(['K',html.Sub("2"),"(MJ/m",html.Sup("3"),")"," = ",
               dcc.Input(id='k2c', value=0.001, type='number', debounce=True, step=0.000001)]),
-            html.H6("Saturation magnetization:"),
+            dcc.Markdown(''' **Saturation magnetization:**'''),
             html.Div(['μ0Ms (Tesla)'," = ",
               dcc.Input(id='ms', value=0.01, type='number', debounce=True, step=0.0001)]),
-            
-
+            dcc.Markdown(''' **Landau-Lifshitz-Gilbert solver to find the direction of the equilibrium magnetization (α):**'''),
+            html.Div(['Damping LLG '," = ",
+              dcc.Input(id='alpha0', value=0.95, type='number', debounce=True, step=0.00001)]),
+            html.Div(['Torque tolerance |α x μ0Heff| (Tesla)'," = ",
+              dcc.Input(id='tol', value=0.00001, type='number', debounce=True, step=0.000000001)]),
+            html.Div(['Time step LLG (ps)'," = ",
+              dcc.Input(id='dt', value=0.1, type='number', debounce=True, step=0.00001)]),
+            html.Div(['Total number of iteration steps'," = ",
+              dcc.Input(id='nt', value=100000, type='number', debounce=True, step=1)]),
+                      
 
             html.Div(id='my-output'),
             html.Hr(),
             html.H4("Simulation"),
             html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            html.H6("Solver output:"),
+            html.Table([
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxc')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyc')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzc')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxc')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyc')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzc')]),
+                html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquec')]),
+
+            ]),  
             dcc.Graph(id='cub_3D'),
             dcc.Graph(id='cub_2D'),
             dcc.Graph(id='mae_cub_3D'),
@@ -270,7 +291,8 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly.png'))]),
             html.H6("where"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
-            html.H6("The magnetization is considered to be saturated in the direction of the effective field Heff,i=Hi+Ha,i (i=x,y,z)."),
+            html.H6("The magnetization is considered to be saturated in the direction of the effective field Heff"),
+            html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
@@ -545,64 +567,79 @@ def update_output(system):
         return 'No crystal system selected'
 
 
+def energy(crystal,sx,sy,sz,ms0,efx,efy,efz,k01,k02):
+    
+    mu0=4.0*np.pi*10**(-7)
+    ene_ef=-(ms0/mu0)*(sx*efx+sy*efy+sz*efz)
+    k01=k01*10.0**6
+    k02=k02*10.0**6
+      
+    if crystal=='cub':
+        ene_af=k01*(sx**2.0*sy**2.0+sx**2.0*sz**2.0+sy**2.0*sz**2.0)+k02*sx**2.0*sy**2.0*sz**2.0
+    elif crystal=='uni':
+        ene_af=k01*(1.0-sz**2.0)+k02*(1.0-sz**2.0)**2.0
+    elif crystal=='ort':
+        ene_af=k01*sx**2.0+k02*sy**2.0
+           
+    ene_tot=ene_ef+ene_af
+    return ene_tot
 
-##############Cubic I -3D
+def field(crystal,sx,sy,sz,ms0,efx,efy,efz,k01,k02):
+    
+    mu0=4.0*np.pi*10**(-7)
+    
+    k01=k01*10.0**6
+    k02=k02*10.0**6
+      
+    if crystal=='cub':
+        hax=-(2.0*k01*mu0/ms0)*sx*(sy**2.0+sz**2.0)-(2.0*k02*mu0/ms0)*sx*(sy**2.0)*(sz**2.0)
+        hay=-(2.0*k01*mu0/ms0)*sy*(sx**2.0+sz**2.0)-(2.0*k02*mu0/ms0)*sy*(sx**2.0)*(sz**2.0)
+        haz=-(2.0*k01*mu0/ms0)*sz*(sy**2.0+sx**2.0)-(2.0*k02*mu0/ms0)*sz*(sy**2.0)*(sx**2.0)
+    elif crystal=='uni':
+        hax=-(2.0*k01*mu0/ms0)*sx-(4.0*k02*mu0/ms0)*sx*(sx**2.0-sy**2.0)
+        hay=-(2.0*k01*mu0/ms0)*sy-(4.0*k02*mu0/ms0)*sy*(sx**2.0-sy**2.0)
+        haz=0.0
+    elif crystal=='ort':
+        hax=-(2.0*k01*mu0/ms0)*sx
+        hay=-(2.0*k02*mu0/ms0)*sy
+        haz=0.0
+           
+    fieldx=hax+efx
+    fieldy=hay+efy
+    fieldz=haz+efz
+    
+    return fieldx,fieldy,fieldz
 
-@app.callback(
-    Output('cub_3D', 'figure'),
-    [Input(component_id='fieldx', component_property='value'),
-     Input(component_id='fieldy', component_property='value'),
-     Input(component_id='fieldz', component_property='value'),
-     Input(component_id='L0', component_property='value'),
-     Input(component_id='L1', component_property='value'),
-     Input(component_id='L2', component_property='value'),
-     Input(component_id='scale', component_property='value'),
-     Input(component_id='k1c', component_property='value'),
-     Input(component_id='k2c', component_property='value'),
-     Input(component_id='ms', component_property='value'),
-    ]
-)
+def llg(crystal0,mms0,effx,effy,effz,kk01,kk02,alpha,tol0,dt,ntot):
 
-
-def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
-
-    d=1.0
+    
+    uu=np.random.random_sample()*np.pi
+    vv=np.random.random_sample()*2.0*np.pi
+            
+    a0x = np.sin(uu)*np.cos(vv)
+    a0y = np.sin(uu)*np.sin(vv)
+    a0z = np.cos(uu)
+    
+    dt=dt*10.0**(-12)
+    
     mu0=4.0*np.pi*10**(-7)
     gamma=1.760859*10**11
-    alpha=1.0
     
-    kk1=kk1*10**6
-    kk2=kk2*10**6
-    
-   # h=np.sqrt(hx*hx+hy*hy+hz*hz)+10.0**(-5)
-    a0x=0.075600
-    a0y=0.555500
-    a0z=0.000200
-    
-    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
-    
-    
-    tol0=10.0**(-6)
     torque=1.0
-    dt=10.0**(-12)
     
-
-    
-    while torque > tol0:
-        hax=-(2.0*kk1*mu0/mms)*a0x*(a0y**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0x*(a0y**2.0)*(a0z**2.0)
-        hay=-(2.0*kk1*mu0/mms)*a0y*(a0x**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0y*(a0x**2.0)*(a0z**2.0)
-        haz=-(2.0*kk1*mu0/mms)*a0z*(a0y**2.0+a0x**2.0)-(2.0*kk2*mu0/mms)*a0z*(a0y**2.0)*(a0x**2.0)
-  
+    count=0
         
-        heffx=hx+hax
-        heffy=hy+hay
-        heffz=hz+haz
-        
+    while count < ntot:
+            
+        heffx,heffy,heffz=field(crystal0,a0x,a0y,a0z,mms0,effx,effy,effz,kk01,kk02)
+            
         dax=((alpha*gamma)/(1.0+alpha**2.0))*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
         day=((alpha*gamma)/(1.0+alpha**2.0))*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
         daz=((alpha*gamma)/(1.0+alpha**2.0))*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
+        
+        dax=dax+(gamma/(1.0+alpha**2.0))*(heffy*a0z-heffz*a0y)
+        day=day+(gamma/(1.0+alpha**2.0))*(heffz*a0x-heffx*a0z)
+        daz=daz+(gamma/(1.0+alpha**2.0))*(heffx*a0y-heffy*a0x)
         
         a0x=a0x+dt*dax
         a0y=a0y+dt*day
@@ -613,19 +650,112 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
         a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
         
         torque=np.sqrt((heffy*a0z-heffz*a0y)**2.0+(heffz*a0x-heffx*a0z)**2.0+(heffx*a0y-heffy*a0x)**2.0)
-        
-    
-    
-    
-    ax=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    ay=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    az=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
+            
+        if torque < tol0:
+            return a0x,a0y,a0z
+                
+            
+        count=count+1
 
-  #  hhx=hx/h
-   # hhy=hy/h
-   # hhz=hz/h
+    return a0x,a0y,a0z
+
+def mc(crystal0,mms0,effx,effy,effz,kk01,kk02,tol0,ntot):
     
+    mu0=4.0*np.pi*10**(-7)
+    gamma=1.760859*10**11
+    kb=1.3806503*10**(-23)
+    muB=9.274009994*10**(-24)
+    temp=1.0
+    sigma=(2.0/25.0)*((kb*temp)/muB)**(1.0/5.0)
     
+    torque=1.0  
+    count=0
+    
+    uu=np.random.random_sample()*np.pi
+    vv=np.random.random_sample()*2.0*np.pi
+            
+    ssx = np.sin(uu)*np.cos(vv)
+    ssy = np.sin(uu)*np.sin(vv)
+    ssz = np.cos(uu)
+    
+    ene0=energy(crystal0,ssx,ssy,ssz,mms0,effx,effy,effz,kk01,kk02)
+    
+    while count < ntot:
+               
+            ssx1=ssx+sigma*np.random.normal()
+            ssy1=ssy+sigma*np.random.normal()
+            ssz1=ssz+sigma*np.random.normal()
+            
+            ssx1=ssx1/np.sqrt(ssx1**2.0+ssy1**2.0+ssz1**2.0)
+            ssy1=ssy1/np.sqrt(ssx1**2.0+ssy1**2.0+ssz1**2.0)
+            ssz1=ssz1/np.sqrt(ssx1**2.0+ssy1**2.0+ssz1**2.0)      
+
+            ene=energy(crystal0,ssx1,ssy1,ssz1,mms0,effx,effy,effz,kk01,kk02)
+            
+            dene=ene-ene0
+            
+            p=np.random.random_sample()
+            
+            pp=np.exp(-dene/(kb*temp))
+            
+            if p < pp:
+                ene0=ene
+                ssx=ssx1
+                ssy=ssy1
+                ssz=ssz1           
+            
+                heffx,heffy,heffz=field(crystal0,ssx,ssy,ssz,mms0,effx,effy,effz,kk01,kk02)
+                torque=np.sqrt((heffy*ssz-heffz*ssy)**2.0+(heffz*ssx-heffx*ssz)**2.0+(heffx*ssy-heffy*ssx)**2.0)
+            
+                if torque < tol0:
+                    return ssx,ssy,ssz
+            
+            count=count+1          
+    
+    return ssx,ssy,ssz
+
+
+
+##############Cubic I -3D
+
+@app.callback(
+    [Output('cub_3D', 'figure'),
+     Output('meqxc', 'children'),
+     Output('meqyc', 'children'),
+     Output('meqzc', 'children'),
+     Output('hefxc', 'children'),
+     Output('hefyc', 'children'),
+     Output('hefzc', 'children'),
+     Output('torquec', 'children'),
+     ],
+    [Input(component_id='fieldx', component_property='value'),
+     Input(component_id='fieldy', component_property='value'),
+     Input(component_id='fieldz', component_property='value'),
+     Input(component_id='L0', component_property='value'),
+     Input(component_id='L1', component_property='value'),
+     Input(component_id='L2', component_property='value'),
+     Input(component_id='scale', component_property='value'),
+     Input(component_id='k1c', component_property='value'),
+     Input(component_id='k2c', component_property='value'),
+     Input(component_id='ms', component_property='value'),
+     Input(component_id='alpha0', component_property='value'),
+     Input(component_id='tol', component_property='value'),
+     Input(component_id='dt', component_property='value'),
+     Input(component_id='nt', component_property='value'),
+     
+    ]
+)
+
+
+def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+
+    d=1.0
+    
+    crys = 'cub'
+    
+    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
+    torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0)
 
     u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
@@ -636,12 +766,17 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
+    hmod=np.sqrt(hx**2.0+hy**2.0+hz**2.0)+10.0**(-8)
+    
+    hhx=hx/hmod
+    hhy=hy/hmod
+    hhz=hz/hmod
 
     fig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
                     subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
-    fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hx], v=[hy], w=[hz],name="H",sizemode="absolute",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     fig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     fig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
@@ -655,7 +790,7 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
     fig.update_yaxes(automargin=True)
     fig.update_xaxes(automargin=True)
 
-    return fig
+    return fig,ax,ay,az,heffx,heffy,heffz,torque
 
 ######################################## Cub 2D
 
@@ -671,67 +806,23 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
      Input(component_id='k1c', component_property='value'),
      Input(component_id='k2c', component_property='value'),
      Input(component_id='ms', component_property='value'),
+     Input(component_id='alpha0', component_property='value'),
+     Input(component_id='tol', component_property='value'),
+     Input(component_id='dt', component_property='value'),
+     Input(component_id='nt', component_property='value'),
+
     ]
 )
 
 
-def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms):
+def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
 
     d=1.0
-    mu0=4.0*np.pi*10**(-7)
-    gamma=1.760859*10**11
-    alpha=1.0
     
-    kk1=kk1*10**6
-    kk2=kk2*10**6
+    crys = 'cub'
     
-   # h=np.sqrt(hx*hx+hy*hy+hz*hz)+10.0**(-5)
-    a0x=0.075600
-    a0y=0.555500
-    a0z=0.000200
-    
-    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
-    
-    
-    tol0=10.0**(-6)
-    torque=1.0
-    dt=10.0**(-12)
-    
-
-    
-    while torque > tol0:
-        hax=-(2.0*kk1*mu0/mms)*a0x*(a0y**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0x*(a0y**2.0)*(a0z**2.0)
-        hay=-(2.0*kk1*mu0/mms)*a0y*(a0x**2.0+a0z**2.0)-(2.0*kk2*mu0/mms)*a0y*(a0x**2.0)*(a0z**2.0)
-        haz=-(2.0*kk1*mu0/mms)*a0z*(a0y**2.0+a0x**2.0)-(2.0*kk2*mu0/mms)*a0z*(a0y**2.0)*(a0x**2.0)
-  
+    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
         
-        heffx=hx+hax
-        heffy=hy+hay
-        heffz=hz+haz
-        
-        dax=((alpha*gamma)/(1.0+alpha**2.0))*(heffx*(a0y**2.0+a0z**2.0)-a0x*(heffy*a0y+heffz*a0z))
-        day=((alpha*gamma)/(1.0+alpha**2.0))*(heffy*(a0x**2.0+a0z**2.0)-a0y*(heffx*a0x+heffz*a0z))
-        daz=((alpha*gamma)/(1.0+alpha**2.0))*(heffz*(a0x**2.0+a0y**2.0)-a0z*(heffx*a0x+heffy*a0y))
-        
-        a0x=a0x+dt*dax
-        a0y=a0y+dt*day
-        a0z=a0z+dt*daz
-        
-        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
-        
-        torque=np.sqrt((heffy*a0z-heffz*a0y)**2.0+(heffz*a0x-heffx*a0z)**2.0+(heffx*a0y-heffy*a0x)**2.0)
-        
-    
-    
-    
-    ax=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    ay=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    az=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0) 
-
     
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
