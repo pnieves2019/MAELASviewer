@@ -52,10 +52,12 @@ app.layout = html.Div(children=[
     
     html.Hr(),
     html.H3("Bibliography"),
-    html.H6(" [1] P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut, MAELASviewer: an online tool to visualize magnetostriction, 2020, Submitted to Sensors"),
+    html.H6(" [1] Nieves, P.; Arapan, S.; Kądzielawa, A.P.; Legut, D. MAELASviewer: An Online Tool to Visualize Magnetostriction. Sensors 2020, 20, 6436. "),
+    dcc.Markdown('''[https://www.mdpi.com/1424-8220/20/22/6436/pdf](https://www.mdpi.com/1424-8220/20/22/6436/pdf)'''), 
     html.H6(" [2] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, 2020, arXiv:2009.01638"),
+    dcc.Markdown('''[https://arxiv.org/pdf/2009.01638.pdf](https://arxiv.org/pdf/2009.01638.pdf)'''), 
     html.H3("Source files"),
-    html.H6("https://github.com/pnieves2019/MAELASwiewer"),
+    dcc.Markdown('''[https://github.com/pnieves2019/MAELASviewer](https://github.com/pnieves2019/MAELASviewer)'''),
     html.Hr(),
 
 

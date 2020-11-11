@@ -20,7 +20,8 @@ ONLINE ACCESS
 
 The online application is available at 
 
-https://maelasviewer.herokuapp.com/
+'''[https://maelasviewer.herokuapp.com](https://maelasviewer.herokuapp.com)'''
+
 
 --------------------------
 OFFLINE AND DEVELOPER MODE
@@ -67,5 +68,5 @@ More details of this application can be found in:
 
 Nieves, P.; Arapan, S.; Kądzielawa, A.P.; Legut, D. MAELASviewer: An Online Tool to Visualize Magnetostriction. Sensors 2020, 20, 6436. 
 
-https://www.mdpi.com/1424-8220/20/22/6436/pdf
+'''[https://www.mdpi.com/1424-8220/20/22/6436/pdf](https://www.mdpi.com/1424-8220/20/22/6436/pdf)'''
 
