@@ -212,7 +212,7 @@ def update_output(system):
             html.H6("where H is the external magentic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
             html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
             html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
-            html.Div([html.Img(src=app.get_asset_url('heff.png'))]),
+            html.Div([html.Img(src=app.get_asset_url('heffc.png'))]),
             
             
             html.H4("Parameters of the simulation"),
