@@ -346,7 +346,7 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The relative length change for hexagonal (I) systems is given by:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hex.png'))]),
-            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
             html.H6("The magnetocrystalline anisotropy energy for hexagonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
