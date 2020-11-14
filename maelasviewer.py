@@ -546,19 +546,32 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The relative length change for tetragoanl (I) systems is given by:"),
             html.Div([html.Img(src=app.get_asset_url('eq_tet.png'))]),
-            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+
+            html.H6("The magnetocrystalline anisotropy energy for tetragonal systems is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
+            html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_field.png'))]),
+            html.H6("where μ0 is the vacuum permeability and Ms is the saturation magnetization. In the simulation, it is assumed that the magnetization is saturated along the effective field Heff"),
+            html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
+            html.H6("where H is the external magentic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
+            html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
+            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001 Tesla. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
+            html.Div([html.Img(src=app.get_asset_url('heff.png'))]),
+
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            html.H6("Direction of the external magnetic field:"),
-            html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='tefieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='tefieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='tefieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-            html.H6("Magnetostrictive coefficients:"),
+            
+            dcc.Markdown(''' **External magnetic field:**'''),
+            html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
+              dcc.Input(id='tefieldx', value=5.000, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('y'),'(Tesla)'" = ",
+              dcc.Input(id='tefieldy', value=0.500, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('z'),'(Tesla)'" = ",
+              dcc.Input(id='tefieldz', value=0.005, type='number', debounce=True, step=0.0000001)]),
+            dcc.Markdown(''' **Magnetostrictive coefficients:**'''),
             html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
               dcc.Input(id='teL01', value=0.0, type='number', debounce=True, step=0.000001)]),
             html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
@@ -575,13 +588,47 @@ def update_output(system):
               dcc.Input(id='teLe', value=0.000001, type='number', debounce=True, step=0.000001)]),
             html.Div(["Scale factor = ",
               dcc.Input(id='tescale', value=1.0, type='number', debounce=True)]),
+            dcc.Markdown(''' **Magnetocrystalline anisotropy constants:**'''),
+            html.Div(['K',html.Sub("0"), "(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k0te', value=0.001, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['K',html.Sub("1"), "(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k1te', value=0.001, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['K',html.Sub("2"),"(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k2te', value=0.001, type='number', debounce=True, step=0.0000001)]),
+            dcc.Markdown(''' **Saturation magnetization:**'''),
+            html.Div(['μ0Ms (Tesla)'," = ",
+              dcc.Input(id='mste', value=0.01, type='number', debounce=True, step=0.0001)]),
+            dcc.Markdown(''' **Landau-Lifshitz-Gilbert solver to find the direction of the equilibrium magnetization (α):**'''),
+            html.Div(['Damping LLG '," = ",
+              dcc.Input(id='alpha0te', value=0.95, type='number', debounce=True, step=0.00001)]),
+            html.Div(['Torque tolerance |α x μ0Heff| (Tesla)'," = ",
+              dcc.Input(id='tolte', value=0.00001, type='number', debounce=True, step=0.000000001)]),
+            html.Div(['Time step LLG (ps)'," = ",
+              dcc.Input(id='dtte', value=0.01, type='number', debounce=True, step=0.00001)]),
+            html.Div(['Total number of iteration steps'," = ",
+              dcc.Input(id='ntte', value=500000, type='number', debounce=True, step=1)]),
+
 
             html.Div(id='my-output-te'),
             html.Hr(),
             html.H4("Simulation"),
             html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            html.H6("Solver output:"),
+            html.Table([
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxte')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyte')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzte')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxte')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyte')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzte')]),
+                html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquete')]),
+            
+            ]),
+            
             dcc.Graph(id='tet_3D'),
-            dcc.Graph(id='tet_2D')
+            dcc.Graph(id='tet_2D'),
+            dcc.Graph(id='mae_tet_3D'),
 
         ])           
 
@@ -1591,8 +1638,18 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
 
 ############## tet-3D
 
+
+
 @app.callback(
-    Output('tet_3D', 'figure'),
+    [Output('tet_3D', 'figure'),
+     Output('meqxte', 'children'),
+     Output('meqyte', 'children'),
+     Output('meqzte', 'children'),
+     Output('hefxte', 'children'),
+     Output('hefyte', 'children'),
+     Output('hefzte', 'children'),
+     Output('torquete', 'children'),
+     ],
     [Input(component_id='tefieldx', component_property='value'),
      Input(component_id='tefieldy', component_property='value'),
      Input(component_id='tefieldz', component_property='value'),
@@ -1604,17 +1661,31 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
      Input(component_id='teLd', component_property='value'),
      Input(component_id='teLe', component_property='value'),
      Input(component_id='tescale', component_property='value'),
+     Input(component_id='k1te', component_property='value'),
+     Input(component_id='k2te', component_property='value'),
+     Input(component_id='mste', component_property='value'),
+     Input(component_id='alpha0te', component_property='value'),
+     Input(component_id='tolte', component_property='value'),
+     Input(component_id='dtte', component_property='value'),
+     Input(component_id='ntte', component_property='value'),
+     
     ]
 )
 
 
-def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
+
+def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    
+    crys = 'uni'
+    
+    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
+    torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
+
+    
+
     u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
@@ -1624,18 +1695,24 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
+    
+    hmod=np.sqrt(hx**2.0+hy**2.0+hz**2.0)+10.0**(-8)
+    
+    hhx=hx/hmod
+    hhy=hy/hmod
+    hhz=hz/hmod
 
     tefig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['   Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
-    tefig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    tefig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     tefig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    tefig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    tefig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    tefig.update_traces(hoverinfo="name", showscale=False)
+    tefig.update_traces(hoverinfo="name+u+v+w", showscale=False)
     tefig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
 
     tefig.update_layout(transition_duration=500)
@@ -1643,7 +1720,10 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     tefig.update_yaxes(automargin=True)
     tefig.update_xaxes(automargin=True)
 
-    return tefig
+    return tefig,ax,ay,az,heffx,heffy,heffz,torque
+
+
+
 
 ######################################## Tet 2D
 
@@ -1660,16 +1740,25 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
      Input(component_id='teLd', component_property='value'),
      Input(component_id='teLe', component_property='value'),
      Input(component_id='tescale', component_property='value'),
+     Input(component_id='k1te', component_property='value'),
+     Input(component_id='k2te', component_property='value'),
+     Input(component_id='mste', component_property='value'),
+     Input(component_id='alpha0te', component_property='value'),
+     Input(component_id='tolte', component_property='value'),
+     Input(component_id='dtte', component_property='value'),
+     Input(component_id='ntte', component_property='value'),
     ]
 )
 
-def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
+
+def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    
+    crys = 'uni'
+    
+    ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
+
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
@@ -1696,7 +1785,7 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-
+    
     figte2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -1717,6 +1806,55 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s):
     figte2d.update_xaxes(automargin=True)
 
     return figte2d
+
+
+##############MAE tet -3D
+
+@app.callback(
+    Output('mae_tet_3D', 'figure'),
+    [Input(component_id='k0te', component_property='value'),
+     Input(component_id='k1te', component_property='value'),
+     Input(component_id='k2te', component_property='value'),
+    ]
+)
+
+
+def update_figmaete(kkkk0,kkkk1,kkkk2):
+
+
+    kkkk0=kkkk0*10**3
+    kkkk1=kkkk1*10**3
+    kkkk2=kkkk2*10**3
+   
+
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
+    bx = np.sin(u)*np.cos(v)
+    by = np.sin(u)*np.sin(v)
+    bz = np.cos(u)
+    f = kkkk0+kkkk1*(1.0-bz**2.0)+kkkk2*(1.0-bz**2.0)**2.0
+    fmin=np.amin(f)
+    
+    x = f*bx
+    y = f*by
+    z = f*bz
+    
+    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+
+
+    figmaete = make_subplots(rows=1, cols=1,
+                    specs=[[{'is_3d': True}]],
+                    subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
+
+   
+    figmaete.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=f, name="E"), 1, 1)
+
+    figmaete.update_layout(transition_duration=500)
+
+    figmaete.update_yaxes(automargin=True)
+    figmaete.update_xaxes(automargin=True)
+
+    return figmaete
+
 
 
 
