@@ -302,6 +302,8 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
             html.H6("The magnetization is considered to be saturated in the direction of the effective field Heff"),
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
+            html.H6("The magentocrystalline anisotropy field for a polycrystalline material is more complicated than for single crystals. Hence, in the simulation the user can set directly the final direction of equilibrium magnetization via the effective field Heff."),
+            html.Div([html.Img(src=app.get_asset_url('poly.png'))]),
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
@@ -643,19 +645,33 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("This interactive applet shows the magnetostriction due to Joule effect for some crystal systems."),
             html.Div([html.Img(src=app.get_asset_url('eq_ort.png'))]),
-            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization (parallel to the external magentic field H) and the measured length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+
+            html.H6("The magnetocrystalline anisotropy energy for orthorhombic systems is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_ort.png'))]),
+            html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
+            html.Div([html.Img(src=app.get_asset_url('mae_field.png'))]),
+            html.H6("where μ0 is the vacuum permeability and Ms is the saturation magnetization. In the simulation, it is assumed that the magnetization is saturated along the effective field Heff"),
+            html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
+            html.H6("where H is the external magentic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
+            html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
+            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001 Tesla. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
+            html.Div([html.Img(src=app.get_asset_url('heffo.png'))]),
+
+
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            html.H6("Direction of the external magnetic field:"),
-            html.Div(['H',html.Sub('x')," = ",
-              dcc.Input(id='ofieldx', value=1.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('y')," = ",
-              dcc.Input(id='ofieldy', value=0.0, type='number', debounce=True, step=0.1)]),
-            html.Div(['H',html.Sub('z')," = ",
-              dcc.Input(id='ofieldz', value=0.0, type='number', debounce=True, step=0.1)]),
-            html.H6("Magnetostrictive coefficients:"),
+            
+            dcc.Markdown(''' **External magnetic field:**'''),
+            html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
+              dcc.Input(id='ofieldx', value=5.000, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('y'),'(Tesla)'" = ",
+              dcc.Input(id='ofieldy', value=0.500, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['μ0H',html.Sub('z'),'(Tesla)'" = ",
+              dcc.Input(id='ofieldz', value=0.005, type='number', debounce=True, step=0.0000001)]),
+            dcc.Markdown(''' **Magnetostrictive coefficients:**'''),
             html.Div(['\u03BB',html.Sup("\u03B11,0")," = ",
               dcc.Input(id='oL01', value=0.0, type='number', debounce=True, step=0.000001)]),
             html.Div(['\u03BB',html.Sup("\u03B12,0")," = ",
@@ -682,13 +698,47 @@ def update_output(system):
               dcc.Input(id='oL9', value=0.000001, type='number', debounce=True, step=0.000001)]),
             html.Div(["Scale factor = ",
               dcc.Input(id='oscale', value=1.0, type='number', debounce=True)]),
+            dcc.Markdown(''' **Magnetocrystalline anisotropy constants:**'''),
+            html.Div(['K',html.Sub("0"), "(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k0o', value=0.001, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['K',html.Sub("1"), "(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k1o', value=0.001, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['K',html.Sub("2"),"(MJ/m",html.Sup("3"),")"," = ",
+              dcc.Input(id='k2o', value=0.001, type='number', debounce=True, step=0.0000001)]),
+            dcc.Markdown(''' **Saturation magnetization:**'''),
+            html.Div(['μ0Ms (Tesla)'," = ",
+              dcc.Input(id='mso', value=0.01, type='number', debounce=True, step=0.0001)]),
+            dcc.Markdown(''' **Landau-Lifshitz-Gilbert solver to find the direction of the equilibrium magnetization (α):**'''),
+            html.Div(['Damping LLG '," = ",
+              dcc.Input(id='alpha0o', value=0.95, type='number', debounce=True, step=0.00001)]),
+            html.Div(['Torque tolerance |α x μ0Heff| (Tesla)'," = ",
+              dcc.Input(id='tolo', value=0.00001, type='number', debounce=True, step=0.000000001)]),
+            html.Div(['Time step LLG (ps)'," = ",
+              dcc.Input(id='dto', value=0.01, type='number', debounce=True, step=0.00001)]),
+            html.Div(['Total number of iteration steps'," = ",
+              dcc.Input(id='nto', value=500000, type='number', debounce=True, step=1)]),
 
             html.Div(id='my-output-o'),
             html.Hr(),
             html.H4(" Simulation"),
             html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            html.H6("Solver output:"),
+            html.Table([
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxo')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyo')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzo')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxo')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyo')]),
+                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzo')]),
+                html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torqueo')]),
+            
+            ]),
+            
+            
             dcc.Graph(id='ort_3D'),
-            dcc.Graph(id='ort_2D')
+            dcc.Graph(id='ort_2D'),
+            dcc.Graph(id='mae_ort_3D'),
  
            
         ])
@@ -745,29 +795,33 @@ def field(crystal,sx,sy,sz,ms0,efx,efy,efz,k01,k02):
 
 def llg(crystal0,mms0,effx,effy,effz,kk01,kk02,alpha,tol0,dt,ntot):
 
+    hmod=np.sqrt(effx**2.0+effy**2.0+effz**2.0)
     
-  #  uu=np.random.random_sample()*np.pi
-  #  vv=np.random.random_sample()*2.0*np.pi
+    if hmod < 10.0**(-6): 
+        uu=np.random.random_sample()*np.pi
+        vv=np.random.random_sample()*2.0*np.pi
             
-  #  a0x = np.sin(uu)*np.cos(vv)
-  #  a0y = np.sin(uu)*np.sin(vv)
-  #  a0z = np.cos(uu)
-  
-    a0x = effx/np.sqrt(effx**2.0+effy**2.0+effz**2.0+10.0**(-7))
-    a0y = effy/np.sqrt(effx**2.0+effy**2.0+effz**2.0+10.0**(-7))
-    a0z = effz/np.sqrt(effx**2.0+effy**2.0+effz**2.0+10.0**(-7))
+        a0x = np.sin(uu)*np.cos(vv)
+        a0y = np.sin(uu)*np.sin(vv)
+        a0z = np.cos(uu)
     
-    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    else:
     
-    a0x=a0x+np.random.uniform(-1,1)*10.0**(-3)
-    a0y=a0y+np.random.uniform(-1,1)*10.0**(-3)
-    a0z=a0z+np.random.uniform(-1,1)*10.0**(-3)
+        a0x = effx/hmod
+        a0y = effy/hmod
+        a0z = effz/hmod
     
-    a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
-    a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+    
+        a0x=a0x+np.random.uniform(-1,1)*10.0**(-3)
+        a0y=a0y+np.random.uniform(-1,1)*10.0**(-3)
+        a0z=a0z+np.random.uniform(-1,1)*10.0**(-3)
+    
+        a0x=a0x/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0y=a0y/np.sqrt(a0x**2+a0y**2+a0z**2.0)
+        a0z=a0z/np.sqrt(a0x**2+a0y**2+a0z**2.0)
     
     
     dt=dt*10.0**(-12)
@@ -1109,13 +1163,13 @@ def update_figure(hx,hy,hz,lmbs,s):
 
     figp = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['       Effective field (Heff), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['       Effective field (Heff), magnetization (\u03B1) and axis (x,y,z)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
     figp.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="Heff/|Heff|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     figp.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
-    figp.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    figp.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
-    figp.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
+    figp.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="X",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
+    figp.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="Y",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    figp.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="Z",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
     figp.update_traces(hoverinfo="name+u+v+w", showscale=False)
     figp.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=(np.sqrt(x**2+y**2+z**2)-d)/d, name="\u03B2"), 1, 2)
@@ -1709,7 +1763,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
     tefig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     tefig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    tefig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    tefig.add_trace(go.Cone(x=[0.0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     tefig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
     tefig.update_traces(hoverinfo="name+u+v+w", showscale=False)
@@ -1860,8 +1914,17 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
 
 ############## Ort-3D
 
+
 @app.callback(
-    Output('ort_3D', 'figure'),
+    [Output('ort_3D', 'figure'),
+     Output('meqxo', 'children'),
+     Output('meqyo', 'children'),
+     Output('meqzo', 'children'),
+     Output('hefxo', 'children'),
+     Output('hefyo', 'children'),
+     Output('hefzo', 'children'),
+     Output('torqueo', 'children'),
+     ],
     [Input(component_id='ofieldx', component_property='value'),
      Input(component_id='ofieldy', component_property='value'),
      Input(component_id='ofieldz', component_property='value'),
@@ -1878,38 +1941,60 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
      Input(component_id='oL8', component_property='value'),
      Input(component_id='oL9', component_property='value'),
      Input(component_id='oscale', component_property='value'),
+     Input(component_id='k1o', component_property='value'),
+     Input(component_id='k2o', component_property='value'),
+     Input(component_id='mso', component_property='value'),
+     Input(component_id='alpha0o', component_property='value'),
+     Input(component_id='tolo', component_property='value'),
+     Input(component_id='dto', component_property='value'),
+     Input(component_id='nto', component_property='value'),
+     
     ]
 )
 
 
-def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s):
+
+def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    
+    crys = 'ort'
+    
+    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
+    torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
+
+    
+
     u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
     f = lmb01*bx**2+lmb02*by**2+lmb03*bz**2+lmb1*(ax**2*bx**2-ax*ay*bx*by-ax*az*bx*bz)+lmb2*(ay**2*bx**2-ax*ay*bx*by)+lmb3*(ax**2*by**2-ax*ay*bx*by)+lmb4*(ay**2*by**2-ax*ay*bx*by-ay*az*by*bz)+lmb5*(ax**2*bz**2-ax*az*bx*bz)+lmb6*(ay**2*bz**2-ay*az*by*bz)+lmb7*4*ax*ay*bx*by+lmb8*4*ax*az*bx*bz+lmb9*4*ay*az*by*bz
+
+    
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
+    
+    hmod=np.sqrt(hx**2.0+hy**2.0+hz**2.0)+10.0**(-8)
+    
+    hhx=hx/hmod
+    hhy=hy/hmod
+    hhz=hz/hmod
 
     ofig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['      Magnetic field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
-    ofig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="H",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    ofig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
     ofig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
     ofig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    ofig.update_traces(hoverinfo="name", showscale=False)
+    ofig.update_traces(hoverinfo="name+u+v+w", showscale=False)
     ofig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
 
     ofig.update_layout(transition_duration=500)
@@ -1917,9 +2002,12 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     ofig.update_yaxes(automargin=True)
     ofig.update_xaxes(automargin=True)
 
-    return ofig
+    return ofig,ax,ay,az,heffx,heffy,heffz,torque
+
+
 
 ######################################## Ort 2D
+
 
 @app.callback(
     Output('ort_2D', 'figure'),
@@ -1939,17 +2027,25 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
      Input(component_id='oL8', component_property='value'),
      Input(component_id='oL9', component_property='value'),
      Input(component_id='oscale', component_property='value'),
+     Input(component_id='k1o', component_property='value'),
+     Input(component_id='k2o', component_property='value'),
+     Input(component_id='mso', component_property='value'),
+     Input(component_id='alpha0o', component_property='value'),
+     Input(component_id='tolo', component_property='value'),
+     Input(component_id='dto', component_property='value'),
+     Input(component_id='nto', component_property='value'),
     ]
 )
 
 
-def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s):
+def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt):
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
-    ax=hx/h
-    ay=hy/h
-    az=hz/h
+    
+    crys = 'ort'
+    
+    ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
+
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
@@ -1977,6 +2073,7 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
 
+    
     figo2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
@@ -1997,6 +2094,57 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     figo2d.update_xaxes(automargin=True)
 
     return figo2d
+
+
+##############MAE ort -3D
+
+@app.callback(
+    Output('mae_ort_3D', 'figure'),
+    [Input(component_id='k0o', component_property='value'),
+     Input(component_id='k1o', component_property='value'),
+     Input(component_id='k2o', component_property='value'),
+    ]
+)
+
+
+def update_figmaeo(kkkk0,kkkk1,kkkk2):
+
+
+    kkkk0=kkkk0*10**3
+    kkkk1=kkkk1*10**3
+    kkkk2=kkkk2*10**3
+   
+
+    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
+    bx = np.sin(u)*np.cos(v)
+    by = np.sin(u)*np.sin(v)
+    bz = np.cos(u)
+    f = kkkk0+kkkk1*bx**2.0+kkkk2*by**2.0
+    fmin=np.amin(f)
+    
+    x = f*bx
+    y = f*by
+    z = f*bz
+    
+    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+
+
+    figmaeo = make_subplots(rows=1, cols=1,
+                    specs=[[{'is_3d': True}]],
+                    subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
+
+   
+    figmaeo.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=f, name="E"), 1, 1)
+
+    figmaeo.update_layout(transition_duration=500)
+
+    figmaeo.update_yaxes(automargin=True)
+    figmaeo.update_xaxes(automargin=True)
+
+    return figmaeo
+
+
+
 
 
 ############## rod-3D
