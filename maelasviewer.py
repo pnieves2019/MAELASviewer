@@ -39,7 +39,7 @@ app.layout = html.Div(children=[
             {'label': 'Joule Effect', 'value': 'Joule'},
             {'label': 'Wiedemann Effect', 'value': 'Wied'},
         ],
-        placeholder="Select a magnetostrction effect"
+        placeholder="Select a magnetostriction effect"
     ),
     html.Div(id='effect_output'),     
     
