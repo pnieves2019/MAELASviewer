@@ -93,7 +93,7 @@ def update_output(effect):
     
             dcc.Markdown(''' Let's consdier that we have a single crystal FCC Ni with lattice vectors are **a**=(a0,0,0), **b**=(0,a0,0) and **c**=(0,0,a0), and its length along the measuring direction **β**=(1,0,0) in the demagnetized state is 1µm (lo,exp=1µm) at room temperature (T=300K). The magnetization is saturated along an applied magnetic field of 2 Tesla in the direction (0,0,1). How long is the length of the magnetized material in the measuring direction **β**=(1,0,0)?  '''),
             dcc.Markdown('''**Solution** '''),
-            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the components of the external magnetic field μ0**H**=(0,0,2)T, and the corresponding values of the magnetostrictive coefficients, magnetocrystalline anisotropy constants and saturation mangetization at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024, K1=-0.005MJ/m^3, K2=-0.002MJ/m^3, μ0Ms=0.61T). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β** (notice that **β**||**l**sim). Doing so, we get **l**sim=(1.23,0,0), so lsim=|**l**sim|=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances.'''),
+            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the components of the external magnetic field μ0**H**=(0,0,2)T, and the corresponding values of the magnetostrictive coefficients, magnetocrystalline anisotropy constants and saturation mangetization at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024, K1=-0.005MJ/m^3, K2=-0.002MJ/m^3, μ0Ms=0.61T). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β**. Doing so, we get lsim=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances. The fractional change length is \u0394l/lo=0.000023 which is also provided by the interactive figures. For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0. For instance, in this example if we set K0=0.005MJ/m^3, then we can clearly see in the 3D figure of the magnetocrystalline anisotropy energy the magnetic easy and hard directions (111) and (100), respectively. '''),
     
             html.Hr(),
             html.H3("Available systems"),
@@ -209,9 +209,9 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('mae_field.png'))]),
             html.H6("where μ0 is the vacuum permeability and Ms is the saturation magnetization. In the simulation, it is assumed that the magnetization is saturated along the effective field Heff"),
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
-            html.H6("where H is the external magnetic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
+            html.H6("where H is the external magnetic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert (LLG) equation"),
             html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
-            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001 Tesla. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
+            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. The torque |α x μ0Heff| is used as the criterion for the numerical convergence of the equilibrium state, it is recommended to use a tolerance for the torque lower than 0.0001 Tesla. Default values of the damping parameter, time step (dt) and total number of iteration steps usually work fine, but the user can change them in case the tolerance for the torque is not achieved."),  
             html.Div([html.Img(src=app.get_asset_url('heffc.png'))]),
             
             
@@ -258,22 +258,28 @@ def update_output(system):
             html.Div(id='my-output'),
             html.Hr(),
             html.H4("Simulation"),
-            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
-            html.H6("Solver output:"),
+            
+            dcc.Markdown(''' **LLG solver output:**'''),
             html.Table([
-                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
-                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxc')]),
-                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyc')]),
-                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzc')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxc')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyc')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzc')]),
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxc'),html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxc'),html.Td(['μ0H', html.Sub('a,x'),'(T)']), html.Td(id='haxc')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyc'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyc'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayc')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzc'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzc'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazc')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquec')]),
 
-            ]),  
+            ]),
+            html.Hr(),
+            dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),
+            
             dcc.Graph(id='cub_3D'),
             dcc.Graph(id='cub_2D'),
+            html.Hr(),
+            dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
+            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),
+           
             dcc.Graph(id='mae_cub_3D'),
+            html.Hr(),
             html.H4("Magnetic properties of some cubic crystals"),
 
             html.Table([
@@ -324,7 +330,8 @@ def update_output(system):
             html.Div(id='my-output-p'),
             html.Hr(),
             html.H4("Simulation"),
-            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
+            dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),
             
             
             dcc.Graph(id='graph-poly'),
@@ -358,7 +365,7 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
             html.H6("where H is the external magnetic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
             html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
-            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001 Tesla. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
+            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. The torque |α x μ0Heff| is used as the criterion for the numerical convergence of the equilibrium state, it is recommended to use a tolerance for the torque lower than 0.0001 Tesla. Default values of the damping parameter, time step (dt) and total number of iteration steps usually work fine, but the user can change them in case the tolerance for the torque is not achieved."),
             html.Div([html.Img(src=app.get_asset_url('heffh.png'))]),
         
 
@@ -409,27 +416,33 @@ def update_output(system):
 
             html.Div(id='my-output-h'),
             html.Hr(),
-            html.H4(" Simulation"),
-            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
-            html.H6("Solver output:"),
+    
+            html.H4("Simulation"),
+            
+            dcc.Markdown(''' **LLG solver output:**'''),
             html.Table([
-                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
-                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxh')]),
-                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyh')]),
-                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzh')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxh')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyh')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzh')]),
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxh'),html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxh'),html.Td(['μ0H', html.Sub('a,x'),'(T)']), html.Td(id='haxh')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyh'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyh'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayh')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzh'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzh'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazh')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torqueh')]),
-            
+
             ]),
-            
+            html.Hr(),
+            dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),
             
             dcc.Graph(id='hex_3D'),
             dcc.Graph(id='hex_2D'),
+            html.Hr(),
+            dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
+            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),
+          
             dcc.Graph(id='mae_hex_3D'),
+            html.Hr(), 
+            
+            
             html.H4("Magnetic properties of some hexagonal crystals"),
-
             html.Table([
                 html.Tr([html.Td('Material'), html.Td('Space group'),html.Td('Temperature (K)'),html.Td(html.Div(['    \u03BB',html.Sup('\u03B11,0'),'    '])), html.Td(html.Div(['    \u03BB',html.Sup('\u03B12,0'),'    '])), html.Td(html.Div(['\u03BB',html.Sup('\u03B11,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B12,2')])), html.Td(html.Div(['\u03BB',html.Sup('\u03B3,2')])),html.Td(html.Div(['\u03BB',html.Sup('\u03B5,2')])),html.Td(html.Div(['K',html.Sub("1"),'(MJ/m',html.Sub("3"),')'])),html.Td(html.Div(['K',html.Sub("2"),'(MJ/m',html.Sub("3"),')'])),html.Td(html.Div(['μ0Ms(Tesla)']))]),
                 html.Tr([html.Td('HCP Co'), html.Td('194'),html.Td('0'),html.Td('    -   '),html.Td('    -   '), html.Td('0.000095'), html.Td('-0.000126'),html.Td('0.000057'),html.Td('-0.000286'),html.Td('0.7'),html.Td('0.18'),html.Td('1.81')]),
@@ -459,7 +472,7 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
             html.H6("where H is the external magnetic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
             html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
-            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001 Tesla. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
+            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. The torque |α x μ0Heff| is used as the criterion for the numerical convergence of the equilibrium state, it is recommended to use a tolerance for the torque lower than 0.0001 Tesla. Default values of the damping parameter, time step (dt) and total number of iteration steps usually work fine, but the user can change them in case the tolerance for the torque is not achieved."),
             html.Div([html.Img(src=app.get_asset_url('hefftr.png'))]),
             
             
@@ -515,25 +528,26 @@ def update_output(system):
 
 
             html.Div(id='my-output-tr'),
-            html.Hr(),
-            html.H4("Simulation"),
-            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
-            html.H6("Solver output:"),
+            html.Hr(),         
+            html.H4("Simulation"),     
+            dcc.Markdown(''' **LLG solver output:**'''),
             html.Table([
-                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
-                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxtr')]),
-                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqytr')]),
-                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqztr')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxtr')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefytr')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefztr')]),
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxtr'),html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxtr'),html.Td(['μ0H', html.Sub('a,x'),'(T)']), html.Td(id='haxtr')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqytr'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefytr'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='haytr')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqztr'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefztr'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='haztr')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquetr')]),
-            
             ]),
-            
+            html.Hr(),
+            dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),
             
             dcc.Graph(id='tri_3D'),
             dcc.Graph(id='tri_2D'),
+            html.Hr(),
+            dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
+            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),
+          
             dcc.Graph(id='mae_tri_3D'),
 
         ]) 
@@ -558,7 +572,7 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
             html.H6("where H is the external magnetic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
             html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
-            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001 Tesla. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
+            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. The torque |α x μ0Heff| is used as the criterion for the numerical convergence of the equilibrium state, it is recommended to use a tolerance for the torque lower than 0.0001 Tesla. Default values of the damping parameter, time step (dt) and total number of iteration steps usually work fine, but the user can change them in case the tolerance for the torque is not achieved."),   
             html.Div([html.Img(src=app.get_asset_url('heffte.png'))]),
 
 
@@ -612,26 +626,25 @@ def update_output(system):
 
 
             html.Div(id='my-output-te'),
-            html.Hr(),
-            html.H4("Simulation"),
-            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
-            html.H6("Solver output:"),
+            html.Hr(),   
+            html.H4("Simulation"),     
+            dcc.Markdown(''' **LLG solver output:**'''),
             html.Table([
-                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
-                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxte')]),
-                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyte')]),
-                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzte')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxte')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyte')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzte')]),
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxte'),html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxte'),html.Td(['μ0H', html.Sub('a,x'),'(T)']), html.Td(id='haxte')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyte'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyte'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayte')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzte'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzte'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazte')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquete')]),
-            
             ]),
-            
+            html.Hr(),
+            dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),  
             dcc.Graph(id='tet_3D'),
             dcc.Graph(id='tet_2D'),
+            html.Hr(),
+            dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
+            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),  
             dcc.Graph(id='mae_tet_3D'),
-
         ])           
 
 
@@ -655,10 +668,8 @@ def update_output(system):
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
             html.H6("where H is the external magnetic field. The direction of the equilibrium magnetization α is calculated by the Landau-Lifshitz-Gilbert equation"),
             html.Div([html.Img(src=app.get_asset_url('llg.png'))]),
-            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. At the equilibrium the magnetization is along the effective field (α||Heff). The torque |α x μ0Heff| is used as criterium for the numerical convergence, it is recommended to use a tolerance for the torque lower than 0.00001 Tesla. The user can change the damping parameter, time step (dt) and total number of iteration steps in case the tolerance for the torque is not achieved."),
+            html.H6("where γ is the electron gyromagnetic ratio, and η is the damping parameter. The torque |α x μ0Heff| is used as the criterion for the numerical convergence of the equilibrium state, it is recommended to use a tolerance for the torque lower than 0.0001 Tesla. Default values of the damping parameter, time step (dt) and total number of iteration steps usually work fine, but the user can change them in case the tolerance for the torque is not achieved."),   
             html.Div([html.Img(src=app.get_asset_url('heffo.png'))]),
-
-
 
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
@@ -719,28 +730,25 @@ def update_output(system):
               dcc.Input(id='nto', value=500000, type='number', debounce=True, step=1)]),
 
             html.Div(id='my-output-o'),
-            html.Hr(),
-            html.H4(" Simulation"),
-            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the length l along direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor along direction \u03B2."),
-            html.H6("Solver output:"),
+            html.Hr(),       
+            html.H4("Simulation"),     
+            dcc.Markdown(''' **LLG solver output:**'''),
             html.Table([
-                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values'])]),
-                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxo')]),
-                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyo')]),
-                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzo')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxo')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyo')]),
-                html.Tr([html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzo')]),
+                html.Tr([html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values']),html.Td(['Parameters']), html.Td(['Calculated values'])]),
+                html.Tr([html.Td(['α', html.Sub('x')]), html.Td(id='meqxo'),html.Td(['μ0H', html.Sub('eff,x'),'(T)']), html.Td(id='hefxo'),html.Td(['μ0H', html.Sub('a,x'),'(T)']), html.Td(id='haxo')]),
+                html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyo'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyo'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayo')]),
+                html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzo'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzo'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazo')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torqueo')]),
-            
             ]),
-            
-            
+            html.Hr(),
+            dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),  
             dcc.Graph(id='ort_3D'),
             dcc.Graph(id='ort_2D'),
-            dcc.Graph(id='mae_ort_3D'),
- 
-           
+            html.Hr(),
+            dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
+            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),  
+            dcc.Graph(id='mae_ort_3D'),     
         ])
 
        
@@ -779,13 +787,15 @@ def field(crystal,sx,sy,sz,ms0,efx,efy,efz,k01,k02):
         hay=-(2.0*k01*mu0/ms0)*sy*(sx**2.0+sz**2.0)-(2.0*k02*mu0/ms0)*sy*(sx**2.0)*(sz**2.0)
         haz=-(2.0*k01*mu0/ms0)*sz*(sy**2.0+sx**2.0)-(2.0*k02*mu0/ms0)*sz*(sy**2.0)*(sx**2.0)
     elif crystal=='uni':
-        hax=-(2.0*k01*mu0/ms0)*sx-(4.0*k02*mu0/ms0)*sx*(sx**2.0-sy**2.0)
-        hay=-(2.0*k01*mu0/ms0)*sy-(4.0*k02*mu0/ms0)*sy*(sx**2.0-sy**2.0)
-        haz=0.0
+       # hax=-(2.0*k01*mu0/ms0)*sx-(4.0*k02*mu0/ms0)*sx*(sx**2.0+sy**2.0)
+       # hay=-(2.0*k01*mu0/ms0)*sy-(4.0*k02*mu0/ms0)*sy*(sx**2.0+sy**2.0)
+        hax=0.0
+        hay=0.0
+        haz=(2.0*k01*mu0/ms0)*sz+(4.0*k02*mu0/ms0)*sz*(1.0-sz**2.0)
     elif crystal=='ort':
         hax=-(2.0*k01*mu0/ms0)*sx
         hay=-(2.0*k02*mu0/ms0)*sy
-        haz=0.0
+        haz=0
            
     fieldx=hax+efx
     fieldy=hay+efy
@@ -931,6 +941,9 @@ def mc(crystal0,mms0,effx,effy,effz,kk01,kk02,tol0,ntot):
      Output('hefyc', 'children'),
      Output('hefzc', 'children'),
      Output('torquec', 'children'),
+     Output('haxc', 'children'),
+     Output('hayc', 'children'),
+     Output('hazc', 'children'),
      ],
     [Input(component_id='fieldx', component_property='value'),
      Input(component_id='fieldy', component_property='value'),
@@ -961,7 +974,8 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0)
 
-    u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
+    u, v = np.mgrid[0:np.pi:100j, 0:2.0*np.pi:100j]
+    
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
@@ -970,31 +984,71 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
     dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
-    hmod=np.sqrt(hx**2.0+hy**2.0+hz**2.0)+10.0**(-8)
+    hmod=np.sqrt(hx**2.0+hy**2.0+hz**2.0)+10.0**(-12) 
     
     hhx=hx/hmod
     hhy=hy/hmod
     hhz=hz/hmod
-
+    
+    lsim = np.sqrt(x**2+y**2+z**2)
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(dl_l)),axis=0)
+    list0 = np.stack((lsim,dl_l,dl_l/s,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    hax=heffx-hx
+    hay=heffy-hy
+    haz=heffz-hz
+    hamod=np.sqrt(hax**2.0+hay**2.0+haz**2.0)+10.0**(-12)
+    hhax=hax/hamod
+    hhay=hay/hamod
+    hhaz=haz/hamod
+    heffmod=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)+10.0**(-12)
+    hheffx=heffx/heffmod
+    hheffy=heffy/heffmod
+    hheffz=heffz/heffmod  
+    
+    
     fig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  Fields (H,Ha,Heff), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ',
+                                    '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2(θ,φ)'],)
 
-    fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
-    fig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
-    fig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    fig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
-    fig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
+    fig.add_trace(go.Cone(x=[0], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="""<b>H<b>/|<b>H<b>|""",
+                          hovertemplate = """Hx/H = %{u:.6g}<br>Hy/H = %{v:.6g}<br>Hz/H = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    
+    fig.add_trace(go.Cone(x=[1], y=[0], z=[1], u=[hhax], v=[hhay], w=[hhaz],name="""<b>Ha<b>/|<b>Ha<b>|""",
+                          hovertemplate = """Hax/Ha = %{u:.6g}<br>Hay/Ha = %{v:.6g}<br>Haz/Ha = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(225,0,0)']]),1, 1)
+    
+    fig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hheffx], v=[hheffy], w=[hheffz],name="""<b>Heff<b>/|<b>Heff<b>|""",
+                          hovertemplate = """Heffx/Heff = %{u:.6g}<br>Heffy/Heff = %{v:.6g}<br>Heffz/Heff = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(200,0,0)']]),1, 1)
+    
+    
+    fig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="""<b>\u03B1<b>""",
+                          hovertemplate = """\u03B1x = %{u:.6g}<br>\u03B1y= %{v:.6g}<br>\u03B1z= %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
+    fig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",hoverinfo="name",
+                          colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
+    fig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    fig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    fig.update_traces(hoverinfo="name+u+v+w", showscale=False)
-    fig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-
+    fig.update_traces(showscale=False)
+    
+    fig.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2],
+                             surfacecolor=list00[3], customdata=list0, name=" ",hoverinfo="name",
+                             hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
+    
+   
     fig.update_layout(transition_duration=500)
+    
+    
 
     fig.update_yaxes(automargin=True)
     fig.update_xaxes(automargin=True)
 
-    return fig,ax,ay,az,heffx,heffy,heffz,torque
+    return fig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
 
 ######################################## Cub 2D
 
@@ -1055,18 +1109,43 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
 
+    
+    
+    dl_lxy = (np.sqrt(xxy**2+yxy**2+zxy**2)-d)/d
+    lsimxy = np.sqrt(xxy**2+yxy**2+zxy**2)
+    list00xy = np.stack((np.transpose(xxy),np.transpose(yxy),np.transpose(zxy)),axis=0)
+    list0xy = np.stack((lsimxy,dl_lxy,dl_lxy/s,xxy/lsimxy,yxy/lsimxy,zxy/lsimxy, vxy*0.0,vxy*(180.0/np.pi)),axis=-1)
+    
+    dl_lxz = (np.sqrt(xxz**2+yxz**2+zxz**2)-d)/d
+    lsimxz = np.sqrt(xxz**2+yxz**2+zxz**2)
+    list00xz = np.stack((np.transpose(xxz),np.transpose(yxz),np.transpose(zxz)),axis=0)
+    list0xz = np.stack((lsimxz,dl_lxz,dl_lxz/s,xxz/lsimxz,yxz/lsimxz,zxz/lsimxz,vxz*(180.0/np.pi),vxz*0.0),axis=-1)
+    
+    dl_lyz = (np.sqrt(xyz**2+yyz**2+zyz**2)-d)/d
+    lsimyz = np.sqrt(xyz**2+yyz**2+zyz**2)
+    uyz = np.mgrid[90.0:90.0:200j]
+    list00yz = np.stack((np.transpose(xyz),np.transpose(yyz),np.transpose(zyz)),axis=0)
+    list0yz = np.stack((lsimyz,dl_lyz,dl_lyz/s,xyz/lsimyz,yyz/lsimyz,zyz/lsimyz,vyz*(180.0/np.pi),uyz),axis=-1)
+    
+    
+    
     figc2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
 
-    figc2d.add_trace(go.Scatter(x=xxy, y=yxy, mode='lines',name='(lx,ly)'), 1, 1)
+    
     figc2d.add_trace(go.Scatter(x=bxxy, y=byxy, mode='lines',name='(lox,loy)'), 1, 1)
+    figc2d.add_trace(go.Scatter(x=list00xy[0], y=list00xy[1], mode='lines', customdata=list0xy, name="(lsimx,lsimy)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 1)
+    
 
-    figc2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figc2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
+    figc2d.add_trace(go.Scatter(x=list00xz[0], y=list00xz[2], mode='lines', customdata=list0xz, name="(lsimx,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
+    
 
-    figc2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figc2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
+    figc2d.add_trace(go.Scatter(x=list00yz[1], y=list00yz[2], mode='lines', customdata=list0yz, name="(lsimy,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 3)
+    
+    
     figc2d.update_layout(xaxis_title='X-axis')
     figc2d.update_layout(yaxis_title='Y-axis')
     figc2d.update_layout(transition_duration=500)
@@ -1109,14 +1188,20 @@ def update_figmaec(kk0,kk1,kk2):
     z = f*bz
     
     ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+    
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
+    list0 = np.stack((f,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    
 
 
     figmaec = make_subplots(rows=1, cols=1,
                     specs=[[{'is_3d': True}]],
                     subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
 
-   
-    figmaec.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=f, name="E"), 1, 1)
+    
+    figmaec.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2], surfacecolor=list00[3], customdata=list0, name=" ", hoverinfo="name",
+                                 hovertemplate = """Ea = %{customdata[0]:.6g} KJ/m^3<br>\u03B1x = %{customdata[1]:.6g}<br>\u03B1y = %{customdata[2]:.6g}<br>\u03B1z = %{customdata[3]:.6g}<br>θ = %{customdata[4]:.6g}°<br>φ = %{customdata[5]:.6g}°<br>"""), 1, 1)
+    
 
     figmaec.update_layout(transition_duration=500)
 
@@ -1148,7 +1233,7 @@ def update_figure(hx,hy,hz,lmbs,s):
     
 
     d=1.0
-    h=np.sqrt(hx*hx+hy*hy+hz*hz)
+    h=np.sqrt(hx*hx+hy*hy+hz*hz)+1.0e-12
     ax=hx/h
     ay=hy/h
     az=hz/h
@@ -1160,21 +1245,38 @@ def update_figure(hx,hy,hz,lmbs,s):
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
+    
+    dl_l=(np.sqrt(x**2+y**2+z**2)-d)/d
+    lsim = np.sqrt(x**2+y**2+z**2)
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(dl_l)),axis=0)
+    list0 = np.stack((lsim,dl_l,dl_l/s,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
 
     figp = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
                     subplot_titles=['       Effective field (Heff), magnetization (\u03B1) and axis (x,y,z)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
 
-    figp.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="Heff/|Heff|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
-    figp.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
-    figp.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="X",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    figp.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="Y",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
-    figp.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="Z",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
-
-    figp.update_traces(hoverinfo="name+u+v+w", showscale=False)
-    figp.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=(np.sqrt(x**2+y**2+z**2)-d)/d, name="\u03B2"), 1, 2)
+    figp.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[ax], v=[ay], w=[az],name="""<b>Heff<b>/|<b>Heff<b>|""",
+                          hovertemplate = """Heffx/Heff = %{u:.6g}<br>Heffy/Heff = %{v:.6g}<br>Heffz/Heff = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(200,0,0)']]),1, 1)
+    
+    figp.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="""<b>\u03B1<b>""",
+                          hovertemplate = """\u03B1x = %{u:.6g}<br>\u03B1y= %{v:.6g}<br>\u03B1z= %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
+    figp.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="X",hoverinfo="name",
+                          colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
+    figp.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="Y",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    figp.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="Z",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)   
+    
+    figp.update_traces(showscale=False)
+    
+    figp.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2],
+                             surfacecolor=list00[3], customdata=list0, name=" ",hoverinfo="name",
+                             hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2) 
+    
     figp.update_layout(transition_duration=500)
-    figp.update_yaxes(automargin=True)
+
 
     return figp
 
@@ -1223,25 +1325,51 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-
+   
+    
+    dl_lxy = (np.sqrt(xxy**2+yxy**2+zxy**2)-d)/d
+    lsimxy = np.sqrt(xxy**2+yxy**2+zxy**2)
+    list00xy = np.stack((np.transpose(xxy),np.transpose(yxy),np.transpose(zxy)),axis=0)
+    list0xy = np.stack((lsimxy,dl_lxy,dl_lxy/s,xxy/lsimxy,yxy/lsimxy,zxy/lsimxy, vxy*0.0,vxy*(180.0/np.pi)),axis=-1)
+    
+    dl_lxz = (np.sqrt(xxz**2+yxz**2+zxz**2)-d)/d
+    lsimxz = np.sqrt(xxz**2+yxz**2+zxz**2)
+    list00xz = np.stack((np.transpose(xxz),np.transpose(yxz),np.transpose(zxz)),axis=0)
+    list0xz = np.stack((lsimxz,dl_lxz,dl_lxz/s,xxz/lsimxz,yxz/lsimxz,zxz/lsimxz,vxz*(180.0/np.pi),vxz*0.0),axis=-1)
+    
+    dl_lyz = (np.sqrt(xyz**2+yyz**2+zyz**2)-d)/d
+    lsimyz = np.sqrt(xyz**2+yyz**2+zyz**2)
+    uyz = np.mgrid[90.0:90.0:200j]
+    list00yz = np.stack((np.transpose(xyz),np.transpose(yyz),np.transpose(zyz)),axis=0)
+    list0yz = np.stack((lsimyz,dl_lyz,dl_lyz/s,xyz/lsimyz,yyz/lsimyz,zyz/lsimyz,vyz*(180.0/np.pi),uyz),axis=-1)
+    
+    
+    
     figcp2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
 
-    figcp2d.add_trace(go.Scatter(x=xxy, y=yxy, mode='lines',name='(lx,ly)'), 1, 1)
+    
     figcp2d.add_trace(go.Scatter(x=bxxy, y=byxy, mode='lines',name='(lox,loy)'), 1, 1)
+    figcp2d.add_trace(go.Scatter(x=list00xy[0], y=list00xy[1], mode='lines', customdata=list0xy, name="(lsimx,lsimy)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 1)
+    
 
-    figcp2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
     figcp2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
+    figcp2d.add_trace(go.Scatter(x=list00xz[0], y=list00xz[2], mode='lines', customdata=list0xz, name="(lsimx,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
+    
 
-    figcp2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figcp2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
+    figcp2d.add_trace(go.Scatter(x=list00yz[1], y=list00yz[2], mode='lines', customdata=list0yz, name="(lsimy,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 3)
+    
+    
     figcp2d.update_layout(xaxis_title='X-axis')
     figcp2d.update_layout(yaxis_title='Y-axis')
     figcp2d.update_layout(transition_duration=500)
 
     figcp2d.update_yaxes(automargin=True)
     figcp2d.update_xaxes(automargin=True)
+
+    
 
     return figcp2d
 
@@ -1259,6 +1387,9 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
      Output('hefyh', 'children'),
      Output('hefzh', 'children'),
      Output('torqueh', 'children'),
+     Output('haxh', 'children'),
+     Output('hayh', 'children'),
+     Output('hazh', 'children'),
      ],
     [Input(component_id='hfieldx', component_property='value'),
      Input(component_id='hfieldy', component_property='value'),
@@ -1311,25 +1442,67 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
     hhy=hy/hmod
     hhz=hz/hmod
 
+    
+    lsim = np.sqrt(x**2+y**2+z**2)
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(dl_l)),axis=0)
+    list0 = np.stack((lsim,dl_l,dl_l/s,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    hax=heffx-hx
+    hay=heffy-hy
+    haz=heffz-hz
+    hamod=np.sqrt(hax**2.0+hay**2.0+haz**2.0)+10.0**(-12)
+    hhax=hax/hamod
+    hhay=hay/hamod
+    hhaz=haz/hamod
+    heffmod=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)+10.0**(-12)
+    hheffx=heffx/heffmod
+    hheffy=heffy/heffmod
+    hheffz=heffz/heffmod  
+    
+    
     hfig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  Fields (H,Ha,Heff), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ',
+                                    '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2(θ,φ)'],)
 
-    hfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
-    hfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
-    hfig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    hfig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
-    hfig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
+    hfig.add_trace(go.Cone(x=[0], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="""<b>H<b>/|<b>H<b>|""",
+                          hovertemplate = """Hx/H = %{u:.6g}<br>Hy/H = %{v:.6g}<br>Hz/H = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    
+    hfig.add_trace(go.Cone(x=[1], y=[0], z=[1], u=[hhax], v=[hhay], w=[hhaz],name="""<b>Ha<b>/|<b>Ha<b>|""",
+                          hovertemplate = """Hax/Ha = %{u:.6g}<br>Hay/Ha = %{v:.6g}<br>Haz/Ha = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(225,0,0)']]),1, 1)
+    
+    hfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hheffx], v=[hheffy], w=[hheffz],name="""<b>Heff<b>/|<b>Heff<b>|""",
+                          hovertemplate = """Heffx/Heff = %{u:.6g}<br>Heffy/Heff = %{v:.6g}<br>Heffz/Heff = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(200,0,0)']]),1, 1)
+    
+    
+    hfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="""<b>\u03B1<b>""",
+                          hovertemplate = """\u03B1x = %{u:.6g}<br>\u03B1y= %{v:.6g}<br>\u03B1z= %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
+    hfig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",hoverinfo="name",
+                          colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
+    hfig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508],w=[0],name="b",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    hfig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    hfig.update_traces(hoverinfo="name+u+v+w", showscale=False)
-    hfig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-
+    hfig.update_traces(showscale=False)
+    
+    hfig.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2],
+                             surfacecolor=list00[3], customdata=list0, name=" ",hoverinfo="name",
+                             hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
+    
+   
     hfig.update_layout(transition_duration=500)
+    
+    
 
     hfig.update_yaxes(automargin=True)
     hfig.update_xaxes(automargin=True)
 
-    return hfig,ax,ay,az,heffx,heffy,heffz,torque
+    return hfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+    
 
 ######################################## Hex 2D
 
@@ -1365,8 +1538,6 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,al
     
     ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
 
-
-
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
@@ -1393,25 +1564,42 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,al
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-
+    
+    dl_lxy = (np.sqrt(xxy**2+yxy**2+zxy**2)-d)/d
+    lsimxy = np.sqrt(xxy**2+yxy**2+zxy**2)
+    list00xy = np.stack((np.transpose(xxy),np.transpose(yxy),np.transpose(zxy)),axis=0)
+    list0xy = np.stack((lsimxy,dl_lxy,dl_lxy/s,xxy/lsimxy,yxy/lsimxy,zxy/lsimxy, vxy*0.0,vxy*(180.0/np.pi)),axis=-1)
+    
+    dl_lxz = (np.sqrt(xxz**2+yxz**2+zxz**2)-d)/d
+    lsimxz = np.sqrt(xxz**2+yxz**2+zxz**2)
+    list00xz = np.stack((np.transpose(xxz),np.transpose(yxz),np.transpose(zxz)),axis=0)
+    list0xz = np.stack((lsimxz,dl_lxz,dl_lxz/s,xxz/lsimxz,yxz/lsimxz,zxz/lsimxz,vxz*(180.0/np.pi),vxz*0.0),axis=-1)
+    
+    dl_lyz = (np.sqrt(xyz**2+yyz**2+zyz**2)-d)/d
+    lsimyz = np.sqrt(xyz**2+yyz**2+zyz**2)
+    uyz = np.mgrid[90.0:90.0:200j]
+    list00yz = np.stack((np.transpose(xyz),np.transpose(yyz),np.transpose(zyz)),axis=0)
+    list0yz = np.stack((lsimyz,dl_lyz,dl_lyz/s,xyz/lsimyz,yyz/lsimyz,zyz/lsimyz,vyz*(180.0/np.pi),uyz),axis=-1)
+     
     figh2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
-
-    figh2d.add_trace(go.Scatter(x=xxy, y=yxy, mode='lines',name='(lx,ly)'), 1, 1)
+   
     figh2d.add_trace(go.Scatter(x=bxxy, y=byxy, mode='lines',name='(lox,loy)'), 1, 1)
-
-    figh2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
+    figh2d.add_trace(go.Scatter(x=list00xy[0], y=list00xy[1], mode='lines', customdata=list0xy, name="(lsimx,lsimy)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 1)
+    
     figh2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
+    figh2d.add_trace(go.Scatter(x=list00xz[0], y=list00xz[2], mode='lines', customdata=list0xz, name="(lsimx,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
 
-    figh2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figh2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
+    figh2d.add_trace(go.Scatter(x=list00yz[1], y=list00yz[2], mode='lines', customdata=list0yz, name="(lsimy,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 3)
+    
     figh2d.update_layout(xaxis_title='X-axis')
     figh2d.update_layout(yaxis_title='Y-axis')
     figh2d.update_layout(transition_duration=500)
 
     figh2d.update_yaxes(automargin=True)
-    figh2d.update_xaxes(automargin=True)
+    figh2d.update_xaxes(automargin=True) 
 
     return figh2d
 
@@ -1447,14 +1635,21 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
     z = f*bz
     
     ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+    
+    
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
+    list0 = np.stack((f,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    
 
 
     figmaeh = make_subplots(rows=1, cols=1,
                     specs=[[{'is_3d': True}]],
                     subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
 
-   
-    figmaeh.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=f, name="E"), 1, 1)
+    
+    figmaeh.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2], surfacecolor=list00[3], customdata=list0, name=" ", hoverinfo="name",
+                                 hovertemplate = """Ea = %{customdata[0]:.6g} KJ/m^3<br>\u03B1x = %{customdata[1]:.6g}<br>\u03B1y = %{customdata[2]:.6g}<br>\u03B1z = %{customdata[3]:.6g}<br>θ = %{customdata[4]:.6g}°<br>φ = %{customdata[5]:.6g}°<br>"""), 1, 1)
+    
 
     figmaeh.update_layout(transition_duration=500)
 
@@ -1462,8 +1657,6 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
     figmaeh.update_xaxes(automargin=True)
 
     return figmaeh
-
-
 
 
 
@@ -1479,6 +1672,9 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
      Output('hefxtr', 'children'),
      Output('hefytr', 'children'),
      Output('hefztr', 'children'),
+     Output('haxtr', 'children'),
+     Output('haytr', 'children'),
+     Output('haztr', 'children'),
      Output('torquetr', 'children'),
      ],
     [Input(component_id='trfieldx', component_property='value'),
@@ -1516,7 +1712,6 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
 
-    
 
     u, v = np.mgrid[0:np.pi:100j, 0:2*np.pi:100j]
     bx = np.sin(u)*np.cos(v)
@@ -1534,25 +1729,65 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
     hhy=hy/hmod
     hhz=hz/hmod
 
+    lsim = np.sqrt(x**2+y**2+z**2)
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(dl_l)),axis=0)
+    list0 = np.stack((lsim,dl_l,dl_l/s,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    hax=heffx-hx
+    hay=heffy-hy
+    haz=heffz-hz
+    hamod=np.sqrt(hax**2.0+hay**2.0+haz**2.0)+10.0**(-12)
+    hhax=hax/hamod
+    hhay=hay/hamod
+    hhaz=haz/hamod
+    heffmod=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)+10.0**(-12)
+    hheffx=heffx/heffmod
+    hheffy=heffy/heffmod
+    hheffz=heffz/heffmod  
+    
+    
     trfig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  Fields (H,Ha,Heff), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ',
+                                    '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2(θ,φ)'],)
 
-    trfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
-    trfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
-    trfig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    trfig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
-    trfig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
+    trfig.add_trace(go.Cone(x=[0], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="""<b>H<b>/|<b>H<b>|""",
+                          hovertemplate = """Hx/H = %{u:.6g}<br>Hy/H = %{v:.6g}<br>Hz/H = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    
+    trfig.add_trace(go.Cone(x=[1], y=[0], z=[1], u=[hhax], v=[hhay], w=[hhaz],name="""<b>Ha<b>/|<b>Ha<b>|""",
+                          hovertemplate = """Hax/Ha = %{u:.6g}<br>Hay/Ha = %{v:.6g}<br>Haz/Ha = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(225,0,0)']]),1, 1)
+    
+    trfig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hheffx], v=[hheffy], w=[hheffz],name="""<b>Heff<b>/|<b>Heff<b>|""",
+                          hovertemplate = """Heffx/Heff = %{u:.6g}<br>Heffy/Heff = %{v:.6g}<br>Heffz/Heff = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(200,0,0)']]),1, 1)
+    
+    
+    trfig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="""<b>\u03B1<b>""",
+                          hovertemplate = """\u03B1x = %{u:.6g}<br>\u03B1y= %{v:.6g}<br>\u03B1z= %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
+    trfig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",hoverinfo="name",
+                          colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
+    trfig.add_trace(go.Cone(x=[-0.2], y=[0.34641016], z=[0], u=[-1], v=[1.7320508],w=[0],name="b",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    trfig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    trfig.update_traces(hoverinfo="name+u+v+w", showscale=False)
-    trfig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-
+    trfig.update_traces(showscale=False)
+    
+    trfig.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2],
+                             surfacecolor=list00[3], customdata=list0, name=" ",hoverinfo="name",
+                             hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
+    
+   
     trfig.update_layout(transition_duration=500)
+    
+    
 
     trfig.update_yaxes(automargin=True)
     trfig.update_xaxes(automargin=True)
 
-    return trfig,ax,ay,az,heffx,heffy,heffz,torque
+    return trfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
 
 
 
@@ -1619,25 +1854,44 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
-
+    
+    
+    dl_lxy = (np.sqrt(xxy**2+yxy**2+zxy**2)-d)/d
+    lsimxy = np.sqrt(xxy**2+yxy**2+zxy**2)
+    list00xy = np.stack((np.transpose(xxy),np.transpose(yxy),np.transpose(zxy)),axis=0)
+    list0xy = np.stack((lsimxy,dl_lxy,dl_lxy/s,xxy/lsimxy,yxy/lsimxy,zxy/lsimxy, vxy*0.0,vxy*(180.0/np.pi)),axis=-1)
+    
+    dl_lxz = (np.sqrt(xxz**2+yxz**2+zxz**2)-d)/d
+    lsimxz = np.sqrt(xxz**2+yxz**2+zxz**2)
+    list00xz = np.stack((np.transpose(xxz),np.transpose(yxz),np.transpose(zxz)),axis=0)
+    list0xz = np.stack((lsimxz,dl_lxz,dl_lxz/s,xxz/lsimxz,yxz/lsimxz,zxz/lsimxz,vxz*(180.0/np.pi),vxz*0.0),axis=-1)
+    
+    dl_lyz = (np.sqrt(xyz**2+yyz**2+zyz**2)-d)/d
+    lsimyz = np.sqrt(xyz**2+yyz**2+zyz**2)
+    uyz = np.mgrid[90.0:90.0:200j]
+    list00yz = np.stack((np.transpose(xyz),np.transpose(yyz),np.transpose(zyz)),axis=0)
+    list0yz = np.stack((lsimyz,dl_lyz,dl_lyz/s,xyz/lsimyz,yyz/lsimyz,zyz/lsimyz,vyz*(180.0/np.pi),uyz),axis=-1)
+     
     figtr2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
-
-    figtr2d.add_trace(go.Scatter(x=xxy, y=yxy, mode='lines',name='(lx,ly)'), 1, 1)
+   
     figtr2d.add_trace(go.Scatter(x=bxxy, y=byxy, mode='lines',name='(lox,loy)'), 1, 1)
-
-    figtr2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
+    figtr2d.add_trace(go.Scatter(x=list00xy[0], y=list00xy[1], mode='lines', customdata=list0xy, name="(lsimx,lsimy)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 1)
+    
     figtr2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
+    figtr2d.add_trace(go.Scatter(x=list00xz[0], y=list00xz[2], mode='lines', customdata=list0xz, name="(lsimx,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
 
-    figtr2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figtr2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
+    figtr2d.add_trace(go.Scatter(x=list00yz[1], y=list00yz[2], mode='lines', customdata=list0yz, name="(lsimy,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 3)
+    
     figtr2d.update_layout(xaxis_title='X-axis')
     figtr2d.update_layout(yaxis_title='Y-axis')
     figtr2d.update_layout(transition_duration=500)
 
     figtr2d.update_yaxes(automargin=True)
-    figtr2d.update_xaxes(automargin=True)
+    figtr2d.update_xaxes(automargin=True)   
+    
 
     return figtr2d
 
@@ -1671,15 +1925,21 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
     y = f*by
     z = f*bz
     
-    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
-
+    ene=np.sqrt(x**2.0+y**2.0+z**2.0)  
+    
+    
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
+    list0 = np.stack((f,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    
 
     figmaetr = make_subplots(rows=1, cols=1,
                     specs=[[{'is_3d': True}]],
                     subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
 
-   
-    figmaetr.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=f, name="E"), 1, 1)
+    
+    figmaetr.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2], surfacecolor=list00[3], customdata=list0, name=" ", hoverinfo="name",
+                                 hovertemplate = """Ea = %{customdata[0]:.6g} KJ/m^3<br>\u03B1x = %{customdata[1]:.6g}<br>\u03B1y = %{customdata[2]:.6g}<br>\u03B1z = %{customdata[3]:.6g}<br>θ = %{customdata[4]:.6g}°<br>φ = %{customdata[5]:.6g}°<br>"""), 1, 1)
+    
 
     figmaetr.update_layout(transition_duration=500)
 
@@ -1703,6 +1963,9 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
      Output('hefyte', 'children'),
      Output('hefzte', 'children'),
      Output('torquete', 'children'),
+     Output('haxte', 'children'),
+     Output('hayte', 'children'),
+     Output('hazte', 'children'),
      ],
     [Input(component_id='tefieldx', component_property='value'),
      Input(component_id='tefieldy', component_property='value'),
@@ -1755,26 +2018,67 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
     hhx=hx/hmod
     hhy=hy/hmod
     hhz=hz/hmod
-
+      
+    
+    lsim = np.sqrt(x**2+y**2+z**2)
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(dl_l)),axis=0)
+    list0 = np.stack((lsim,dl_l,dl_l/s,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    hax=heffx-hx
+    hay=heffy-hy
+    haz=heffz-hz
+    hamod=np.sqrt(hax**2.0+hay**2.0+haz**2.0)+10.0**(-12)
+    hhax=hax/hamod
+    hhay=hay/hamod
+    hhaz=haz/hamod
+    heffmod=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)+10.0**(-12)
+    hheffx=heffx/heffmod
+    hheffy=heffy/heffmod
+    hheffz=heffz/heffmod  
+    
+    
     tefig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  Fields (H,Ha,Heff), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ',
+                                    '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2(θ,φ)'],)
 
-    tefig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
-    tefig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
-    tefig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    tefig.add_trace(go.Cone(x=[0.0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
-    tefig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
+    tefig.add_trace(go.Cone(x=[0], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="""<b>H<b>/|<b>H<b>|""",
+                          hovertemplate = """Hx/H = %{u:.6g}<br>Hy/H = %{v:.6g}<br>Hz/H = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    
+    tefig.add_trace(go.Cone(x=[1], y=[0], z=[1], u=[hhax], v=[hhay], w=[hhaz],name="""<b>Ha<b>/|<b>Ha<b>|""",
+                          hovertemplate = """Hax/Ha = %{u:.6g}<br>Hay/Ha = %{v:.6g}<br>Haz/Ha = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(225,0,0)']]),1, 1)
+    
+    tefig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hheffx], v=[hheffy], w=[hheffz],name="""<b>Heff<b>/|<b>Heff<b>|""",
+                          hovertemplate = """Heffx/Heff = %{u:.6g}<br>Heffy/Heff = %{v:.6g}<br>Heffz/Heff = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(200,0,0)']]),1, 1)
+    
+    
+    tefig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="""<b>\u03B1<b>""",
+                          hovertemplate = """\u03B1x = %{u:.6g}<br>\u03B1y= %{v:.6g}<br>\u03B1z= %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
+    tefig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",hoverinfo="name",
+                          colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
+    tefig.add_trace(go.Cone(x=[0.0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    tefig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    tefig.update_traces(hoverinfo="name+u+v+w", showscale=False)
-    tefig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-
+    tefig.update_traces(showscale=False)
+    
+    tefig.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2],
+                             surfacecolor=list00[3], customdata=list0, name=" ",hoverinfo="name",
+                             hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
+    
+   
     tefig.update_layout(transition_duration=500)
+    
+    
 
     tefig.update_yaxes(automargin=True)
     tefig.update_xaxes(automargin=True)
 
-    return tefig,ax,ay,az,heffx,heffy,heffz,torque
+    return tefig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
 
 
 
@@ -1840,24 +2144,42 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,m
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
     
+    
+    dl_lxy = (np.sqrt(xxy**2+yxy**2+zxy**2)-d)/d
+    lsimxy = np.sqrt(xxy**2+yxy**2+zxy**2)
+    list00xy = np.stack((np.transpose(xxy),np.transpose(yxy),np.transpose(zxy)),axis=0)
+    list0xy = np.stack((lsimxy,dl_lxy,dl_lxy/s,xxy/lsimxy,yxy/lsimxy,zxy/lsimxy, vxy*0.0,vxy*(180.0/np.pi)),axis=-1)
+    
+    dl_lxz = (np.sqrt(xxz**2+yxz**2+zxz**2)-d)/d
+    lsimxz = np.sqrt(xxz**2+yxz**2+zxz**2)
+    list00xz = np.stack((np.transpose(xxz),np.transpose(yxz),np.transpose(zxz)),axis=0)
+    list0xz = np.stack((lsimxz,dl_lxz,dl_lxz/s,xxz/lsimxz,yxz/lsimxz,zxz/lsimxz,vxz*(180.0/np.pi),vxz*0.0),axis=-1)
+    
+    dl_lyz = (np.sqrt(xyz**2+yyz**2+zyz**2)-d)/d
+    lsimyz = np.sqrt(xyz**2+yyz**2+zyz**2)
+    uyz = np.mgrid[90.0:90.0:200j]
+    list00yz = np.stack((np.transpose(xyz),np.transpose(yyz),np.transpose(zyz)),axis=0)
+    list0yz = np.stack((lsimyz,dl_lyz,dl_lyz/s,xyz/lsimyz,yyz/lsimyz,zyz/lsimyz,vyz*(180.0/np.pi),uyz),axis=-1)
+     
     figte2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
-
-    figte2d.add_trace(go.Scatter(x=xxy, y=yxy, mode='lines',name='(lx,ly)'), 1, 1)
+   
     figte2d.add_trace(go.Scatter(x=bxxy, y=byxy, mode='lines',name='(lox,loy)'), 1, 1)
-
-    figte2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
+    figte2d.add_trace(go.Scatter(x=list00xy[0], y=list00xy[1], mode='lines', customdata=list0xy, name="(lsimx,lsimy)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 1)
+    
     figte2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
+    figte2d.add_trace(go.Scatter(x=list00xz[0], y=list00xz[2], mode='lines', customdata=list0xz, name="(lsimx,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
 
-    figte2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figte2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
+    figte2d.add_trace(go.Scatter(x=list00yz[1], y=list00yz[2], mode='lines', customdata=list0yz, name="(lsimy,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 3)
+    
     figte2d.update_layout(xaxis_title='X-axis')
     figte2d.update_layout(yaxis_title='Y-axis')
     figte2d.update_layout(transition_duration=500)
 
     figte2d.update_yaxes(automargin=True)
-    figte2d.update_xaxes(automargin=True)
+    figte2d.update_xaxes(automargin=True)   
 
     return figte2d
 
@@ -1893,19 +2215,26 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
     z = f*bz
     
     ene=np.sqrt(x**2.0+y**2.0+z**2.0)
-
+  
+    
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
+    list0 = np.stack((f,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    
 
     figmaete = make_subplots(rows=1, cols=1,
                     specs=[[{'is_3d': True}]],
                     subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
 
-   
-    figmaete.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=f, name="E"), 1, 1)
+    
+    figmaete.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2], surfacecolor=list00[3], customdata=list0, name=" ", hoverinfo="name",
+                                 hovertemplate = """Ea = %{customdata[0]:.6g} KJ/m^3<br>\u03B1x = %{customdata[1]:.6g}<br>\u03B1y = %{customdata[2]:.6g}<br>\u03B1z = %{customdata[3]:.6g}<br>θ = %{customdata[4]:.6g}°<br>φ = %{customdata[5]:.6g}°<br>"""), 1, 1)
+    
 
     figmaete.update_layout(transition_duration=500)
 
     figmaete.update_yaxes(automargin=True)
     figmaete.update_xaxes(automargin=True)
+
 
     return figmaete
 
@@ -1924,6 +2253,9 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
      Output('hefyo', 'children'),
      Output('hefzo', 'children'),
      Output('torqueo', 'children'),
+     Output('haxo', 'children'),
+     Output('hayo', 'children'),
+     Output('hazo', 'children'),
      ],
     [Input(component_id='ofieldx', component_property='value'),
      Input(component_id='ofieldy', component_property='value'),
@@ -1983,26 +2315,68 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     hhx=hx/hmod
     hhy=hy/hmod
     hhz=hz/hmod
+    
 
+    lsim = np.sqrt(x**2+y**2+z**2)
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(dl_l)),axis=0)
+    list0 = np.stack((lsim,dl_l,dl_l/s,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    hax=heffx-hx
+    hay=heffy-hy
+    haz=heffz-hz
+    hamod=np.sqrt(hax**2.0+hay**2.0+haz**2.0)+10.0**(-12)
+    hhax=hax/hamod
+    hhay=hay/hamod
+    hhaz=haz/hamod
+    heffmod=np.sqrt(heffx**2.0+heffy**2.0+heffz**2.0)+10.0**(-12)
+    hheffx=heffx/heffmod
+    hheffy=heffy/heffmod
+    hheffz=heffz/heffmod  
+    
+    
     ofig = make_subplots(rows=1, cols=2,
                     specs=[[{'is_3d': True}, {'is_3d': True}]],
-                    subplot_titles=['  External field (H), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ', '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2'],)
+                    subplot_titles=['  Fields (H,Ha,Heff), magnetization (\u03B1) and unit cell lattice vectors (a,b,c)           ',
+                                    '        Color corresponds to (\u0394l/lo)*scale_factor along direction \u03B2(θ,φ)'],)
 
-    ofig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="H/|H|",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
-    ofig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="\u03B1",colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
-    ofig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
-    ofig.add_trace(go.Cone(x=[0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
-    ofig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
+    ofig.add_trace(go.Cone(x=[0], y=[1], z=[1], u=[hhx], v=[hhy], w=[hhz],name="""<b>H<b>/|<b>H<b>|""",
+                          hovertemplate = """Hx/H = %{u:.6g}<br>Hy/H = %{v:.6g}<br>Hz/H = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]),1, 1)
+    
+    ofig.add_trace(go.Cone(x=[1], y=[0], z=[1], u=[hhax], v=[hhay], w=[hhaz],name="""<b>Ha<b>/|<b>Ha<b>|""",
+                          hovertemplate = """Hax/Ha = %{u:.6g}<br>Hay/Ha = %{v:.6g}<br>Haz/Ha = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(225,0,0)']]),1, 1)
+    
+    ofig.add_trace(go.Cone(x=[1], y=[1], z=[1], u=[hheffx], v=[hheffy], w=[hheffz],name="""<b>Heff<b>/|<b>Heff<b>|""",
+                          hovertemplate = """Heffx/Heff = %{u:.6g}<br>Heffy/Heff = %{v:.6g}<br>Heffz/Heff = %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(200,0,0)']]),1, 1)
+    
+    
+    ofig.add_trace(go.Cone(x=[1], y=[1], z=[0], u=[ax], v=[ay], w=[az],name="""<b>\u03B1<b>""",
+                          hovertemplate = """\u03B1x = %{u:.6g}<br>\u03B1y= %{v:.6g}<br>\u03B1z= %{w:.6g}<br>""",
+                          colorscale=[[0, 'rgb(255,127,14)'], [1, 'rgb(255,127,16)']]),1, 1)
+    ofig.add_trace(go.Cone(x=[0.4], y=[0], z=[0], u=[2], v=[0], w=[0],name="a",hoverinfo="name",
+                          colorscale=[[0, 'rgb(255,0,0)'], [1, 'rgb(240,0,0)']]),1, 1)
+    ofig.add_trace(go.Cone(x=[0.0], y=[0.4], z=[0], u=[0], v=[2], w=[0],name="b",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(0,240,0)']]),1, 1)
+    ofig.add_trace(go.Cone(x=[0], y=[0], z=[0.4], u=[0], v=[0], w=[2],name="c",hoverinfo="name",
+                          colorscale=[[0, 'rgb(0,0,255)'], [1, 'rgb(0,0,240)']]),1, 1)
 
-    ofig.update_traces(hoverinfo="name+u+v+w", showscale=False)
-    ofig.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=dl_l, name="l"), 1, 2)
-
+    ofig.update_traces(showscale=False)
+    
+    ofig.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2],
+                             surfacecolor=list00[3], customdata=list0, name=" ",hoverinfo="name",
+                             hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
+    
+   
     ofig.update_layout(transition_duration=500)
+    
+    
 
     ofig.update_yaxes(automargin=True)
     ofig.update_xaxes(automargin=True)
 
-    return ofig,ax,ay,az,heffx,heffy,heffz,torque
+    return ofig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+
 
 
 
@@ -2071,27 +2445,44 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     fyz = lmb01*bxyz**2+lmb02*byyz**2+lmb03*bzyz**2+lmb1*(ax**2*bxyz**2-ax*ay*bxyz*byyz-ax*az*bxyz*bzyz)+lmb2*(ay**2*bxyz**2-ax*ay*bxyz*byyz)+lmb3*(ax**2*byyz**2-ax*ay*bxyz*byyz)+lmb4*(ay**2*byyz**2-ax*ay*bxyz*byyz-ay*az*byyz*bzyz)+lmb5*(ax**2*bzyz**2-ax*az*bxyz*bzyz)+lmb6*(ay**2*bzyz**2-ay*az*byyz*bzyz)+lmb7*4*ax*ay*bxyz*byyz+lmb8*4*ax*az*bxyz*bzyz+lmb9*4*ay*az*byyz*bzyz
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
-    zyz = d*(1.0+s*fyz)*bzyz
-
+    zyz = d*(1.0+s*fyz)*bzyz  
     
+    dl_lxy = (np.sqrt(xxy**2+yxy**2+zxy**2)-d)/d
+    lsimxy = np.sqrt(xxy**2+yxy**2+zxy**2)
+    list00xy = np.stack((np.transpose(xxy),np.transpose(yxy),np.transpose(zxy)),axis=0)
+    list0xy = np.stack((lsimxy,dl_lxy,dl_lxy/s,xxy/lsimxy,yxy/lsimxy,zxy/lsimxy, vxy*0.0,vxy*(180.0/np.pi)),axis=-1)
+    
+    dl_lxz = (np.sqrt(xxz**2+yxz**2+zxz**2)-d)/d
+    lsimxz = np.sqrt(xxz**2+yxz**2+zxz**2)
+    list00xz = np.stack((np.transpose(xxz),np.transpose(yxz),np.transpose(zxz)),axis=0)
+    list0xz = np.stack((lsimxz,dl_lxz,dl_lxz/s,xxz/lsimxz,yxz/lsimxz,zxz/lsimxz,vxz*(180.0/np.pi),vxz*0.0),axis=-1)
+    
+    dl_lyz = (np.sqrt(xyz**2+yyz**2+zyz**2)-d)/d
+    lsimyz = np.sqrt(xyz**2+yyz**2+zyz**2)
+    uyz = np.mgrid[90.0:90.0:200j]
+    list00yz = np.stack((np.transpose(xyz),np.transpose(yyz),np.transpose(zyz)),axis=0)
+    list0yz = np.stack((lsimyz,dl_lyz,dl_lyz/s,xyz/lsimyz,yyz/lsimyz,zyz/lsimyz,vyz*(180.0/np.pi),uyz),axis=-1)
+     
     figo2d = make_subplots(rows=1, cols=3,
                     specs=[[{'type': 'xy'}, {'type': 'xy'}, {'type': 'xy'}]],
                     subplot_titles=['Plot XY plane (z=0)', 'Plot XZ plane (y=0)', 'Plot YZ plane (x=0)'],)
-
-    figo2d.add_trace(go.Scatter(x=xxy, y=yxy, mode='lines',name='(lx,ly)'), 1, 1)
+   
     figo2d.add_trace(go.Scatter(x=bxxy, y=byxy, mode='lines',name='(lox,loy)'), 1, 1)
-
-    figo2d.add_trace(go.Scatter(x=xxz, y=zxz, mode='lines',name='(lx,lz)'), 1, 2)
+    figo2d.add_trace(go.Scatter(x=list00xy[0], y=list00xy[1], mode='lines', customdata=list0xy, name="(lsimx,lsimy)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 1)
+    
     figo2d.add_trace(go.Scatter(x=bxxz, y=bzxz, mode='lines',name='(lox,loz)'), 1, 2)
+    figo2d.add_trace(go.Scatter(x=list00xz[0], y=list00xz[2], mode='lines', customdata=list0xz, name="(lsimx,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 2)
 
-    figo2d.add_trace(go.Scatter(x=yyz, y=zyz, mode='lines',name='(ly,lz)'), 1, 3)
     figo2d.add_trace(go.Scatter(x=byyz, y=bzyz, mode='lines',name='(loy,loz)'), 1, 3)
+    figo2d.add_trace(go.Scatter(x=list00yz[1], y=list00yz[2], mode='lines', customdata=list0yz, name="(lsimy,lsimz)", hovertemplate = """lsim = %{customdata[0]:.6g} a.u.<br>(\u0394l/lo)*s = %{customdata[1]:.6g}<br>\u0394l/lo = %{customdata[2]:.6g}<br>\u03B2x = %{customdata[3]:.6g}<br>\u03B2y = %{customdata[4]:.6g}<br>\u03B2z = %{customdata[5]:.6g}<br>θ = %{customdata[6]:.6g}°<br>φ = %{customdata[7]:.6g}°<br>"""), 1, 3)
+    
     figo2d.update_layout(xaxis_title='X-axis')
     figo2d.update_layout(yaxis_title='Y-axis')
     figo2d.update_layout(transition_duration=500)
 
     figo2d.update_yaxes(automargin=True)
-    figo2d.update_xaxes(automargin=True)
+    figo2d.update_xaxes(automargin=True)   
+
 
     return figo2d
 
@@ -2127,14 +2518,20 @@ def update_figmaeo(kkkk0,kkkk1,kkkk2):
     z = f*bz
     
     ene=np.sqrt(x**2.0+y**2.0+z**2.0)
-
+  
+    
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
+    list0 = np.stack((f,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
+    
 
     figmaeo = make_subplots(rows=1, cols=1,
                     specs=[[{'is_3d': True}]],
                     subplot_titles=['  Color corresponds to Magnetocrystalline Anisotropy Energy (KJ/m^3) '])
 
-   
-    figmaeo.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=f, name="E"), 1, 1)
+    
+    figmaeo.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2], surfacecolor=list00[3], customdata=list0, name=" ", hoverinfo="name",
+                                 hovertemplate = """Ea = %{customdata[0]:.6g} KJ/m^3<br>\u03B1x = %{customdata[1]:.6g}<br>\u03B1y = %{customdata[2]:.6g}<br>\u03B1z = %{customdata[3]:.6g}<br>θ = %{customdata[4]:.6g}°<br>φ = %{customdata[5]:.6g}°<br>"""), 1, 1)
+    
 
     figmaeo.update_layout(transition_duration=500)
 
@@ -2142,9 +2539,6 @@ def update_figmaeo(kkkk0,kkkk1,kkkk2):
     figmaeo.update_xaxes(automargin=True)
 
     return figmaeo
-
-
-
 
 
 ############## rod-3D
@@ -2180,6 +2574,13 @@ def update_rod(rad,length,hlong,llmbs,iimax):
     #hln=hlong
     #htn=ht
     
+    phix = 0.0*x
+    phiy = 0.0*y
+    phiz = phi*(z/length)
+    phizd = phi*(z/length)*(180.0/np.pi)
+    
+    list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(phiz)),axis=0)
+    list0 = np.stack((phix,phiy,phiz,phizd),axis=-1)
     
 
     figrod = make_subplots(rows=1, cols=1,
@@ -2191,13 +2592,16 @@ def update_rod(rad,length,hlong,llmbs,iimax):
     figrod.add_trace(go.Cone(x=[0], y=[4*rad], z=[0.5*length], u=[-htn], v=[0], w=[hln],name="H∥+H⟂",sizemode="absolute",showscale=False,colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(255,0,0)']]),1, 1)
     figrod.add_trace(go.Cone(x=[0], y=[-4*rad], z=[0.5*length], u=[htn], v=[0], w=[hln],name="H∥+H⟂",sizemode="absolute",showscale=False,colorscale=[[0, 'rgb(0,255,0)'], [1, 'rgb(255,0,0)']]),1, 1)
     figrod.update_traces(hoverinfo="name")
-    figrod.add_trace(go.Surface(x=x, y=y, z=z, surfacecolor=phi*(z/length), name="magnetic rod"), 1, 1)
+     
+    figrod.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2], surfacecolor=list00[3], customdata=list0, name="magnetic rod",hoverinfo="name",
+                               hovertemplate = """x = %{x:.6g} m<br>y = %{y:.6g} m<br>z = %{z:.6g} m<br>ϕ(z) = %{customdata[2]:.6g} rad<br>ϕ(z) = %{customdata[3]:.6g} °<br>"""), 1, 1)
 
-    #figrod.update_traces(hoverinfo="name")
+  
     figrod.update_layout(transition_duration=500)
 
     figrod.update_yaxes(automargin=True)
     figrod.update_xaxes(automargin=True)
+    
 
     return figrod
 
