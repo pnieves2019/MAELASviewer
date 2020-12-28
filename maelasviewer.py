@@ -93,7 +93,7 @@ def update_output(effect):
     
             dcc.Markdown(''' Let's consdier that we have a single crystal FCC Ni with lattice vectors are **a**=(a0,0,0), **b**=(0,a0,0) and **c**=(0,0,a0), and its length along the measuring direction **β**=(1,0,0) in the demagnetized state is 1µm (lo,exp=1µm) at room temperature (T=300K). The magnetization is saturated along an applied magnetic field of 2 Tesla in the direction (0,0,1). How long is the length of the magnetized material in the measuring direction **β**=(1,0,0)?  '''),
             dcc.Markdown('''**Solution** '''),
-            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the components of the external magnetic field μ0**H**=(0,0,2)T, and the corresponding values of the magnetostrictive coefficients, magnetocrystalline anisotropy constants and saturation mangetization at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024, K1=-0.005MJ/m^3, K2=-0.002MJ/m^3, μ0Ms=0.61T). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β**. Doing so, we get lsim=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances. The fractional change length is \u0394l/lo=0.000023 which is also provided by the interactive figures. For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0. For instance, in this example if we set K0=0.005MJ/m^3, then we can clearly see in the 3D figure of the magnetocrystalline anisotropy energy the magnetic easy and hard directions (111) and (100), respectively. '''),
+            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the components of the external magnetic field μ0**H**=(0,0,2)T, and the corresponding values of the magnetostrictive coefficients, magnetocrystalline anisotropy constants and saturation mangetization at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024, K1=-0.005MJ/m^3, K2=-0.002MJ/m^3, μ0Ms=0.61T). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β**. Doing so, we get lsim=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances. The fractional change length is \u0394l/lo=0.000023 which is also provided by the interactive figures. In the 3D figure of the magnetocrystalline anisotropy energy  we can see the magnetic easy direction (111) and hard direction (100). '''),
     
             html.Hr(),
             html.H3("Available systems"),
@@ -270,13 +270,13 @@ def update_output(system):
             ]),
             html.Hr(),
             dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
-            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction \u03B2=(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),
+            html.H6("The distance between a point on the surface and the origin (0,0,0) describes the simulated length lsim in the direction =(sinθ*cosφ, sinθ*sinφ, cosθ), where θ and φ are the polar and azimuthal angles, respectively. The color of the surface corresponds to the relative length change multiplied by the scale factor in the measuring length direction \u03B2."),
             
             dcc.Graph(id='cub_3D'),
             dcc.Graph(id='cub_2D'),
             html.Hr(),
             dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
-            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),
+            html.H6("In this interactive plot you can visualize the magnetocrystalline anisotropy energy (Ea) as a function of the magnetization direction α=(sinθ*cosφ, sinθ*sinφ, cosθ)."),
            
             dcc.Graph(id='mae_cub_3D'),
             html.Hr(),
@@ -436,8 +436,8 @@ def update_output(system):
             dcc.Graph(id='hex_2D'),
             html.Hr(),
             dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
-            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),
-          
+            html.H6("In this interactive plot you can visualize the magnetocrystalline anisotropy energy (Ea) as a function of the magnetization direction α=(sinθ*cosφ, sinθ*sinφ, cosθ)."),
+           
             dcc.Graph(id='mae_hex_3D'),
             html.Hr(), 
             
@@ -546,8 +546,8 @@ def update_output(system):
             dcc.Graph(id='tri_2D'),
             html.Hr(),
             dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
-            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),
-          
+            html.H6("In this interactive plot you can visualize the magnetocrystalline anisotropy energy (Ea) as a function of the magnetization direction α=(sinθ*cosφ, sinθ*sinφ, cosθ)."),
+           
             dcc.Graph(id='mae_tri_3D'),
 
         ]) 
@@ -643,7 +643,8 @@ def update_output(system):
             dcc.Graph(id='tet_2D'),
             html.Hr(),
             dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
-            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),  
+            html.H6("In this interactive plot you can visualize the magnetocrystalline anisotropy energy (Ea) as a function of the magnetization direction α=(sinθ*cosφ, sinθ*sinφ, cosθ)."),
+           
             dcc.Graph(id='mae_tet_3D'),
         ])           
 
@@ -747,7 +748,8 @@ def update_output(system):
             dcc.Graph(id='ort_2D'),
             html.Hr(),
             dcc.Markdown(''' **Generated figure to visualize the magnetocrystalline anisotropy energy:**'''),
-            html.H6("For easy viewing of hard and easy magnetic directions, we recommend to shift the magentocrystalline anisotropy energy to the range of positive energy values using the magnetocrystalline anisotropy constant K0."),  
+            html.H6("In this interactive plot you can visualize the magnetocrystalline anisotropy energy (Ea) as a function of the magnetization direction α=(sinθ*cosφ, sinθ*sinφ, cosθ)."),
+           
             dcc.Graph(id='mae_ort_3D'),     
         ])
 
@@ -1181,13 +1183,16 @@ def update_figmaec(kk0,kk1,kk2):
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
     f = kk0+kk1*(bx**2.0*by**2.0+by**2.0*bz**2.0+bx**2.0*bz**2.0)+kk2*bx**2.0*by**2.0*bz**2.0
-    fmin=np.amin(f)
+    f0 = f-kk0
+    f0min = np.amin(f0)
+    f0max = np.amax(f0)
+    ff0 = f0 + np.absolute(f0min) + (f0max-f0min)*0.45
     
-    x = f*bx
-    y = f*by
-    z = f*bz
+    x = ff0*bx
+    y = ff0*by
+    z = ff0*bz
     
-    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+    
     
     list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
     list0 = np.stack((f,bx,by,bz,u*(180.0/np.pi),v*(180.0/np.pi)),axis=-1)
@@ -1200,13 +1205,19 @@ def update_figmaec(kk0,kk1,kk2):
 
     
     figmaec.add_trace(go.Surface(x=list00[0], y=list00[1], z=list00[2], surfacecolor=list00[3], customdata=list0, name=" ", hoverinfo="name",
-                                 hovertemplate = """Ea = %{customdata[0]:.6g} KJ/m^3<br>\u03B1x = %{customdata[1]:.6g}<br>\u03B1y = %{customdata[2]:.6g}<br>\u03B1z = %{customdata[3]:.6g}<br>θ = %{customdata[4]:.6g}°<br>φ = %{customdata[5]:.6g}°<br>"""), 1, 1)
+                                 hovertemplate = """Ea = %{customdata[0]:.6g} KJ/m^3<br>\u03B1x = %{customdata[1]:.6g}<br>\u03B1y = %{customdata[2]:.6g}<br>\u03B1z = %{customdata[3]:.6g}<br>θ = %{customdata[4]:.6g}°<br>φ = %{customdata[5]:.6g}°<br>"""),1, 1)
+    
+    
+    figmaec.update_layout(transition_duration=500)
+    
+    figmaec.update_layout(
+        scene = {
+            "xaxis": {"showticklabels": False},
+            "yaxis": {"showticklabels": False},
+            "zaxis": {"showticklabels": False}
+        })
     
 
-    figmaec.update_layout(transition_duration=500)
-
-    figmaec.update_yaxes(automargin=True)
-    figmaec.update_xaxes(automargin=True)
 
     return figmaec
 
@@ -1628,13 +1639,14 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
     f = kkkk0+kkkk1*(1.0-bz**2.0)+kkkk2*(1.0-bz**2.0)**2.0
-    fmin=np.amin(f)
+    f0 = f-kkkk0
+    f0min = np.amin(f0)
+    f0max = np.amax(f0)
+    ff0 = f0 + np.absolute(f0min) + (f0max-f0min)*0.45
     
-    x = f*bx
-    y = f*by
-    z = f*bz
-    
-    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+    x = ff0*bx
+    y = ff0*by
+    z = ff0*bz
     
     
     list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
@@ -1653,8 +1665,12 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
 
     figmaeh.update_layout(transition_duration=500)
 
-    figmaeh.update_yaxes(automargin=True)
-    figmaeh.update_xaxes(automargin=True)
+    figmaeh.update_layout(
+        scene = {
+            "xaxis": {"showticklabels": False},
+            "yaxis": {"showticklabels": False},
+            "zaxis": {"showticklabels": False}
+        })
 
     return figmaeh
 
@@ -1919,13 +1935,14 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
     f = kkkk0+kkkk1*(1.0-bz**2.0)+kkkk2*(1.0-bz**2.0)**2.0
-    fmin=np.amin(f)
+    f0 = f-kkkk0
+    f0min = np.amin(f0)
+    f0max = np.amax(f0)
+    ff0 = f0 + np.absolute(f0min) + (f0max-f0min)*0.45
     
-    x = f*bx
-    y = f*by
-    z = f*bz
-    
-    ene=np.sqrt(x**2.0+y**2.0+z**2.0)  
+    x = ff0*bx
+    y = ff0*by
+    z = ff0*bz
     
     
     list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
@@ -1943,9 +1960,13 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
 
     figmaetr.update_layout(transition_duration=500)
 
-    figmaetr.update_yaxes(automargin=True)
-    figmaetr.update_xaxes(automargin=True)
-
+    figmaetr.update_layout(
+        scene = {
+            "xaxis": {"showticklabels": False},
+            "yaxis": {"showticklabels": False},
+            "zaxis": {"showticklabels": False}
+        })
+    
     return figmaetr
 
 
@@ -2208,13 +2229,14 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
     f = kkkk0+kkkk1*(1.0-bz**2.0)+kkkk2*(1.0-bz**2.0)**2.0
-    fmin=np.amin(f)
+    f0 = f-kkkk0
+    f0min = np.amin(f0)
+    f0max = np.amax(f0)
+    ff0 = f0 + np.absolute(f0min) + (f0max-f0min)*0.45
     
-    x = f*bx
-    y = f*by
-    z = f*bz
-    
-    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+    x = ff0*bx
+    y = ff0*by
+    z = ff0*bz
   
     
     list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
@@ -2232,8 +2254,12 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
 
     figmaete.update_layout(transition_duration=500)
 
-    figmaete.update_yaxes(automargin=True)
-    figmaete.update_xaxes(automargin=True)
+    figmaete.update_layout(
+        scene = {
+            "xaxis": {"showticklabels": False},
+            "yaxis": {"showticklabels": False},
+            "zaxis": {"showticklabels": False}
+        })
 
 
     return figmaete
@@ -2511,13 +2537,14 @@ def update_figmaeo(kkkk0,kkkk1,kkkk2):
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
     f = kkkk0+kkkk1*bx**2.0+kkkk2*by**2.0
-    fmin=np.amin(f)
+    f0 = f-kkkk0
+    f0min = np.amin(f0)
+    f0max = np.amax(f0)
+    ff0 = f0 + np.absolute(f0min) + (f0max-f0min)*0.45
     
-    x = f*bx
-    y = f*by
-    z = f*bz
-    
-    ene=np.sqrt(x**2.0+y**2.0+z**2.0)
+    x = ff0*bx
+    y = ff0*by
+    z = ff0*bz
   
     
     list00 = np.stack((np.transpose(x),np.transpose(y),np.transpose(z),np.transpose(f)),axis=0)
@@ -2535,8 +2562,12 @@ def update_figmaeo(kkkk0,kkkk1,kkkk2):
 
     figmaeo.update_layout(transition_duration=500)
 
-    figmaeo.update_yaxes(automargin=True)
-    figmaeo.update_xaxes(automargin=True)
+    figmaeo.update_layout(
+        scene = {
+            "xaxis": {"showticklabels": False},
+            "yaxis": {"showticklabels": False},
+            "zaxis": {"showticklabels": False}
+        })
 
     return figmaeo
 
