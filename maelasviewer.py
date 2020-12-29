@@ -24,7 +24,7 @@ app.layout = html.Div(children=[
     html.H1(children='MAELASviewer: Online visualization of magnetostriction'),
     html.Hr(),
     html.H5('Authors: P. Nieves, S. Arapan, A.P. Kądzielawa and D. Legut'),
-    html.H6('Flagship Material Design via Exascale Computing at the IT4Innovations National Supercomputing Center at VŠB - Technical University of Ostrava'),
+    html.H6('Flagship Material Design via Exascale Computing at the IT4Innovations National Supercomputing Center at VŠB - Technical University of Ostrava, Czech Republic'),
     html.Hr(),
 
     html.H3("Introduction"),
@@ -268,6 +268,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyc'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyc'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayc')]),
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzc'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzc'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazc')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquec')]),
+                html.Tr([html.Td(['Status']), html.Td(id='statc')]),
 
             ]),
             html.Hr(),
@@ -428,6 +429,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyh'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyh'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayh')]),
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzh'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzh'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazh')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torqueh')]),
+                html.Tr([html.Td(['Status']), html.Td(id='stath')]),
 
             ]),
             html.Hr(),
@@ -538,6 +540,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyhm'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyhm'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayhm')]),
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzhm'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzhm'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazhm')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquehm')]),
+                html.Tr([html.Td(['Status']), html.Td(id='stathm')]),
 
             ]),
             html.Hr(),
@@ -649,6 +652,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqytr'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefytr'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='haytr')]),
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqztr'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefztr'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='haztr')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquetr')]),
+                html.Tr([html.Td(['Status']), html.Td(id='stattr')]),
             ]),
             html.Hr(),
             dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
@@ -747,6 +751,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyte'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyte'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayte')]),
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzte'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzte'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazte')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquete')]),
+                html.Tr([html.Td(['Status']), html.Td(id='statte')]),
             ]),
             html.Hr(),
             dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
@@ -852,6 +857,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('y')]), html.Td(id='meqyo'),html.Td(['μ0H', html.Sub('eff,y'),'(T)']), html.Td(id='hefyo'),html.Td(['μ0H', html.Sub('a,y'),'(T)']), html.Td(id='hayo')]),
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzo'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzo'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazo')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torqueo')]),
+                html.Tr([html.Td(['Status']), html.Td(id='stato')]),
             ]),
             html.Hr(),
             dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
@@ -980,12 +986,16 @@ def llg(crystal0,mms0,effx,effy,effz,kk01,kk02,alpha,tol0,dt,ntot):
         torque=np.sqrt((heffy*a0z-heffz*a0y)**2.0+(heffz*a0x-heffx*a0z)**2.0+(heffx*a0y-heffy*a0x)**2.0)
             
         if torque < tol0:
-            return a0x,a0y,a0z
+            
+            stat = 'The calculation converged successfully. The torque is lower than the tolerance.'
+            return a0x,a0y,a0z,stat
                 
             
         count=count+1
 
-    return a0x,a0y,a0z
+    stat = 'The calculation did not converge. The torque is greater than the tolerance. Try to increase the total number of iteration steps and press Enter.'
+    
+    return a0x,a0y,a0z,stat
 
 def mc(crystal0,mms0,effx,effy,effz,kk01,kk02,tol0,ntot):
     
@@ -1058,6 +1068,7 @@ def mc(crystal0,mms0,effx,effy,effz,kk01,kk02,tol0,ntot):
      Output('haxc', 'children'),
      Output('hayc', 'children'),
      Output('hazc', 'children'),
+     Output('statc', 'children'),
      ],
     [Input(component_id='fieldx', component_property='value'),
      Input(component_id='fieldy', component_property='value'),
@@ -1084,7 +1095,8 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
     
     crys = 'cub'
     
-    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    
+    ax,ay,az,stat0=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0)
 
@@ -1162,7 +1174,7 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
     fig.update_yaxes(automargin=True)
     fig.update_xaxes(automargin=True)
 
-    return fig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+    return fig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
 
 ######################################## Cub 2D
 
@@ -1193,7 +1205,7 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
     
     crys = 'cub'
     
-    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
         
     
     vxy = np.mgrid[0:2*np.pi:200j]
@@ -1513,6 +1525,7 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
      Output('haxh', 'children'),
      Output('hayh', 'children'),
      Output('hazh', 'children'),
+     Output('stath', 'children'),
      ],
     [Input(component_id='hfieldx', component_property='value'),
      Input(component_id='hfieldy', component_property='value'),
@@ -1543,7 +1556,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
 
@@ -1624,7 +1637,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
     hfig.update_yaxes(automargin=True)
     hfig.update_xaxes(automargin=True)
 
-    return hfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+    return hfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
     
 
 ######################################## Hex 2D - clark
@@ -1659,7 +1672,7 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,al
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
 
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
@@ -1803,6 +1816,7 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
      Output('haxhm', 'children'),
      Output('hayhm', 'children'),
      Output('hazhm', 'children'),
+     Output('stathm', 'children'),
      ],
     [Input(component_id='hfieldxm', component_property='value'),
      Input(component_id='hfieldym', component_property='value'),
@@ -1833,7 +1847,7 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
 
@@ -1916,7 +1930,7 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
     hfigm.update_yaxes(automargin=True)
     hfigm.update_xaxes(automargin=True)
 
-    return hfigm,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+    return hfigm,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
     
 
 
@@ -1952,7 +1966,7 @@ def update_figh2dm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kkk1,kkk2,mmms,alp
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
 
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
@@ -2098,6 +2112,7 @@ def update_figmaehm(kkkk0,kkkk1,kkkk2):
      Output('haytr', 'children'),
      Output('haztr', 'children'),
      Output('torquetr', 'children'),
+     Output('stattr', 'children'),
      ],
     [Input(component_id='trfieldx', component_property='value'),
      Input(component_id='trfieldy', component_property='value'),
@@ -2130,7 +2145,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
 
@@ -2209,7 +2224,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
     trfig.update_yaxes(automargin=True)
     trfig.update_xaxes(automargin=True)
 
-    return trfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+    return trfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
 
 
 
@@ -2248,7 +2263,7 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
 
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
@@ -2393,6 +2408,7 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
      Output('haxte', 'children'),
      Output('hayte', 'children'),
      Output('hazte', 'children'),
+     Output('statte', 'children'),
      ],
     [Input(component_id='tefieldx', component_property='value'),
      Input(component_id='tefieldy', component_property='value'),
@@ -2424,7 +2440,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
 
@@ -2505,7 +2521,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
     tefig.update_yaxes(automargin=True)
     tefig.update_xaxes(automargin=True)
 
-    return tefig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+    return tefig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
 
 
 
@@ -2542,7 +2558,7 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,m
     
     crys = 'uni'
     
-    ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
 
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
@@ -2688,6 +2704,7 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
      Output('haxo', 'children'),
      Output('hayo', 'children'),
      Output('hazo', 'children'),
+     Output('stato', 'children'),
      ],
     [Input(component_id='ofieldx', component_property='value'),
      Input(component_id='ofieldy', component_property='value'),
@@ -2724,7 +2741,7 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     
     crys = 'ort'
     
-    ax,ay,az=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mms,hx,hy,hz,kk1,kk2,alph,tol00,dtt,ntt)
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0) 
 
@@ -2807,7 +2824,7 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     ofig.update_yaxes(automargin=True)
     ofig.update_xaxes(automargin=True)
 
-    return ofig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz
+    return ofig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
 
 
 
@@ -2850,7 +2867,7 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     
     crys = 'ort'
     
-    ax,ay,az=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
+    ax,ay,az,stat0=llg(crys,mmms,hx,hy,hz,kkk1,kkk2,alph,tol00,dtt,ntt)
 
     vxy = np.mgrid[0:2*np.pi:200j]
     bxxy = np.cos(vxy)
