@@ -2154,7 +2154,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
-    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-(1/3))*(bx**2+by**2)+lmba2*((az**2)-(1/3))*(bz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bx**2-by**2)+ax*ay*bx*by)+lmbg2*(ax*az*bx*bz+ay*az*by*bz)+lmb12*(0.5*ay*az*(bx**2-by**2)+ax*az*bx*by)+lmb21*(0.5*(ax**2-ay**2)*by*bz+ax*ay*bx*bz)
+    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-(1/3))*(bx**2+by**2)+lmba2*((az**2)-(1/3))*(bz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bx**2-by**2)+2.0*ax*ay*bx*by)+lmbg2*(ax*az*bx*bz+ay*az*by*bz)+lmb12*(0.5*ay*az*(bx**2-by**2)+ax*az*bx*by)+lmb21*(0.5*(ax**2-ay**2)*by*bz+ax*ay*bx*bz)
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
@@ -2269,7 +2269,7 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+ax*ay*bxxy*byxy)+lmbg2*(ax*az*bxxy*bzxy+ay*az*byxy*bzxy)+lmb12*(0.5*ay*az*(bxxy**2-byxy**2)+ax*az*bxxy*byxy)+lmb21*(0.5*(ax**2-ay**2)*byxy*bzxy+ax*ay*bxxy*bzxy)
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2.0*ax*ay*bxxy*byxy)+lmbg2*(ax*az*bxxy*bzxy+ay*az*byxy*bzxy)+lmb12*(0.5*ay*az*(bxxy**2-byxy**2)+ax*az*bxxy*byxy)+lmb21*(0.5*(ax**2-ay**2)*byxy*bzxy+ax*ay*bxxy*bzxy)
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
@@ -2278,7 +2278,7 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-(1/3))*(bxxz**2+byxz**2)+lmba2*((az**2)-(1/3))*(bzxz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+ax*ay*bxxz*byxz)+lmbg2*(ax*az*bxxz*bzxz+ay*az*byxz*bzxz)+lmb12*(0.5*ay*az*(bxxz**2-byxz**2)+ax*az*bxxz*byxz)+lmb21*(0.5*(ax**2-ay**2)*byxz*bzxz+ax*ay*bxxz*bzxz)
+    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-(1/3))*(bxxz**2+byxz**2)+lmba2*((az**2)-(1/3))*(bzxz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+2.0*ax*ay*bxxz*byxz)+lmbg2*(ax*az*bxxz*bzxz+ay*az*byxz*bzxz)+lmb12*(0.5*ay*az*(bxxz**2-byxz**2)+ax*az*bxxz*byxz)+lmb21*(0.5*(ax**2-ay**2)*byxz*bzxz+ax*ay*bxxz*bzxz)
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
@@ -2287,7 +2287,7 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+ax*ay*bxyz*byyz)+lmbg2*(ax*az*bxyz*bzyz+ay*az*byyz*bzyz)+lmb12*(0.5*ay*az*(bxyz**2-byyz**2)+ax*az*bxyz*byyz)+lmb21*(0.5*(ax**2-ay**2)*byyz*bzyz+ax*ay*bxyz*bzyz)
+    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+2.0*ax*ay*bxyz*byyz)+lmbg2*(ax*az*bxyz*bzyz+ay*az*byyz*bzyz)+lmb12*(0.5*ay*az*(bxyz**2-byyz**2)+ax*az*bxyz*byyz)+lmb21*(0.5*(ax**2-ay**2)*byyz*bzyz+ax*ay*bxyz*bzyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
