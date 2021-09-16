@@ -56,6 +56,8 @@ app.layout = html.Div(children=[
     dcc.Markdown('''[https://www.mdpi.com/1424-8220/20/22/6436/pdf](https://www.mdpi.com/1424-8220/20/22/6436/pdf)'''),
     html.H6(" [2] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, Comput. Phys. Commun. 264, 107964 (2021). "),
     dcc.Markdown('''[https://doi.org/10.1016/j.cpc.2021.107964](https://doi.org/10.1016/j.cpc.2021.107964)'''),
+    html.H6(" [3] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS 2.0: A new version of a computer program for the calculation of magneto-elastic properties, arXiv:2106.03624 (2021). "),
+    dcc.Markdown('''[https://arxiv.org/abs/2106.03624](https://arxiv.org/abs/2106.03624)'''),
     html.H3("Source files"),
     dcc.Markdown('''[https://github.com/pnieves2019/MAELASviewer](https://github.com/pnieves2019/MAELASviewer)'''),
     html.Hr(),
@@ -91,31 +93,31 @@ def update_output(effect):
             html.H4("Example"),
 
 
-            dcc.Markdown(''' Let's consdier that we have a single crystal FCC Ni with lattice vectors are **a**=(a0,0,0), **b**=(0,a0,0) and **c**=(0,0,a0), and its length along the measuring direction **β**=(1,0,0) in the demagnetized state is 1µm (lo,exp=1µm) at room temperature (T=300K). The magnetization is saturated along an applied magnetic field of 2 Tesla in the direction (0,0,1). How long is the length of the magnetized material in the measuring direction **β**=(1,0,0)?  '''),
+            dcc.Markdown(''' Let's consdier that we have a single crystal FCC Ni with lattice vectors are **a**=(a0,0,0), **b**=(0,a0,0) and **c**=(0,0,a0), and its length along the measuring direction **β**=(1,0,0) in the demagnetized state is 1µm (lo,exp=1µm) at room temperature (T=300K). The demagnetized state (reference state) has magnetic domains along all easy directions. The magnetization is saturated along an applied magnetic field of 2 Tesla in the direction (0,0,1). How long is the length of the magnetized material in the measuring direction **β**=(1,0,0)?  '''),
             dcc.Markdown('''**Solution** '''),
-            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we set the components of the external magnetic field μ0**H**=(0,0,2)T, and the corresponding values of the magnetostrictive coefficients, magnetocrystalline anisotropy constants and saturation mangetization at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024, K1=-0.005MJ/m^3, K2=-0.002MJ/m^3, μ0Ms=0.61T). In this example, we don't include the volume magnetostriction, so we set λα=0. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β**. Doing so, we get lsim=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances. The fractional change length is \u0394l/lo=0.000023 which is also provided by the interactive figures. In the 3D figure of the magnetocrystalline anisotropy energy  we can see the magnetic easy direction (111) and hard direction (100). '''),
+            dcc.Markdown(''' Firstly, we select the crystal system `Single crystal: Cubic I (space group numbers  207-230)` since FCC Ni is a cubic crystal with space group 225. Next, we select the reference demagnetized state with domains along all easy directions. We set the components of the external magnetic field μ0**H**=(0,0,2)T, and the corresponding values of the magnetostrictive coefficients, magnetocrystalline anisotropy constants and saturation mangetization at room temperature of FCC Ni (λ001=-0.000046, λ111=-0.000024, K1=-0.005MJ/m^3, K2=-0.002MJ/m^3, μ0Ms=0.61T). For the selected demagentized state, λα does not influence the fractional change in length, so we don't need to worry about it. In order to facilitate the visualization of magnetostriction we set the scale factor s=10000. Now, either in the 3D surface plot or in the 2D cross section plot in the plane XY (z=0) we can click on the measuring direction **β**=(1,0,0)  to read the value of the simulated length along **β**. Doing so, we get lsim=1.23. Finally, inserting lsim=1.23, s=10000 and lo,exp=1µm into Eq.(1), we obtain that the final length along **β**=(1,0,0) is equal to lexp=1.000023µm. In this case, we see that the magnetic field induced a very small length change in the scale of interatomic distances. The fractional change in length is \u0394l/lo=0.000023 which is also provided by the interactive figures. In the 3D figure of the magnetocrystalline anisotropy energy  we can see the magnetic easy direction (111) and hard direction (100). '''),
 
             html.Hr(),
             html.H3("Available systems"),
             html.H6("1. Single crystal: Cubic I (space group numbers  207-230)"),
-            html.H6("2. Polycrystal: Cubic I (space group numbers  207-230)"),
-            html.H6("3. Single crystal: Hexagonal I (space group numbers  177-194) - Clark definition"),
-            html.H6("4. Single crystal: Hexagonal I (space group numbers  177-194) - Mason definition"),
-            html.H6("5. Single crystal: Trigonal I (space group numbers  149-167)"),
-            html.H6("6. Single crystal: Tetragonal I (space group numbers  89-142)"),
-            html.H6("7. Single crystal: Orthorhombic (space group numbers  16-74)"),
+            html.H6("2. Single crystal: Hexagonal I (space group numbers  177-194) - Clark definition"),
+            html.H6("3. Single crystal: Hexagonal I (space group numbers  177-194) - Mason definition"),
+            html.H6("4. Single crystal: Trigonal I (space group numbers  149-167)"),
+            html.H6("5. Single crystal: Tetragonal I (space group numbers  89-142)"),
+            html.H6("6. Single crystal: Orthorhombic (space group numbers  16-74)"),
+            html.H6("7. Polycrystals"),
             html.Hr(),
             html.H3('Select a crystal system:'),
             dcc.Dropdown(
                 id='joule_system',
                 options=[
                     {'label': 'Single crystal: Cubic I (space group numbers  207-230)', 'value': 'cub'},
-                    {'label': 'Polycrystal: Cubic I (space group numbers  207-230)', 'value': 'cubpol'},
                     {'label': 'Single crystal: Hexagonal I (space group numbers  177-194) - Clark definition', 'value': 'hex'},
                     {'label': 'Single crystal: Hexagonal I (space group numbers  177-194) - Mason definition', 'value': 'hexm'},
                     {'label': 'Single crystal: Trigonal I (space group numbers  149-167)', 'value': 'trig'},
                     {'label': 'Single crystal: Tetragonal I (space group numbers  89-142)', 'value': 'tet'},
                     {'label': 'Single crystal: Orthorhombic (space group numbers  16-74)', 'value': 'ort'},
+                    {'label': 'Polycrystals', 'value': 'cubpol'},
                 ],
                 placeholder="Select a crystal system"
             ),
@@ -196,15 +198,27 @@ def update_output(system):
 
             html.H3("Single crystal: Cubic I (space group numbers  207-230)"),
             html.H4("Theory"),
-            html.H6("The relative length change for cubic (I) systems is given by:"),
+            html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
+            html.Div([html.Img(src=app.get_asset_url('demag_cub.png'))]),
+            
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
+            
+            
+            html.H6("The fractional change in length for cubic (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measured length direction, respectively."),
             html.H6("Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter (s) that can be modified by the user"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_s1.png'))]),
             html.H6("Note that this scale preserve the ratio between the magnetostrictive coefficients. Obviously, the case with s=1 corresponds to the real situation. The printed length lsim given at the surface of the distorted sphere is calculated as"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_s2.png'))]),
-            html.H6("where we took into account that lo=1. Similar procedure is applied to the other supported crystal systems."),
+            html.H6("where we took into account that lo=1. Similar procedure is applied to the other supported crystal systems and reference demagentized state."),
 
+            dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
+            html.H6("The fractional change in length for cubic (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_cub2.png'))]),
+            
+
+            dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
             html.H6("The magnetocrystalline anisotropy energy for cubic systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_cub.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -220,6 +234,17 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
+            
+            
+            dcc.Markdown(''' **Type of reference demagnetized state:**'''),
+            dcc.Dropdown(
+                id='demag_cub',
+                options=[
+                    {'label': 'Demagnetized state with randomly oriented atomic magnetic moments', 'value': 'demag_cub_1'},
+                    {'label': 'Demagnetized state with magnetic domains along all easy directions', 'value': 'demag_cub_2'},
+                ],
+                value='demag_cub_1'
+            ),
             dcc.Markdown(''' **External magnetic field:**'''),
             html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
               dcc.Input(id='fieldx', value=5.000, type='number', debounce=True, step=0.0000001)]),
@@ -303,11 +328,11 @@ def update_output(system):
 
         return html.Div(children=[
 
-            html.H3("Polycrystal: Cubic I (space group numbers  207-230)"),
+            html.H3("Polycrystals"),
             html.H4("Theory"),
-            html.H6("The theory of magnetostriction for polycrystalline materials is more complex. A widely used approximation is to assume that the stress distribution is uniform through the material. In this case the relative change in length may be put into the form:"),
+            html.H6("The theory of magnetostriction for polycrystalline materials is more complex. A widely used approximation is to assume that the stress distribution is uniform through the material. In this case the relative change in length may be put into the following general form for all crystal symmetries supported by MAELAS:"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly.png'))]),
-            html.H6("where"),
+            html.H6("where the relation between ξ and η with the magnetostrictive coefficients for single crystals can be found in the manuscript of version 2.0 of MAELAS. For example, in the case of cubic (I) crystal with a reference demagnetized state with domains along all easy directions we have"),    
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
             html.H6("The magnetization is considered to be saturated in the direction of the effective field Heff"),
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
@@ -325,8 +350,10 @@ def update_output(system):
             html.Div(['μ0H',html.Sub('eff,z'),"(T) = ",
               dcc.Input(id='pfieldz', value=0.0, type='number', debounce=True, step=0.1)]),
             html.H6("Magnetostrictive coefficients:"),
-            html.Div(['\u03BB',html.Sub("S")," = ",
-              dcc.Input(id='LS', value=0.0000001, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['\u03BE'," = ",
+              dcc.Input(id='xi', value=0.0000001, type='number', debounce=True, step=0.0000001)]),
+            html.Div(['\u03B7'," = ",
+              dcc.Input(id='eta', value=0.0000001, type='number', debounce=True, step=0.0000001)]),
             html.Div(["Scale factor = ",
               dcc.Input(id='pscale', value=1.0, type='number', debounce=True)]),
 
@@ -356,10 +383,25 @@ def update_output(system):
 
             html.H3(" Single crystal: Hexagonal I (space group numbers  177-194) - Clark definition"),
             html.H4("Theory"),
-            html.H6("In Clark definition, the relative length change for hexagonal (I) systems is given by:"),
+            html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
+            html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
+            
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
+            
+            
+            html.H6("In Clark definition, the fractional change in length for hexagonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hex.png'))]),
-            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
+            html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively."),
 
+            
+            dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
+            html.H6("The fractional change in length for hexagonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_hex2.png'))]),
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
+            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),
+
+
+            dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
             html.H6("The magnetocrystalline anisotropy energy for hexagonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -375,6 +417,16 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
+            
+            dcc.Markdown(''' **Type of reference demagnetized state:**'''),
+            dcc.Dropdown(
+                id='demag_hex',
+                options=[
+                    {'label': 'Demagnetized state with randomly oriented atomic magnetic moments', 'value': 'demag_hex_1'},
+                    {'label': 'Demagnetized state with magnetic domains along all easy directions', 'value': 'demag_hex_2'},
+                ],
+                value='demag_hex_1'
+            ),
             dcc.Markdown(''' **External magnetic field:**'''),
             html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
               dcc.Input(id='hfieldx', value=5.000, type='number', debounce=True, step=0.0000001)]),
@@ -430,6 +482,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzh'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzh'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazh')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torqueh')]),
                 html.Tr([html.Td(['Status']), html.Td(id='stath')]),
+                html.Tr([html.Td(['Detected type of magnetocrystalline anisotropy']), html.Td(id='typeanihex')]),
 
             ]),
             html.Hr(),
@@ -466,11 +519,25 @@ def update_output(system):
 
             html.H3(" Single crystal: Hexagonal I (space group numbers  177-194) - Mason definition"),
             html.H4("Theory"),
-            html.H6("In Mason definition, the relative length change for hexagonal (I) systems is given by:"),
+            html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
+            html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
+            
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
+            
+            
+            html.H6("In Mason definition, the fractional change in length for hexagonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hexm.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
             html.H6("These magnetostrictive coefficients are related to those defined by Clark through the following equations:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hexm_conv.png'))]),
+            
+            dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
+            html.H6("The fractional change in length for hexagonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_hexm2.png'))]),
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
+            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),     
+            
+            dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
             html.H6("The magnetocrystalline anisotropy energy for hexagonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -486,6 +553,16 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
+            
+            dcc.Markdown(''' **Type of reference demagnetized state:**'''),
+            dcc.Dropdown(
+                id='demag_hexm',
+                options=[
+                    {'label': 'Demagnetized state with randomly oriented atomic magnetic moments', 'value': 'demag_hexm_1'},
+                    {'label': 'Demagnetized state with magnetic domains along all easy directions', 'value': 'demag_hexm_2'},
+                ],
+                value='demag_hexm_1'
+            ),
             dcc.Markdown(''' **External magnetic field:**'''),
             html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
               dcc.Input(id='hfieldxm', value=5.000, type='number', debounce=True, step=0.0000001)]),
@@ -541,6 +618,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzhm'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzhm'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazhm')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquehm')]),
                 html.Tr([html.Td(['Status']), html.Td(id='stathm')]),
+                html.Tr([html.Td(['Detected type of magnetocrystalline anisotropy']), html.Td(id='typeanihexm')]),
 
             ]),
             html.Hr(),
@@ -575,10 +653,28 @@ def update_output(system):
 
             html.H3("Single crystal: Trigonal I (space group numbers  149-167)"),
             html.H4("Theory"),
-            html.H6("The relative length change for trigonal (I) systems is given by:"),
+            html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
+            html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
+            
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
+            
+            
+            html.H6("The fractional change in length for trigonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
+   
+        
             html.Div([html.Img(src=app.get_asset_url('eq_trig.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
+            
+            dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
+            html.H6("The fractional change in length for trigonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_trig2.png'))]),
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
+            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),     
+            
+            dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
+            
+            
             html.H6("The magnetocrystalline anisotropy energy for trigonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -594,7 +690,15 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-
+            dcc.Markdown(''' **Type of reference demagnetized state:**'''),
+            dcc.Dropdown(
+                id='demag_tri',
+                options=[
+                    {'label': 'Demagnetized state with randomly oriented atomic magnetic moments', 'value': 'demag_tri_1'},
+                    {'label': 'Demagnetized state with magnetic domains along all easy directions', 'value': 'demag_tri_2'},
+                ],
+                value='demag_tri_1'
+            ),
             dcc.Markdown(''' **External magnetic field:**'''),
             html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
               dcc.Input(id='trfieldx', value=5.000, type='number', debounce=True, step=0.0000001)]),
@@ -653,6 +757,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqztr'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefztr'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='haztr')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquetr')]),
                 html.Tr([html.Td(['Status']), html.Td(id='stattr')]),
+                html.Tr([html.Td(['Detected type of magnetocrystalline anisotropy']), html.Td(id='typeanitri')]),
             ]),
             html.Hr(),
             dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
@@ -676,10 +781,25 @@ def update_output(system):
 
             html.H3("Single crystal: Tetragonal I (space group numbers  89-142)"),
             html.H4("Theory"),
-            html.H6("The relative length change for tetragoanl (I) systems is given by:"),
+            html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
+            html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
+            
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),   
+            
+            html.H6("The fractional change in length for tetragonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
+   
             html.Div([html.Img(src=app.get_asset_url('eq_tet.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
+            dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
+            html.H6("The fractional change in length for tetragonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_tet2.png'))]),
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
+            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),     
+            
+            dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
+            
+            
             html.H6("The magnetocrystalline anisotropy energy for tetragonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -696,6 +816,15 @@ def update_output(system):
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
 
+            dcc.Markdown(''' **Type of reference demagnetized state:**'''),
+            dcc.Dropdown(
+                id='demag_tet',
+                options=[
+                    {'label': 'Demagnetized state with randomly oriented atomic magnetic moments', 'value': 'demag_tet_1'},
+                    {'label': 'Demagnetized state with magnetic domains along all easy directions', 'value': 'demag_tet_2'},
+                ],
+                value='demag_tet_1'
+            ),
             dcc.Markdown(''' **External magnetic field:**'''),
             html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
               dcc.Input(id='tefieldx', value=5.000, type='number', debounce=True, step=0.0000001)]),
@@ -752,6 +881,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzte'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzte'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazte')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torquete')]),
                 html.Tr([html.Td(['Status']), html.Td(id='statte')]),
+                html.Tr([html.Td(['Detected type of magnetocrystalline anisotropy']), html.Td(id='typeanitet')]),
             ]),
             html.Hr(),
             dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
@@ -774,10 +904,30 @@ def update_output(system):
 
             html.H3("Single crystal: Orthorhombic (space group numbers  16-74)"),
             html.H4("Theory"),
-            html.H6("This interactive applet shows the magnetostriction due to Joule effect for some crystal systems."),
+            
+            html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
+            html.Div([html.Img(src=app.get_asset_url('demag_ort.png'))]),
+            
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),   
+            
+            html.H6("The fractional change in length for orthorhombic systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
+   
+            
+            
+            
             html.Div([html.Img(src=app.get_asset_url('eq_ort.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
+            dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
+            html.H6("The fractional change in length for orthorhombic systems using a reference demagnetized state with magnetic domains along all easy axis directions is:"),
+            html.Div([html.Img(src=app.get_asset_url('eq_ort2.png'))]),
+            html.H6("MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and computes the corresponding form of the fractional change of length. The case with easy plane is not supported for a reference demagnetized state with magnetic domains along all easy directions. "), 
+            html.Div([html.Img(src=app.get_asset_url('typeaniort.png'))]),     
+            
+            dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
+            
+            
+            
             html.H6("The magnetocrystalline anisotropy energy for orthorhombic systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_ort.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -792,7 +942,15 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-
+            dcc.Markdown(''' **Type of reference demagnetized state:**'''),
+            dcc.Dropdown(
+                id='demag_ort',
+                options=[
+                    {'label': 'Demagnetized state with randomly oriented atomic magnetic moments', 'value': 'demag_ort_1'},
+                    {'label': 'Demagnetized state with magnetic domains along all easy directions', 'value': 'demag_ort_2'},
+                ],
+                value='demag_ort_1'
+            ),
             dcc.Markdown(''' **External magnetic field:**'''),
             html.Div(['μ0H',html.Sub('x'),'(Tesla)'" = ",
               dcc.Input(id='ofieldx', value=5.000, type='number', debounce=True, step=0.0000001)]),
@@ -858,6 +1016,7 @@ def update_output(system):
                 html.Tr([html.Td(['α', html.Sub('z')]), html.Td(id='meqzo'),html.Td(['μ0H', html.Sub('eff,z'),'(T)']), html.Td(id='hefzo'),html.Td(['μ0H', html.Sub('a,z'),'(T)']), html.Td(id='hazo')]),
                 html.Tr([html.Td(['Torque |α x μ0Heff| (T)']), html.Td(id='torqueo')]),
                 html.Tr([html.Td(['Status']), html.Td(id='stato')]),
+                html.Tr([html.Td(['Detected type of magnetocrystalline anisotropy']), html.Td(id='typeaniort')]),
             ]),
             html.Hr(),
             dcc.Markdown(''' **Generated figures to visualize magnetostriction:** '''),
@@ -1084,12 +1243,13 @@ def mc(crystal0,mms0,effx,effy,effz,kk01,kk02,tol0,ntot):
      Input(component_id='tol', component_property='value'),
      Input(component_id='dt', component_property='value'),
      Input(component_id='nt', component_property='value'),
+     Input(component_id='demag_cub', component_property='value'),
 
     ]
 )
 
 
-def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
 
     d=1.0
 
@@ -1100,6 +1260,10 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0)
 
+    
+    if demag == 'demag_cub_2':
+        lmb0=0.0
+    
     u, v = np.mgrid[0:np.pi:100j, 0:2.0*np.pi:100j]
 
     bx = np.sin(u)*np.cos(v)
@@ -1194,13 +1358,17 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
      Input(component_id='tol', component_property='value'),
      Input(component_id='dt', component_property='value'),
      Input(component_id='nt', component_property='value'),
+     Input(component_id='demag_cub', component_property='value'),
 
     ]
 )
 
 
-def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
 
+    if demag == 'demag_cub_2':
+        lmb0=0.0
+    
     d=1.0
 
     crys = 'cub'
@@ -1355,14 +1523,15 @@ def update_figmaec(kk0,kk1,kk2):
     [Input(component_id='pfieldx', component_property='value'),
      Input(component_id='pfieldy', component_property='value'),
      Input(component_id='pfieldz', component_property='value'),
-     Input(component_id='LS', component_property='value'),
+     Input(component_id='xi', component_property='value'),
+     Input(component_id='eta', component_property='value'),
      Input(component_id='pscale', component_property='value'),
     ]
 )
 
 
 
-def update_figure(hx,hy,hz,lmbs,s):
+def update_figure(hx,hy,hz,xxi,eeta,s):
 
 
 
@@ -1376,7 +1545,7 @@ def update_figure(hx,hy,hz,lmbs,s):
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
-    f = lmbs*1.5*((ax*bx+ay*by+az*bz)**2-(1/3))
+    f = xxi+eeta*(ax*bx+ay*by+az*bz)**2.0
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
@@ -1422,12 +1591,13 @@ def update_figure(hx,hy,hz,lmbs,s):
     [Input(component_id='pfieldx', component_property='value'),
      Input(component_id='pfieldy', component_property='value'),
      Input(component_id='pfieldz', component_property='value'),
-     Input(component_id='LS', component_property='value'),
+     Input(component_id='xi', component_property='value'),
+     Input(component_id='eta', component_property='value'),
      Input(component_id='pscale', component_property='value'),
     ]
 )
 
-def update_figcp2d(hx,hy,hz,lmbs,s):
+def update_figcp2d(hx,hy,hz,xxi,eeta,s):
 
     d=1.0
     h=np.sqrt(hx*hx+hy*hy+hz*hz)
@@ -1438,7 +1608,7 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmbs*1.5*((ax*bxxy+ay*byxy+az*bzxy)**2-(1/3))
+    fxy = xxi+eeta*(ax*bxxy+ay*byxy+az*bzxy)**2.0
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
@@ -1447,7 +1617,7 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmbs*1.5*((ax*bxxz+ay*byxz+az*bzxz)**2-(1/3))
+    fxz = xxi+eeta*(ax*bxxz+ay*byxz+az*bzxz)**2.0
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
@@ -1456,7 +1626,7 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmbs*1.5*((ax*bxyz+ay*byyz+az*bzyz)**2-(1/3))
+    fyz = xxi+eeta*(ax*bxyz+ay*byyz+az*bzyz)**2.0
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
@@ -1526,6 +1696,7 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
      Output('hayh', 'children'),
      Output('hazh', 'children'),
      Output('stath', 'children'),
+     Output('typeanihex', 'children'),
      ],
     [Input(component_id='hfieldx', component_property='value'),
      Input(component_id='hfieldy', component_property='value'),
@@ -1544,14 +1715,41 @@ def update_figcp2d(hx,hy,hz,lmbs,s):
      Input(component_id='tolh', component_property='value'),
      Input(component_id='dth', component_property='value'),
      Input(component_id='nth', component_property='value'),
-
+     Input(component_id='demag_hex', component_property='value'),
     ]
 )
 
 
 
-def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
 
+    c=1.0/3.0
+    typeani="Easy plane"
+    
+    if demag == 'demag_hex_1':
+        c=1.0/3.0
+        if kk1>0 and kk2>-kk1:
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            typeani="Easy plane"
+        else:
+            typeani="Easy cone"
+    
+    if demag == 'demag_hex_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kk1>0 and kk2>-kk1:
+            c=1.0
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            c=0.0
+            typeani="Easy plane"
+        else:
+            coneang=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
+            c=np.cos(coneang)**2.0
+            typeani="Easy cone"
+    
     d=1.0
 
     crys = 'uni'
@@ -1566,7 +1764,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
-    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-(1/3))*(bx**2+by**2)+lmba2*((az**2)-(1/3))*(bz**2)+lmbg*(0.5*(ax**2-ay**2)*(bx**2-by**2)+2*ax*ay*bx*by)+2*lmbe*(ax*az*bx*bz+az*ay*bz*by)
+    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-c)*(bx**2+by**2)+lmba2*((az**2)-c)*(bz**2)+lmbg*(0.5*(ax**2-ay**2)*(bx**2-by**2)+2*ax*ay*bx*by)+2*lmbe*(ax*az*bx*bz+az*ay*bz*by)
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
@@ -1637,7 +1835,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
     hfig.update_yaxes(automargin=True)
     hfig.update_xaxes(automargin=True)
 
-    return hfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
+    return hfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0,typeani
 
 
 ######################################## Hex 2D - clark
@@ -1662,12 +1860,34 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
      Input(component_id='tolh', component_property='value'),
      Input(component_id='dth', component_property='value'),
      Input(component_id='nth', component_property='value'),
+     Input(component_id='demag_hex', component_property='value'),
     ]
 )
 
 
-def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt):
+def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
+    c=1.0/3.0
+    
+    
+    if demag == 'demag_hex_1':
+        c=1.0/3.0
+        
+    
+    if demag == 'demag_hex_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kkk1>0 and kkk2>-kkk1:
+            c=1.0         
+        elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
+            c=0.0        
+        else:
+            coneang=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
+            c=np.cos(coneang)**2.0
+            
+    
+    
     d=1.0
 
     crys = 'uni'
@@ -1678,7 +1898,7 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,al
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2*ax*ay*bxxy*byxy)+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-c)*(bxxy**2+byxy**2)+lmba2*((az**2)-c)*(bzxy**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2*ax*ay*bxxy*byxy)+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
@@ -1687,7 +1907,7 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,al
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-(1/3))*(bxxz**2+byxz**2)+lmba2*((az**2)-(1/3))*(bzxz**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+2*ax*ay*bxxz*byxz)+2*lmbe*(ax*az*bxxz*bzxz+az*ay*bzxz*byxz)
+    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-c)*(bxxz**2+byxz**2)+lmba2*((az**2)-c)*(bzxz**2)+lmbg*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+2*ax*ay*bxxz*byxz)+2*lmbe*(ax*az*bxxz*bzxz+az*ay*bzxz*byxz)
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
@@ -1696,7 +1916,7 @@ def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,al
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+2*ax*ay*bxyz*byyz)+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
+    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-c)*(bxyz**2+byyz**2)+lmba2*((az**2)-c)*(bzyz**2)+lmbg*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+2*ax*ay*bxyz*byyz)+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
@@ -1817,6 +2037,7 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
      Output('hayhm', 'children'),
      Output('hazhm', 'children'),
      Output('stathm', 'children'),
+     Output('typeanihexm', 'children'),
      ],
     [Input(component_id='hfieldxm', component_property='value'),
      Input(component_id='hfieldym', component_property='value'),
@@ -1835,14 +2056,41 @@ def update_figmaeh(kkkk0,kkkk1,kkkk2):
      Input(component_id='tolhm', component_property='value'),
      Input(component_id='dthm', component_property='value'),
      Input(component_id='nthm', component_property='value'),
-
+     Input(component_id='demag_hexm', component_property='value'),
     ]
 )
 
 
 
-def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
 
+    c=0.0
+    typeani="Easy axis"
+    
+    if demag == 'demag_hexm_1':
+        c=0.0
+        if kk1>0 and kk2>-kk1:
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            typeani="Easy plane"
+        else:
+            typeani="Easy cone"
+    
+    if demag == 'demag_hexm_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kk1>0 and kk2>-kk1:
+            c=0.0
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            c=np.pi/2.0
+            typeani="Easy plane"
+        else:
+            c=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
+            typeani="Easy cone"
+    
+    
     d=1.0
 
     crys = 'uni'
@@ -1858,7 +2106,7 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
 
-    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba*((ax*bx+ay*by)**2-(ax*bx+ay*by)*az*bz)+lmbb*((1.0-az**2)*(1.0-bz**2)-(ax*bx+ay*by)**2)+lmbc*((1.0-az**2)*bz**2-(ax*bx+ay*by)*az*bz)+4.0*lmbd*(ax*bx+ay*by)*az*bz
+    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba*((ax*bx+ay*by)**2-(ax*bx+ay*by)*az*bz-0.5*(bx**2+by**2)*np.sin(c)**2.0)+lmbb*((np.cos(c)**2.0-az**2)*(1.0-bz**2)-(ax*bx+ay*by)**2+0.5*(bx**2+by**2)*np.sin(c)**2.0)+lmbc*((np.cos(c)**2.0-az**2)*bz**2-(ax*bx+ay*by)*az*bz)+4.0*lmbd*(ax*bx+ay*by)*az*bz
 
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
@@ -1930,7 +2178,7 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
     hfigm.update_yaxes(automargin=True)
     hfigm.update_xaxes(automargin=True)
 
-    return hfigm,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
+    return hfigm,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0,typeani
 
 
 
@@ -1956,12 +2204,33 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
      Input(component_id='tolhm', component_property='value'),
      Input(component_id='dthm', component_property='value'),
      Input(component_id='nthm', component_property='value'),
+     Input(component_id='demag_hexm', component_property='value'),
     ]
 )
 
 
-def update_figh2dm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt):
+def update_figh2dm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
+    
+    c=0.0
+    
+    
+    if demag == 'demag_hexm_1':
+        c=0.0
+        
+    
+    if demag == 'demag_hexm_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kkk1>0 and kkk2>-kkk1:
+            c=0.0          
+        elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
+            c=np.pi/2.0         
+        else:
+            c=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
+    
+    
     d=1.0
 
     crys = 'uni'
@@ -1972,7 +2241,7 @@ def update_figh2dm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kkk1,kkk2,mmms,alp
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba*((ax*bxxy+ay*byxy)**2-(ax*bxxy+ay*byxy)*az*bzxy)+lmbb*((1.0-az**2)*(1.0-bzxy**2)-(ax*bxxy+ay*byxy)**2)+lmbc*((1.0-az**2)*bzxy**2-(ax*bxxy+ay*byxy)*az*bzxy)+4.0*lmbd*(ax*bxxy+ay*byxy)*az*bzxy
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba*((ax*bxxy+ay*byxy)**2-(ax*bxxy+ay*byxy)*az*bzxy-0.5*(bxxy**2+byxy**2)*np.sin(c)**2.0)+lmbb*((np.cos(c)**2.0-az**2)*(1.0-bzxy**2)-(ax*bxxy+ay*byxy)**2+0.5*(bxxy**2+byxy**2)*np.sin(c)**2.0)+lmbc*((np.cos(c)**2.0-az**2)*bzxy**2-(ax*bxxy+ay*byxy)*az*bzxy)+4.0*lmbd*(ax*bxxy+ay*byxy)*az*bzxy
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
@@ -1981,7 +2250,7 @@ def update_figh2dm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kkk1,kkk2,mmms,alp
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba*((ax*bxxz+ay*byxz)**2-(ax*bxxz+ay*byxz)*az*bzxz)+lmbb*((1.0-az**2)*(1.0-bzxz**2)-(ax*bxxz+ay*byxz)**2)+lmbc*((1.0-az**2)*bzxz**2-(ax*bxxz+ay*byxz)*az*bzxz)+4.0*lmbd*(ax*bxxz+ay*byxz)*az*bzxz
+    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba*((ax*bxxz+ay*byxz)**2-(ax*bxxz+ay*byxz)*az*bzxz-0.5*(bxxz**2+byxz**2)*np.sin(c)**2.0)+lmbb*((np.cos(c)**2.0-az**2)*(1.0-bzxz**2)-(ax*bxxz+ay*byxz)**2+0.5*(bxxz**2+byxz**2)*np.sin(c)**2.0)+lmbc*((np.cos(c)**2.0-az**2)*bzxz**2-(ax*bxxz+ay*byxz)*az*bzxz)+4.0*lmbd*(ax*bxxz+ay*byxz)*az*bzxz
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
@@ -1990,7 +2259,7 @@ def update_figh2dm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kkk1,kkk2,mmms,alp
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba*((ax*bxyz+ay*byyz)**2-(ax*bxyz+ay*byyz)*az*bzyz)+lmbb*((1.0-az**2)*(1.0-bzyz**2)-(ax*bxyz+ay*byyz)**2)+lmbc*((1.0-az**2)*bzyz**2-(ax*bxyz+ay*byyz)*az*bzyz)+4.0*lmbd*(ax*bxyz+ay*byyz)*az*bzyz
+    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba*((ax*bxyz+ay*byyz)**2-(ax*bxyz+ay*byyz)*az*bzyz-0.5*(bxyz**2+byyz**2)*np.sin(c)**2.0)+lmbb*((np.cos(c)**2.0-az**2)*(1.0-bzyz**2)-(ax*bxyz+ay*byyz)**2+0.5*(bxyz**2+byyz**2)*np.sin(c)**2.)+lmbc*((np.cos(c)**2.0-az**2)*bzyz**2-(ax*bxyz+ay*byyz)*az*bzyz)+4.0*lmbd*(ax*bxyz+ay*byyz)*az*bzyz
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
@@ -2113,6 +2382,7 @@ def update_figmaehm(kkkk0,kkkk1,kkkk2):
      Output('haztr', 'children'),
      Output('torquetr', 'children'),
      Output('stattr', 'children'),
+     Output('typeanitri', 'children'),
      ],
     [Input(component_id='trfieldx', component_property='value'),
      Input(component_id='trfieldy', component_property='value'),
@@ -2133,14 +2403,41 @@ def update_figmaehm(kkkk0,kkkk1,kkkk2):
      Input(component_id='toltr', component_property='value'),
      Input(component_id='dttr', component_property='value'),
      Input(component_id='nttr', component_property='value'),
-
+     Input(component_id='demag_tri', component_property='value'),
     ]
 )
 
 
 
-def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
 
+    c=1.0/3.0
+    typeani="Easy plane"
+    
+    if demag == 'demag_tri_1':
+        c=1.0/3.0
+        if kk1>0 and kk2>-kk1:
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            typeani="Easy plane"
+        else:
+            typeani="Easy cone"
+    
+    if demag == 'demag_tri_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kk1>0 and kk2>-kk1:
+            c=1.0
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            c=0.0
+            typeani="Easy plane"
+        else:
+            coneang=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
+            c=np.cos(coneang)**2.0
+            typeani="Easy cone"
+    
     d=1.0
 
     crys = 'uni'
@@ -2154,7 +2451,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
-    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-(1/3))*(bx**2+by**2)+lmba2*((az**2)-(1/3))*(bz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bx**2-by**2)+2.0*ax*ay*bx*by)+lmbg2*(ax*az*bx*bz+ay*az*by*bz)+lmb12*(0.5*ay*az*(bx**2-by**2)+ax*az*bx*by)+lmb21*(0.5*(ax**2-ay**2)*by*bz+ax*ay*bx*bz)
+    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-c)*(bx**2+by**2)+lmba2*((az**2)-c)*(bz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bx**2-by**2)+2.0*ax*ay*bx*by)+lmbg2*(ax*az*bx*bz+ay*az*by*bz)+lmb12*(0.5*ay*az*(bx**2-by**2)+ax*az*bx*by)+lmb21*(0.5*(ax**2-ay**2)*by*bz+ax*ay*bx*bz)
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
@@ -2224,7 +2521,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
     trfig.update_yaxes(automargin=True)
     trfig.update_xaxes(automargin=True)
 
-    return trfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
+    return trfig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0,typeani
 
 
 
@@ -2253,12 +2550,33 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
      Input(component_id='toltr', component_property='value'),
      Input(component_id='dttr', component_property='value'),
      Input(component_id='nttr', component_property='value'),
+     Input(component_id='demag_tri', component_property='value'),
     ]
 )
 
 
-def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt):
+def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
+    c=1.0/3.0
+    
+    
+    if demag == 'demag_hex_1':
+        c=1.0/3.0
+        
+    
+    if demag == 'demag_hex_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kkk1>0 and kkk2>-kkk1:
+            c=1.0         
+        elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
+            c=0.0        
+        else:
+            coneang=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
+            c=np.cos(coneang)**2.0
+    
+    
     d=1.0
 
     crys = 'uni'
@@ -2269,7 +2587,7 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2.0*ax*ay*bxxy*byxy)+lmbg2*(ax*az*bxxy*bzxy+ay*az*byxy*bzxy)+lmb12*(0.5*ay*az*(bxxy**2-byxy**2)+ax*az*bxxy*byxy)+lmb21*(0.5*(ax**2-ay**2)*byxy*bzxy+ax*ay*bxxy*bzxy)
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-c)*(bxxy**2+byxy**2)+lmba2*((az**2)-c)*(bzxy**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+2.0*ax*ay*bxxy*byxy)+lmbg2*(ax*az*bxxy*bzxy+ay*az*byxy*bzxy)+lmb12*(0.5*ay*az*(bxxy**2-byxy**2)+ax*az*bxxy*byxy)+lmb21*(0.5*(ax**2-ay**2)*byxy*bzxy+ax*ay*bxxy*bzxy)
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
@@ -2278,7 +2596,7 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-(1/3))*(bxxz**2+byxz**2)+lmba2*((az**2)-(1/3))*(bzxz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+2.0*ax*ay*bxxz*byxz)+lmbg2*(ax*az*bxxz*bzxz+ay*az*byxz*bzxz)+lmb12*(0.5*ay*az*(bxxz**2-byxz**2)+ax*az*bxxz*byxz)+lmb21*(0.5*(ax**2-ay**2)*byxz*bzxz+ax*ay*bxxz*bzxz)
+    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-c)*(bxxz**2+byxz**2)+lmba2*((az**2)-c)*(bzxz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+2.0*ax*ay*bxxz*byxz)+lmbg2*(ax*az*bxxz*bzxz+ay*az*byxz*bzxz)+lmb12*(0.5*ay*az*(bxxz**2-byxz**2)+ax*az*bxxz*byxz)+lmb21*(0.5*(ax**2-ay**2)*byxz*bzxz+ax*ay*bxxz*bzxz)
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
@@ -2287,7 +2605,7 @@ def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+2.0*ax*ay*bxyz*byyz)+lmbg2*(ax*az*bxyz*bzyz+ay*az*byyz*bzyz)+lmb12*(0.5*ay*az*(bxyz**2-byyz**2)+ax*az*bxyz*byyz)+lmb21*(0.5*(ax**2-ay**2)*byyz*bzyz+ax*ay*bxyz*bzyz)
+    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-c)*(bxyz**2+byyz**2)+lmba2*((az**2)-c)*(bzyz**2)+lmbg1*(0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+2.0*ax*ay*bxyz*byyz)+lmbg2*(ax*az*bxyz*bzyz+ay*az*byyz*bzyz)+lmb12*(0.5*ay*az*(bxyz**2-byyz**2)+ax*az*bxyz*byyz)+lmb21*(0.5*(ax**2-ay**2)*byyz*bzyz+ax*ay*bxyz*bzyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
@@ -2409,6 +2727,7 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
      Output('hayte', 'children'),
      Output('hazte', 'children'),
      Output('statte', 'children'),
+     Output('typeanitet', 'children'),
      ],
     [Input(component_id='tefieldx', component_property='value'),
      Input(component_id='tefieldy', component_property='value'),
@@ -2428,14 +2747,43 @@ def update_figmaetr(kkkk0,kkkk1,kkkk2):
      Input(component_id='tolte', component_property='value'),
      Input(component_id='dtte', component_property='value'),
      Input(component_id='ntte', component_property='value'),
+     Input(component_id='demag_tet', component_property='value'),
 
     ]
 )
 
 
 
-def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
 
+    c=1.0/3.0
+    typeani="Easy plane"
+    
+    if demag == 'demag_tet_1':
+        c=1.0/3.0
+        if kk1>0 and kk2>-kk1:
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            typeani="Easy plane"
+        else:
+            typeani="Easy cone"
+    
+    if demag == 'demag_tet_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kk1>0 and kk2>-kk1:
+            c=1.0
+            typeani="Easy axis"
+        elif (kk1>0 and kk2<=-kk1) or (kk1<0 and kk2<=-kk1/2.0):
+            c=0.0
+            typeani="Easy plane"
+        else:
+            coneang=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
+            c=np.cos(coneang)**2.0
+            typeani="Easy cone"
+    
+    
     d=1.0
 
     crys = 'uni'
@@ -2450,7 +2798,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
-    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-(1/3))*(bx**2+by**2)+lmba2*((az**2)-(1/3))*(bz**2)+lmbg*0.5*(ax**2-ay**2)*(bx**2-by**2)+lmbd*2*ax*ay*bx*by+2*lmbe*(ax*az*bx*bz+az*ay*bz*by)
+    f = lmb01*(bx**2+by**2)+lmb02*(bz**2)+lmba1*((az**2)-c)*(bx**2+by**2)+lmba2*((az**2)-c)*(bz**2)+lmbg*0.5*(ax**2-ay**2)*(bx**2-by**2)+lmbd*2*ax*ay*bx*by+2*lmbe*(ax*az*bx*bz+az*ay*bz*by)
     x = d*(1.0+s*f)*bx
     y = d*(1.0+s*f)*by
     z = d*(1.0+s*f)*bz
@@ -2521,7 +2869,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
     tefig.update_yaxes(automargin=True)
     tefig.update_xaxes(automargin=True)
 
-    return tefig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
+    return tefig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0,typeani
 
 
 
@@ -2548,12 +2896,32 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
      Input(component_id='tolte', component_property='value'),
      Input(component_id='dtte', component_property='value'),
      Input(component_id='ntte', component_property='value'),
+     Input(component_id='demag_tet', component_property='value'),
     ]
 )
 
 
-def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt):
+def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
+    c=1.0/3.0
+    
+    
+    if demag == 'demag_tet_1':
+        c=1.0/3.0
+        
+    
+    if demag == 'demag_tet_2':
+        lmb01=0.0
+        lmb02=0.0
+        
+        if kkk1>0 and kkk2>-kkk1:
+            c=1.0         
+        elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
+            c=0.0        
+        else:
+            coneang=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
+            c=np.cos(coneang)**2.0
+    
     d=1.0
 
     crys = 'uni'
@@ -2564,7 +2932,7 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,m
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-(1/3))*(bxxy**2+byxy**2)+lmba2*((az**2)-(1/3))*(bzxy**2)+lmbg*0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+lmbd*2*ax*ay*bxxy*byxy+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
+    fxy = lmb01*(bxxy**2+byxy**2)+lmb02*(bzxy**2)+lmba1*((az**2)-c)*(bxxy**2+byxy**2)+lmba2*((az**2)-c)*(bzxy**2)+lmbg*0.5*(ax**2-ay**2)*(bxxy**2-byxy**2)+lmbd*2*ax*ay*bxxy*byxy+2*lmbe*(ax*az*bxxy*bzxy+az*ay*bzxy*byxy)
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
@@ -2573,7 +2941,7 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,m
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-(1/3))*(bxxz**2+byxz**2)+lmba2*((az**2)-(1/3))*(bzxz**2)+lmbg*0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+lmbd*2*ax*ay*bxxz*byxz+2*lmbe*(ax*az*bxxz*bzxz+az*ay*bzxz*byxz)
+    fxz = lmb01*(bxxz**2+byxz**2)+lmb02*(bzxz**2)+lmba1*((az**2)-c)*(bxxz**2+byxz**2)+lmba2*((az**2)-c)*(bzxz**2)+lmbg*0.5*(ax**2-ay**2)*(bxxz**2-byxz**2)+lmbd*2*ax*ay*bxxz*byxz+2*lmbe*(ax*az*bxxz*bzxz+az*ay*bzxz*byxz)
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
@@ -2582,7 +2950,7 @@ def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,m
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-(1/3))*(bxyz**2+byyz**2)+lmba2*((az**2)-(1/3))*(bzyz**2)+lmbg*0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+lmbd*2*ax*ay*bxyz*byyz+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
+    fyz = lmb01*(bxyz**2+byyz**2)+lmb02*(bzyz**2)+lmba1*((az**2)-c)*(bxyz**2+byyz**2)+lmba2*((az**2)-c)*(bzyz**2)+lmbg*0.5*(ax**2-ay**2)*(bxyz**2-byyz**2)+lmbd*2*ax*ay*bxyz*byyz+2*lmbe*(ax*az*bxyz*bzyz+az*ay*bzyz*byyz)
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz
@@ -2705,6 +3073,7 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
      Output('hayo', 'children'),
      Output('hazo', 'children'),
      Output('stato', 'children'),
+     Output('typeaniort', 'children'),
      ],
     [Input(component_id='ofieldx', component_property='value'),
      Input(component_id='ofieldy', component_property='value'),
@@ -2729,14 +3098,64 @@ def update_figmaete(kkkk0,kkkk1,kkkk2):
      Input(component_id='tolo', component_property='value'),
      Input(component_id='dto', component_property='value'),
      Input(component_id='nto', component_property='value'),
+     Input(component_id='demag_ort', component_property='value'),
 
     ]
 )
 
 
 
-def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s,kk1,kk2,mms,alph,tol00,dtt,ntt):
+def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
 
+    oa=1.0
+    ob=0.0
+    typeani="Easy direction along the lattice vector c parallel to z-axis"
+    
+    ea=kk1
+    eb=kk2
+    ec=0.0
+    
+    eneort=np.array(([ea,eb,ec]))
+    
+    emin=np.min(eneort)
+    
+    if demag == 'demag_ort_1':
+        oa=0.0
+        ob=0.0
+        if ea==emin:
+            typeani="Easy direction along the lattice vector a parallel to x-axis"
+        elif eb==emin:
+            typeani="Easy direction along the lattice vector b parallel to y-axis"
+        elif ec==emin:
+            typeani="Easy direction along the lattice vector c parallel to z-axis"
+        
+        if (kk1==0 and kk2>0) or (kk1>0 and kk2==0) or (kk1==kk2 and kk1<0 and kk2<0):
+            typeani="Easy plane"
+        
+    
+    if demag == 'demag_ort_2':
+        lmb01=0.0
+        lmb02=0.0
+        lmb03=0.0
+        
+        if ea==emin:
+            oa=1.0
+            ob=0.0
+            typeani="Easy direction along the lattice vector a parallel to x-axis"
+        elif eb==emin:
+            oa=0.0
+            ob=1.0
+            typeani="Easy direction along the lattice vector b parallel to y-axis"
+        elif ec==emin:
+            oa=0.0
+            ob=0.0
+            typeani="Easy direction along the lattice vector c parallel to z-axis"
+        
+        if (kk1==0 and kk2>0) or (kk1>0 and kk2==0) or (kk1==kk2 and kk1<0 and kk2<0):
+            typeani="Easy plane. Warning!! This case is not implemented for the selected reference demagnetized state"
+    
+    
+    
     d=1.0
 
     crys = 'ort'
@@ -2751,7 +3170,7 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     bx = np.sin(u)*np.cos(v)
     by = np.sin(u)*np.sin(v)
     bz = np.cos(u)
-    f = lmb01*bx**2+lmb02*by**2+lmb03*bz**2+lmb1*(ax**2*bx**2-ax*ay*bx*by-ax*az*bx*bz)+lmb2*(ay**2*bx**2-ax*ay*bx*by)+lmb3*(ax**2*by**2-ax*ay*bx*by)+lmb4*(ay**2*by**2-ax*ay*bx*by-ay*az*by*bz)+lmb5*(ax**2*bz**2-ax*az*bx*bz)+lmb6*(ay**2*bz**2-ay*az*by*bz)+lmb7*4*ax*ay*bx*by+lmb8*4*ax*az*bx*bz+lmb9*4*ay*az*by*bz
+    f = lmb01*bx**2+lmb02*by**2+lmb03*bz**2+lmb1*((ax**2-oa)*bx**2-ax*ay*bx*by-ax*az*bx*bz)+lmb2*((ay**2-ob)*bx**2-ax*ay*bx*by)+lmb3*((ax**2-oa)*by**2-ax*ay*bx*by)+lmb4*((ay**2-ob)*by**2-ax*ay*bx*by-ay*az*by*bz)+lmb5*((ax**2-oa)*bz**2-ax*az*bx*bz)+lmb6*((ay**2-ob)*bz**2-ay*az*by*bz)+lmb7*4*ax*ay*bx*by+lmb8*4*ax*az*bx*bz+lmb9*4*ay*az*by*bz
 
 
     x = d*(1.0+s*f)*bx
@@ -2824,7 +3243,7 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     ofig.update_yaxes(automargin=True)
     ofig.update_xaxes(automargin=True)
 
-    return ofig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0
+    return ofig,ax,ay,az,heffx,heffy,heffz,torque,hax,hay,haz,stat0,typeani
 
 
 
@@ -2857,12 +3276,50 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
      Input(component_id='tolo', component_property='value'),
      Input(component_id='dto', component_property='value'),
      Input(component_id='nto', component_property='value'),
+     Input(component_id='demag_ort', component_property='value'),
     ]
 )
 
 
-def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt):
+def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lmb8,lmb9,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
+    oa=1.0
+    ob=0.0
+    
+    
+    ea=kkk1
+    eb=kkk2
+    ec=0.0
+    
+    eneort=np.array(([ea,eb,ec]))
+    
+    emin=np.min(eneort)
+    
+    if demag == 'demag_ort_1':
+        oa=0.0
+        ob=0.0
+        
+        
+    
+    if demag == 'demag_ort_2':
+        lmb01=0.0
+        lmb02=0.0
+        lmb03=0.0
+        
+        if ea==emin:
+            oa=1.0
+            ob=0.0
+        elif eb==emin:
+            oa=0.0
+            ob=1.0
+        elif ec==emin:
+            oa=0.0
+            ob=0.0
+    
+    
+    
+    
+    
     d=1.0
 
     crys = 'ort'
@@ -2873,7 +3330,7 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     bxxy = np.cos(vxy)
     byxy = np.sin(vxy)
     bzxy = 0.0
-    fxy = lmb01*bxxy**2+lmb02*byxy**2+lmb03*bzxy**2+lmb1*(ax**2*bxxy**2-ax*ay*bxxy*byxy-ax*az*bxxy*bzxy)+lmb2*(ay**2*bxxy**2-ax*ay*bxxy*byxy)+lmb3*(ax**2*byxy**2-ax*ay*bxxy*byxy)+lmb4*(ay**2*byxy**2-ax*ay*bxxy*byxy-ay*az*byxy*bzxy)+lmb5*(ax**2*bzxy**2-ax*az*bxxy*bzxy)+lmb6*(ay**2*bzxy**2-ay*az*byxy*bzxy)+lmb7*4*ax*ay*bxxy*byxy+lmb8*4*ax*az*bxxy*bzxy+lmb9*4*ay*az*byxy*bzxy
+    fxy = lmb01*bxxy**2+lmb02*byxy**2+lmb03*bzxy**2+lmb1*((ax**2-oa)*bxxy**2-ax*ay*bxxy*byxy-ax*az*bxxy*bzxy)+lmb2*((ay**2-ob)*bxxy**2-ax*ay*bxxy*byxy)+lmb3*((ax**2-oa)*byxy**2-ax*ay*bxxy*byxy)+lmb4*((ay**2-ob)*byxy**2-ax*ay*bxxy*byxy-ay*az*byxy*bzxy)+lmb5*((ax**2-oa)*bzxy**2-ax*az*bxxy*bzxy)+lmb6*((ay**2-ob)*bzxy**2-ay*az*byxy*bzxy)+lmb7*4*ax*ay*bxxy*byxy+lmb8*4*ax*az*bxxy*bzxy+lmb9*4*ay*az*byxy*bzxy
     xxy = d*(1.0+s*fxy)*bxxy
     yxy = d*(1.0+s*fxy)*byxy
     zxy = d*(1.0+s*fxy)*bzxy
@@ -2882,7 +3339,7 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     bxxz = np.sin(vxz)
     byxz = 0.0
     bzxz = np.cos(vxz)
-    fxz = lmb01*bxxz**2+lmb02*byxz**2+lmb03*bzxz**2+lmb1*(ax**2*bxxz**2-ax*ay*bxxz*byxz-ax*az*bxxz*bzxz)+lmb2*(ay**2*bxxz**2-ax*ay*bxxz*byxz)+lmb3*(ax**2*byxz**2-ax*ay*bxxz*byxz)+lmb4*(ay**2*byxz**2-ax*ay*bxxz*byxz-ay*az*byxz*bzxz)+lmb5*(ax**2*bzxz**2-ax*az*bxxz*bzxz)+lmb6*(ay**2*bzxz**2-ay*az*byxz*bzxz)+lmb7*4*ax*ay*bxxz*byxz+lmb8*4*ax*az*bxxz*bzxz+lmb9*4*ay*az*byxz*bzxz
+    fxz = lmb01*bxxz**2+lmb02*byxz**2+lmb03*bzxz**2+lmb1*((ax**2-oa)*bxxz**2-ax*ay*bxxz*byxz-ax*az*bxxz*bzxz)+lmb2*((ay**2-ob)*bxxz**2-ax*ay*bxxz*byxz)+lmb3*((ax**2-oa)*byxz**2-ax*ay*bxxz*byxz)+lmb4*((ay**2-ob)*byxz**2-ax*ay*bxxz*byxz-ay*az*byxz*bzxz)+lmb5*((ax**2-oa)*bzxz**2-ax*az*bxxz*bzxz)+lmb6*((ay**2-ob)*bzxz**2-ay*az*byxz*bzxz)+lmb7*4*ax*ay*bxxz*byxz+lmb8*4*ax*az*bxxz*bzxz+lmb9*4*ay*az*byxz*bzxz
     xxz = d*(1.0+s*fxz)*bxxz
     yxz = d*(1.0+s*fxz)*byxz
     zxz = d*(1.0+s*fxz)*bzxz
@@ -2891,7 +3348,7 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
     bxyz = 0.0
     byyz = np.sin(vyz)
     bzyz = np.cos(vyz)
-    fyz = lmb01*bxyz**2+lmb02*byyz**2+lmb03*bzyz**2+lmb1*(ax**2*bxyz**2-ax*ay*bxyz*byyz-ax*az*bxyz*bzyz)+lmb2*(ay**2*bxyz**2-ax*ay*bxyz*byyz)+lmb3*(ax**2*byyz**2-ax*ay*bxyz*byyz)+lmb4*(ay**2*byyz**2-ax*ay*bxyz*byyz-ay*az*byyz*bzyz)+lmb5*(ax**2*bzyz**2-ax*az*bxyz*bzyz)+lmb6*(ay**2*bzyz**2-ay*az*byyz*bzyz)+lmb7*4*ax*ay*bxyz*byyz+lmb8*4*ax*az*bxyz*bzyz+lmb9*4*ay*az*byyz*bzyz
+    fyz = lmb01*bxyz**2+lmb02*byyz**2+lmb03*bzyz**2+lmb1*((ax**2-oa)*bxyz**2-ax*ay*bxyz*byyz-ax*az*bxyz*bzyz)+lmb2*((ay**2-ob)*bxyz**2-ax*ay*bxyz*byyz)+lmb3*((ax**2-oa)*byyz**2-ax*ay*bxyz*byyz)+lmb4*((ay**2-ob)*byyz**2-ax*ay*bxyz*byyz-ay*az*byyz*bzyz)+lmb5*((ax**2-oa)*bzyz**2-ax*az*bxyz*bzyz)+lmb6*((ay**2-ob)*bzyz**2-ay*az*byyz*bzyz)+lmb7*4*ax*ay*bxyz*byyz+lmb8*4*ax*az*bxyz*bzyz+lmb9*4*ay*az*byyz*bzyz
     xyz = d*(1.0+s*fyz)*bxyz
     yyz = d*(1.0+s*fyz)*byyz
     zyz = d*(1.0+s*fyz)*bzyz

@@ -70,3 +70,11 @@ Nieves, P.; Arapan, S.; Kądzielawa, A.P.; Legut, D. MAELASviewer: An Online Too
 
 [https://www.mdpi.com/1424-8220/20/22/6436/pdf](https://www.mdpi.com/1424-8220/20/22/6436/pdf)
 
+
+----------------------------
+Update: 15 September 2021
+----------------------------
+
+In the simulation of the Joule effect, we implemented the possibility to select the type of reference demagnetized state to compute the fractional change in length.
+
+
