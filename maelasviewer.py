@@ -56,8 +56,8 @@ app.layout = html.Div(children=[
     dcc.Markdown('''[https://www.mdpi.com/1424-8220/20/22/6436/pdf](https://www.mdpi.com/1424-8220/20/22/6436/pdf)'''),
     html.H6(" [2] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS: MAgneto-ELAStic properties calculation via computational high-throughput approach, Comput. Phys. Commun. 264, 107964 (2021). "),
     dcc.Markdown('''[https://doi.org/10.1016/j.cpc.2021.107964](https://doi.org/10.1016/j.cpc.2021.107964)'''),
-    html.H6(" [3] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS 2.0: A new version of a computer program for the calculation of magneto-elastic properties, arXiv:2106.03624 (2021). "),
-    dcc.Markdown('''[https://arxiv.org/abs/2106.03624](https://arxiv.org/abs/2106.03624)'''),
+    html.H6(" [3] P. Nieves, S. Arapan, S.H. Zhang, A.P. Kądzielawa, R.F. Zhang and D. Legut, MAELAS 2.0: A new version of a computer program for the calculation of magneto-elastic properties, Comput. Phys. Commun. 271, 108197 (2022). "),
+    dcc.Markdown('''[https://doi.org/10.1016/j.cpc.2021.108197](https://doi.org/10.1016/j.cpc.2021.108197)'''),
     html.H3("Source files"),
     dcc.Markdown('''[https://github.com/pnieves2019/MAELASviewer](https://github.com/pnieves2019/MAELASviewer)'''),
     html.Hr(),
@@ -200,10 +200,10 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
             html.Div([html.Img(src=app.get_asset_url('demag_cub.png'))]),
-            
+
             dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
-            
-            
+
+
             html.H6("The fractional change in length for cubic (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measured length direction, respectively."),
@@ -216,7 +216,7 @@ def update_output(system):
             dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
             html.H6("The fractional change in length for cubic (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub2.png'))]),
-            
+
 
             dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
             html.H6("The magnetocrystalline anisotropy energy for cubic systems is"),
@@ -234,8 +234,8 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            
-            
+
+
             dcc.Markdown(''' **Type of reference demagnetized state:**'''),
             dcc.Dropdown(
                 id='demag_cub',
@@ -332,7 +332,7 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The theory of magnetostriction for polycrystalline materials is more complex. A widely used approximation is to assume that the stress distribution is uniform through the material. In this case the relative change in length may be put into the following general form for all crystal symmetries supported by MAELAS:"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly.png'))]),
-            html.H6("where the relation between ξ and η with the magnetostrictive coefficients for single crystals can be found in the manuscript of version 2.0 of MAELAS. For example, in the case of cubic (I) crystal with a reference demagnetized state with domains along all easy directions we have"),    
+            html.H6("where the relation between ξ and η with the magnetostrictive coefficients for single crystals can be found in the manuscript of version 2.0 of MAELAS. For example, in the case of cubic (I) crystal with a reference demagnetized state with domains along all easy directions we have"),
             html.Div([html.Img(src=app.get_asset_url('eq_cub_poly_lmb_s.png'))]),
             html.H6("The magnetization is considered to be saturated in the direction of the effective field Heff"),
             html.Div([html.Img(src=app.get_asset_url('eff_field.png'))]),
@@ -385,19 +385,19 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
             html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
-            
+
             dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
-            
-            
+
+
             html.H6("In Clark definition, the fractional change in length for hexagonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hex.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively."),
 
-            
+
             dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
             html.H6("The fractional change in length for hexagonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hex2.png'))]),
-            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."),
             html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),
 
 
@@ -417,7 +417,7 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            
+
             dcc.Markdown(''' **Type of reference demagnetized state:**'''),
             dcc.Dropdown(
                 id='demag_hex',
@@ -521,22 +521,22 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
             html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
-            
+
             dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
-            
-            
+
+
             html.H6("In Mason definition, the fractional change in length for hexagonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hexm.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
             html.H6("These magnetostrictive coefficients are related to those defined by Clark through the following equations:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hexm_conv.png'))]),
-            
+
             dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
             html.H6("The fractional change in length for hexagonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_hexm2.png'))]),
-            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
-            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),     
-            
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."),
+            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),
+
             dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
             html.H6("The magnetocrystalline anisotropy energy for hexagonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
@@ -553,7 +553,7 @@ def update_output(system):
             html.H4("Parameters of the simulation"),
             html.H6("(Press Enter after changing any input to update the figures)"),
             html.Hr(),
-            
+
             dcc.Markdown(''' **Type of reference demagnetized state:**'''),
             dcc.Dropdown(
                 id='demag_hexm',
@@ -655,26 +655,26 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
             html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
-            
+
             dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
-            
-            
+
+
             html.H6("The fractional change in length for trigonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
-   
-        
+
+
             html.Div([html.Img(src=app.get_asset_url('eq_trig.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
-            
+
             dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
             html.H6("The fractional change in length for trigonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_trig2.png'))]),
-            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
-            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),     
-            
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."),
+            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),
+
             dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
-            
-            
+
+
             html.H6("The magnetocrystalline anisotropy energy for trigonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -783,23 +783,23 @@ def update_output(system):
             html.H4("Theory"),
             html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
             html.Div([html.Img(src=app.get_asset_url('demag_hex.png'))]),
-            
-            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),   
-            
+
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
+
             html.H6("The fractional change in length for tetragonal (I) systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
-   
+
             html.Div([html.Img(src=app.get_asset_url('eq_tet.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
             dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
             html.H6("The fractional change in length for tetragonal (I) systems using a reference demagnetized state with magnetic domains along all easy directions is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_tet2.png'))]),
-            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."), 
-            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),     
-            
+            html.H6("where Ω is the cone angle. For easy axis and easy plane the cone angle is Ω=0 and Ω=π/2, respectively.  MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and sets the corresponding value of Ω in the above equation for the fractional change of length."),
+            html.Div([html.Img(src=app.get_asset_url('typeani.png'))]),
+
             dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
-            
-            
+
+
             html.H6("The magnetocrystalline anisotropy energy for tetragonal systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_hex.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -904,30 +904,30 @@ def update_output(system):
 
             html.H3("Single crystal: Orthorhombic (space group numbers  16-74)"),
             html.H4("Theory"),
-            
+
             html.H6("The form of the fractional change in length depends on the demagnetized state that is used as a reference state. We have implemented two types of reference demagnetized state: (i) with randomly oriented atomic magnetic moments and (ii) with magnetic domains along all possible easy directions."),
             html.Div([html.Img(src=app.get_asset_url('demag_ort.png'))]),
-            
-            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),   
-            
+
+            dcc.Markdown('''**Reference demagnetized state with randomly oriented atomic magnetic moments**'''),
+
             html.H6("The fractional change in length for orthorhombic systems using a reference demagnetized state with randomly oriented atomic magnetic moments is:"),
-   
-            
-            
-            
+
+
+
+
             html.Div([html.Img(src=app.get_asset_url('eq_ort.png'))]),
             html.H6("where αi and βi (i=x,y,z) are the direction of magnetization and the measuring length direction, respectively. Magentostriction is a small effect that is hard to visualize. To facilitate its visualization in the simulation, we multiply the right hand side of this equation by a scale factor parameter which can be modified by the user."),
 
             dcc.Markdown('''**Reference demagnetized state with magnetic domains along all easy directions**'''),
             html.H6("The fractional change in length for orthorhombic systems using a reference demagnetized state with magnetic domains along all easy axis directions is:"),
             html.Div([html.Img(src=app.get_asset_url('eq_ort2.png'))]),
-            html.H6("MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and computes the corresponding form of the fractional change of length. The case with easy plane is not supported for a reference demagnetized state with magnetic domains along all easy directions. "), 
-            html.Div([html.Img(src=app.get_asset_url('typeaniort.png'))]),     
-            
+            html.H6("MAELASviewer automatically detects the type of magnetocrystalline anisotropy from the input values of K1 and K2, and computes the corresponding form of the fractional change of length. The case with easy plane is not supported for a reference demagnetized state with magnetic domains along all easy directions. "),
+            html.Div([html.Img(src=app.get_asset_url('typeaniort.png'))]),
+
             dcc.Markdown('''**Magnetocrystalline anisotropy and applied field**'''),
-            
-            
-            
+
+
+
             html.H6("The magnetocrystalline anisotropy energy for orthorhombic systems is"),
             html.Div([html.Img(src=app.get_asset_url('mae_ort.png'))]),
             html.H6("where K0, K1 and K2 are the magnetocrystalline anisotropy constants. K0 can be used to shift the minimum energy reference in the 3D visualization of the magnetocrystalline anisotropy energy. The magnetocrystalline anisotropy field Ha is"),
@@ -1260,10 +1260,10 @@ def update_fig(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag):
     heffx,heffy,heffz=field(crys,ax,ay,az,mms,hx,hy,hz,kk1,kk2)
     torque=np.sqrt((heffy*az-heffz*ay)**2.0+(heffz*ax-heffx*az)**2.0+(heffx*ay-heffy*ax)**2.0)
 
-    
+
     if demag == 'demag_cub_2':
         lmb0=0.0
-    
+
     u, v = np.mgrid[0:np.pi:100j, 0:2.0*np.pi:100j]
 
     bx = np.sin(u)*np.cos(v)
@@ -1368,7 +1368,7 @@ def update_figc2d(hx,hy,hz,lmb0,lmb1,lmb2,s,kk1,kk2,mms,alph,tol00,dtt,ntt,demag
 
     if demag == 'demag_cub_2':
         lmb0=0.0
-    
+
     d=1.0
 
     crys = 'cub'
@@ -1725,7 +1725,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
 
     c=1.0/3.0
     typeani="Easy plane"
-    
+
     if demag == 'demag_hex_1':
         c=1.0/3.0
         if kk1>0 and kk2>-kk1:
@@ -1734,11 +1734,11 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
             typeani="Easy plane"
         else:
             typeani="Easy cone"
-    
+
     if demag == 'demag_hex_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kk1>0 and kk2>-kk1:
             c=1.0
             typeani="Easy axis"
@@ -1749,7 +1749,7 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
             coneang=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
             c=np.cos(coneang)**2.0
             typeani="Easy cone"
-    
+
     d=1.0
 
     crys = 'uni'
@@ -1868,26 +1868,26 @@ def update_hfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kk1,kk2,mms,alph,to
 def update_figh2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbe,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
     c=1.0/3.0
-    
-    
+
+
     if demag == 'demag_hex_1':
         c=1.0/3.0
-        
-    
+
+
     if demag == 'demag_hex_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kkk1>0 and kkk2>-kkk1:
-            c=1.0         
+            c=1.0
         elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
-            c=0.0        
+            c=0.0
         else:
             coneang=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
             c=np.cos(coneang)**2.0
-            
-    
-    
+
+
+
     d=1.0
 
     crys = 'uni'
@@ -2066,7 +2066,7 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
 
     c=0.0
     typeani="Easy axis"
-    
+
     if demag == 'demag_hexm_1':
         c=0.0
         if kk1>0 and kk2>-kk1:
@@ -2075,11 +2075,11 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
             typeani="Easy plane"
         else:
             typeani="Easy cone"
-    
+
     if demag == 'demag_hexm_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kk1>0 and kk2>-kk1:
             c=0.0
             typeani="Easy axis"
@@ -2089,8 +2089,8 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
         else:
             c=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
             typeani="Easy cone"
-    
-    
+
+
     d=1.0
 
     crys = 'uni'
@@ -2211,26 +2211,26 @@ def update_hfigm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kk1,kk2,mms,alph,tol
 
 def update_figh2dm(hx,hy,hz,lmb01,lmb02,lmba,lmbb,lmbc,lmbd,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
-    
+
     c=0.0
-    
-    
+
+
     if demag == 'demag_hexm_1':
         c=0.0
-        
-    
+
+
     if demag == 'demag_hexm_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kkk1>0 and kkk2>-kkk1:
-            c=0.0          
+            c=0.0
         elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
-            c=np.pi/2.0         
+            c=np.pi/2.0
         else:
             c=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
-    
-    
+
+
     d=1.0
 
     crys = 'uni'
@@ -2413,7 +2413,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
 
     c=1.0/3.0
     typeani="Easy plane"
-    
+
     if demag == 'demag_tri_1':
         c=1.0/3.0
         if kk1>0 and kk2>-kk1:
@@ -2422,11 +2422,11 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
             typeani="Easy plane"
         else:
             typeani="Easy cone"
-    
+
     if demag == 'demag_tri_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kk1>0 and kk2>-kk1:
             c=1.0
             typeani="Easy axis"
@@ -2437,7 +2437,7 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
             coneang=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
             c=np.cos(coneang)**2.0
             typeani="Easy cone"
-    
+
     d=1.0
 
     crys = 'uni'
@@ -2558,25 +2558,25 @@ def update_trfig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kk1,
 def update_figtr2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg1,lmbg2,lmb12,lmb21,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
     c=1.0/3.0
-    
-    
+
+
     if demag == 'demag_hex_1':
         c=1.0/3.0
-        
-    
+
+
     if demag == 'demag_hex_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kkk1>0 and kkk2>-kkk1:
-            c=1.0         
+            c=1.0
         elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
-            c=0.0        
+            c=0.0
         else:
             coneang=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
             c=np.cos(coneang)**2.0
-    
-    
+
+
     d=1.0
 
     crys = 'uni'
@@ -2758,7 +2758,7 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
 
     c=1.0/3.0
     typeani="Easy plane"
-    
+
     if demag == 'demag_tet_1':
         c=1.0/3.0
         if kk1>0 and kk2>-kk1:
@@ -2767,11 +2767,11 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
             typeani="Easy plane"
         else:
             typeani="Easy cone"
-    
+
     if demag == 'demag_tet_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kk1>0 and kk2>-kk1:
             c=1.0
             typeani="Easy axis"
@@ -2782,8 +2782,8 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
             coneang=np.arcsin(np.sqrt(np.absolute(kk1)/(2.0*kk2)))
             c=np.cos(coneang)**2.0
             typeani="Easy cone"
-    
-    
+
+
     d=1.0
 
     crys = 'uni'
@@ -2904,24 +2904,24 @@ def update_tefig(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kk1,kk2,mms,a
 def update_figte2d(hx,hy,hz,lmb01,lmb02,lmba1,lmba2,lmbg,lmbd,lmbe,s,kkk1,kkk2,mmms,alph,tol00,dtt,ntt,demag):
 
     c=1.0/3.0
-    
-    
+
+
     if demag == 'demag_tet_1':
         c=1.0/3.0
-        
-    
+
+
     if demag == 'demag_tet_2':
         lmb01=0.0
         lmb02=0.0
-        
+
         if kkk1>0 and kkk2>-kkk1:
-            c=1.0         
+            c=1.0
         elif (kkk1>0 and kkk2<=-kkk1) or (kkk1<0 and kkk2<=-kkk1/2.0):
-            c=0.0        
+            c=0.0
         else:
             coneang=np.arcsin(np.sqrt(np.absolute(kkk1)/(2.0*kkk2)))
             c=np.cos(coneang)**2.0
-    
+
     d=1.0
 
     crys = 'uni'
@@ -3110,15 +3110,15 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
     oa=1.0
     ob=0.0
     typeani="Easy direction along the lattice vector c parallel to z-axis"
-    
+
     ea=kk1
     eb=kk2
     ec=0.0
-    
+
     eneort=np.array(([ea,eb,ec]))
-    
+
     emin=np.min(eneort)
-    
+
     if demag == 'demag_ort_1':
         oa=0.0
         ob=0.0
@@ -3128,16 +3128,16 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
             typeani="Easy direction along the lattice vector b parallel to y-axis"
         elif ec==emin:
             typeani="Easy direction along the lattice vector c parallel to z-axis"
-        
+
         if (kk1==0 and kk2>0) or (kk1>0 and kk2==0) or (kk1==kk2 and kk1<0 and kk2<0):
             typeani="Easy plane"
-        
-    
+
+
     if demag == 'demag_ort_2':
         lmb01=0.0
         lmb02=0.0
         lmb03=0.0
-        
+
         if ea==emin:
             oa=1.0
             ob=0.0
@@ -3150,12 +3150,12 @@ def update_ofig(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,lm
             oa=0.0
             ob=0.0
             typeani="Easy direction along the lattice vector c parallel to z-axis"
-        
+
         if (kk1==0 and kk2>0) or (kk1>0 and kk2==0) or (kk1==kk2 and kk1<0 and kk2<0):
             typeani="Easy plane. Warning!! This case is not implemented for the selected reference demagnetized state"
-    
-    
-    
+
+
+
     d=1.0
 
     crys = 'ort'
@@ -3285,27 +3285,27 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
 
     oa=1.0
     ob=0.0
-    
-    
+
+
     ea=kkk1
     eb=kkk2
     ec=0.0
-    
+
     eneort=np.array(([ea,eb,ec]))
-    
+
     emin=np.min(eneort)
-    
+
     if demag == 'demag_ort_1':
         oa=0.0
         ob=0.0
-        
-        
-    
+
+
+
     if demag == 'demag_ort_2':
         lmb01=0.0
         lmb02=0.0
         lmb03=0.0
-        
+
         if ea==emin:
             oa=1.0
             ob=0.0
@@ -3315,11 +3315,11 @@ def update_figo2d(hx,hy,hz,lmb01,lmb02,lmb03,lmb1,lmb2,lmb3,lmb4,lmb5,lmb6,lmb7,
         elif ec==emin:
             oa=0.0
             ob=0.0
-    
-    
-    
-    
-    
+
+
+
+
+
     d=1.0
 
     crys = 'ort'
