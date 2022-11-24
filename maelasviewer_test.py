@@ -9,7 +9,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import numpy as np
+#import numpy as np
 from dash.dependencies import Input, Output
 
 
