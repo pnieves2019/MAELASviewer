@@ -18,10 +18,15 @@ MAELASviewer is an online tool to visualize magnetostriction. This interactive a
 ONLINE ACCESS
 -------------------------
 
-The online application is available at 
+Starting November 28th, 2022, due to a change in free Heroku services, the original Heroku url for MAELASviewer:
 
 [https://maelasviewer.herokuapp.com](https://maelasviewer.herokuapp.com)
 
+will no longer be available. To fix this problem, we have migrated MAELASviewer to the following new url:
+
+[http://www.md-esg.eu/maelasviewer/](http://www.md-esg.eu/maelasviewer/)
+
+Note that this visualization tool can also be used offline by running it on your local computer, see details below.
 
 --------------------------
 OFFLINE AND DEVELOPER MODE
